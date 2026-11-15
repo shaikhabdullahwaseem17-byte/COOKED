@@ -44,11 +44,11 @@ def _is_usable_candidate(candidate: str) -> bool:
         return False
     if len(words) > 22 or len(text) > 160:
         return False
-    if "\\n" in text or "#" in text:
+    if "\n" in text or "#" in text:
         return False
     if text.count("!") > 1:
         return False
-    if re.search(r"\\b(?:just kidding|wait, actually|or something like that)\\b", text, re.IGNORECASE):
+    if re.search(r"\b(?:just kidding|wait, actually|or something like that)\b", text, re.IGNORECASE):
         return False
     return True
 
