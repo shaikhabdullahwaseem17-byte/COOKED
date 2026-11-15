@@ -176,3 +176,24 @@ def test_numeric_extraction_does_not_read_numbers_inside_words():
     assert providers._is_fact_consistent_candidate(
         "His phone was still getting notifications.", context
     )
+
+
+def test_candidate_filter_rejects_generic_praise_endings():
+    for candidate in (
+        "Nine minutes for a quick thought? That's commitment.",
+        "Ninety minutes for meetings? Peak efficiency.",
+        "That's a whole other kind of mood board.",
+    ):
+        assert not providers._is_usable_candidate(candidate)
+
+
+def test_candidate_filter_keeps_specific_punchlines():
+    assert providers._is_usable_candidate(
+        "The question arrived with supporting documentation."
+    )
+
+
+def test_style_editor_guidance_exists_for_every_style():
+    assert set(providers.STYLE_EDITOR_GUIDANCE) == {
+        "instagram", "dry", "desi", "absurd"
+    }
