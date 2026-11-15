@@ -73,6 +73,8 @@ PYTHONPATH=. python scripts/humor_benchmark.py
 
 The GitHub Actions live benchmark runs the fixed, English-only cases against the configured local model and saves a JSON report plus a readable Markdown report as workflow artifacts. The report records all candidate outputs and per-call latency so that model behaviour can be reviewed rather than judged from a single selected line.
 
+Benchmark situations are kept separate from the curated style examples, with an automated overlap check in the test suite.
+
 Gemma 4 E2B is currently being evaluated as a candidate model. It is not the default model; that decision depends on human review of the actual outputs and latency.
 
 The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Benchmark results require human review and do not establish that comments will perform well on Instagram.
