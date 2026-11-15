@@ -140,7 +140,9 @@ async def _complete(prompt: str, temperature: float) -> str:
     except (httpx.RequestError, KeyError, IndexError, ValueError) as exc:
         raise ProviderError("The model provider returned an unexpected response.") from exc
 
-    result = (result or "").strip().strip("\"'“”‘’").strip()
+    if not isinstance(result, str):
+        raise ProviderError("The model provider returned an unexpected response.")
+    result = result.strip().strip("\\"'“”‘’").strip()
     if not result:
         raise ProviderError("The model returned an empty response. Try again.")
     return result
