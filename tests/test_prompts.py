@@ -261,3 +261,10 @@ def test_example_retrieval_requires_meaningful_overlap():
         "instagram",
         limit=2,
     ) == []
+
+
+
+def test_prompt_excludes_diagnosis_based_insults():
+    prompt = build_prompt("He rewrote a caption nineteen times.", "instagram", 3)
+    assert "medical or mental-health conditions" in prompt
+    assert "Never use a diagnosis as an insult" in prompt
