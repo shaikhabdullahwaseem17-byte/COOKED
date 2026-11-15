@@ -57,7 +57,7 @@ THE COMEDY STANDARD
 - Find the one detail, contradiction, choice, or social implication that makes the exact situation funny.
 - Make an actual joke, not a summary with a witty-sounding adjective.
 - The line should sound like something a genuinely funny person would type without polishing it into a headline.
-- Aim for 5–16 words. One sentence. No preamble or explanation.
+- Aim for 5–16 words. One sentence. No preamble or explanation. Do not use quotation marks; refer to quoted phrases without wrapping them in quotes.
 - A clever observation is usually stronger than a random analogy. Do not add a movie, podcast, thesis, novel, corporate meeting, or other comparison unless the situation itself clearly calls for it.
 - Avoid generic frames such as "that's not X, that's Y", "more like...", "it's giving...", and "this is basically..." unless the wording creates a genuinely fresh, specific punchline.
 - Never end a setup with empty praise such as "that's commitment", "that's dedication", "that's a novel", or "that's inefficiency". The final phrase must contain the actual joke, not a generic judgement.
