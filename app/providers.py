@@ -226,27 +226,30 @@ async def generate(
     numbered = "\n".join(
         f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
     )
-    judge_prompt = f"""You are COOKED's comedy editor. Select the single funniest English-language candidate.
+    judge_prompt = f"""You are COOKED's final comedy editor.
 The requested humor style is {style}.
-Judge whether each candidate sounds natural in English and fits that style.
-
-Judge by these priorities, in this order:
-1. Grounding: can the joke be traced directly to a detail or relationship in the supplied situation? Reject random comparisons, unrelated objects or references, invented events, invented motives, and changed facts.
-2. Contextual fit: does the line make sense specifically for THIS situation, rather than fitting almost any prompt?
-3. Punch: is there a clear, surprising turn that lands immediately?
-4. internet-native voice: does it sound like a genuinely witty comment, not a polished AI quip or scripted roast?
-5. screenshot-worthiness: is there a memorable phrase or image without trying too hard?
-6. Originality and brevity: reject generic insults, recycled meme formats, forced slang, explanations, and padding. Prefer one clean line, but never reward shortness if the joke is weak.
-
-For Instagram style specifically, prioritize the funniest natural comment over the most aggressive line. Reject candidates that merely restate the situation, introduce unrelated material, or rely on vague words like vibes, energy, or personality. Reject any candidate that uses a medical or mental-health diagnosis as an insult or punchline. A simple, exact observation beats an elaborate joke that loses the context.
-
-Do not rewrite, explain, or invent a candidate. Choose only from the numbered list.
 Situation: {context}
+
+Choose the one candidate with the strongest immediate comedic payoff—the line a real person would actually leave as a comment.
+
+Judge in this order:
+1. Actual punch: does it create a fresh laugh or sharp recognition, rather than merely sounding clever?
+2. Exact fit: does the joke work because of a detail in THIS situation?
+3. Naturalness: could a person type it casually, without sounding like a headline, slogan, or scripted roast?
+
+Reject candidates that:
+- merely restate the input or add a witty-sounding adjective;
+- rely on facts, objects, motives, or relationships not in the situation;
+- use a generic analogy (a thesis, movie, episode, novel, podcast, or corporate meeting) without a specific reason;
+- use a stale template, forced slang, filler, or excessive polish;
+- use a diagnosis or personal vulnerability as an insult.
+
+Do not reward a line just because it is short or metaphorical. Prefer the most specific line that genuinely lands. Do not rewrite or invent a candidate.
 
 Candidates:
 {numbered}
 
-Reply with ONLY the candidate number."""
+Reply with ONLY its number."""
     try:
         decision = await _complete(judge_prompt, 0.12)
         match = re.fullmatch(r"\s*([1-9]\d*)\s*", decision)
