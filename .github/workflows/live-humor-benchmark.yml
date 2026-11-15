@@ -3,7 +3,7 @@ name: live-humor-benchmark
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, quality/grounded-instagram]
     paths:
       - '.github/workflows/live-humor-benchmark.yml'
       - 'app/**'
@@ -33,11 +33,11 @@ jobs:
             if ollama list >/dev/null 2>&1; then break; fi
             sleep 2
           done
-          ollama pull qwen2.5:7b
+          ollama pull gemma4:e2b
       - name: Run live benchmark
         env:
           COOKED_PROVIDER: ollama
-          COOKED_MODEL: qwen2.5:7b
+          COOKED_MODEL: gemma4:e2b
           REQUEST_TIMEOUT: "180"
         run: |
           PYTHONPATH=. python scripts/humor_benchmark.py --output-dir benchmark-results
