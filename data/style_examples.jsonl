@@ -1,5 +1,6 @@
-{"input":"He announced he was taking a break from social media for the fifth time this month.","output":"At this point even Instagram thinks it's a seasonal subscription.","language":"en","style":"instagram","source":"original_example"}
-{"input":"My friend made a 40-slide presentation about why he is always right.","output":"The confidence had a whole slide deck. The evidence was on annual leave.","language":"en","style":"dry","source":"original_example"}
-{"input":"Woh har baat pe expert banta hai.","output":"Bhai ka confidence Wikipedia se hai, references kisi ke paas nahi.","language":"ur-rom","style":"desi","source":"original_example"}
-{"input":"وہ ہر بات پر خود کو ماہر سمجھتا ہے۔","output":"اعتماد پورا ہے، بس ثبوت راستے میں کہیں رہ گئے۔","language":"ur","style":"desi","source":"original_example"}
-{"input":"वह हर बात पर खुद को विशेषज्ञ समझता है।","output":"आत्मविश्वास पूरा है, बस सबूत छुट्टी पर हैं।","language":"hi","style":"dry","source":"original_example"}
+{"input":"He announced he was taking a break from social media for the fifth time this month.","output":"At this point even Instagram thinks it's a seasonal subscription.","style":"instagram","language":"en","source":"original_example"}
+{"input":"My friend made a 40-slide presentation about why he is always right.","output":"The confidence had a whole slide deck. The evidence was on annual leave.","style":"dry","language":"en","source":"original_example"}
+{"input":"He says he is two minutes away while he is still deciding what to wear.","output":"His ETA is apparently measured in outfit changes.","style":"desi","language":"en","source":"original_example"}
+{"input":"She packed three suitcases for a one-night trip.","output":"She packed like the hotel was asking her to relocate.","style":"absurd","language":"en","source":"original_example"}
+{"input":"He posted a 12-minute apology video for being four minutes late.","output":"The apology had a longer runtime than the delay.","style":"instagram","language":"en","source":"original_example"}
+{"input":"My friend made a spreadsheet to decide what to eat, then ordered the same lunch as always.","output":"The spreadsheet was just a very expensive way to confirm yesterday.","style":"dry","language":"en","source":"original_example"}
