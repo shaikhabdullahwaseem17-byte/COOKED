@@ -29,6 +29,9 @@ def test_homepage_serves_the_web_interface():
     assert response.status_code == 200
     assert "COOKED" in response.text
     assert 'id="go"' in response.text
+    assert 'id="language"' not in response.text
+    for style in ("instagram", "dry", "desi", "absurd"):
+        assert f'<option value="{style}">' in response.text
 
 
 def test_roast_rejects_private_contact_details():
