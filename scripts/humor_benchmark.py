@@ -13,14 +13,15 @@ from app import config, providers
 from app.prompts import build_prompt
 
 CASES: tuple[dict[str, str], ...] = (
-    {"id": "en_instagram_apology", "style": "instagram", "text": "He posted a 12-minute apology video for being four minutes late."},
-    {"id": "en_dry_lunch", "style": "dry", "text": "My friend made a spreadsheet to decide what to eat for lunch, then ordered the exact same thing as always."},
-    {"id": "en_absurd_luggage", "style": "absurd", "text": "She packed three suitcases for a one-night trip."},
-    {"id": "en_desi_late", "style": "desi", "text": "He says 'I'm two minutes away' while he is still deciding what to wear."},
-    {"id": "en_instagram_low_context", "style": "instagram", "text": "He replied 'interesting' and immediately changed the subject."},
-    {"id": "en_dry_meeting", "style": "dry", "text": "He says every meeting will be brief, then speaks longer than everyone else."},
-    {"id": "en_absurd_overplanning", "style": "absurd", "text": "She made a 14-step plan for a five-minute errand."},
-    {"id": "en_desi_group_project", "style": "desi", "text": "He volunteers to handle every group project, then blames the internet at the deadline."},
+    # Five fresh Instagram cases: deliberately distinct from the style-reference inputs.
+    {"id": "en_instagram_voice_note", "style": "instagram", "text": "He described a nine-minute voice note as 'just a quick thought'."},
+    {"id": "en_instagram_no_context", "style": "instagram", "text": "She posted 'no context' and then spent 40 replies explaining the context."},
+    {"id": "en_instagram_effortless_caption", "style": "instagram", "text": "He called the caption 'effortless' after rewriting it nineteen times."},
+    {"id": "en_instagram_phone_break", "style": "instagram", "text": "He said he was taking a break from his phone, then replied to every comment within seconds."},
+    {"id": "en_instagram_tiny_update", "style": "instagram", "text": "She promised a 'tiny update' and posted a 23-message thread."},
+    {"id": "en_dry_meeting", "style": "dry", "text": "The recurring meeting to discuss cutting meetings has been extended to 90 minutes."},
+    {"id": "en_desi_group_chat", "style": "desi", "text": "The family group chat has 86 unread messages, all forwarding the same 'Good morning' greeting."},
+    {"id": "en_absurd_plants", "style": "absurd", "text": "She made a color-coded seating chart for the houseplants."},
 )
 
 
