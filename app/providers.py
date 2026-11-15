@@ -42,7 +42,9 @@ def _is_usable_candidate(candidate: str) -> bool:
     words = _tokens(text)
     if not text or not words:
         return False
-    if len(words) > 22 or len(text) > 160:
+    if len(words) > 18 or len(text) > 140:
+        return False
+    if text.count('"') % 2:
         return False
     if "\n" in text or "#" in text:
         return False
@@ -104,9 +106,13 @@ def _quality_score(candidate: str, context: str) -> float:
 
 async def _complete(prompt: str, temperature: float) -> str:
     try:
-        async with httpx.AsyncClient(timeout=config.REQUEST_TIMEOUT) as client:
+        is_qwen35 = (
+            config.PROVIDER == "ollama"
+            and config.MODEL.casefold().startswith("qwen3.5")
+        )
+        request_timeout = min(config.REQUEST_TIMEOUT, 90) if is_qwen35 else config.REQUEST_TIMEOUT
+        async with httpx.AsyncClient(timeout=request_timeout) as client:
             if config.PROVIDER == "ollama":
-                is_qwen35 = config.MODEL.casefold().startswith("qwen3.5")
                 options = {
                     "temperature": temperature,
                     "top_p": 0.92,
@@ -116,7 +122,7 @@ async def _complete(prompt: str, temperature: float) -> str:
                     # COOKED needs a short comment, not a long reasoning trace.
                     # Keep candidate generations and the editor response bounded.
                     options["num_predict"] = (
-                        6 if "You are COOKED's comedy editor" in prompt else 72
+                        6 if "You are COOKED's comedy editor" in prompt else 48
                     )
                 payload = {
                     "model": config.MODEL,
