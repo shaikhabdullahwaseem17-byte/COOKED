@@ -38,7 +38,6 @@ def _tokens(text: str) -> set[str]:
 
 def select_examples(
     context: str,
-    language: str,
     style: str,
     limit: int = 2,
 ) -> list[dict]:
@@ -49,7 +48,7 @@ def select_examples(
     all_examples = list(load_examples())
     exact = [
         item for item in all_examples
-        if item.get("language") == language and item.get("style") == style
+        if item.get("language", "en") == "en" and item.get("style") == style
     ]
     # Never teach one style using an example from a different style.
     pool = exact
