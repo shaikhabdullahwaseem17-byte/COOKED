@@ -177,6 +177,8 @@ async def generate(prompt: str, context: str) -> str:
         f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
     )
     judge_prompt = f"""You are COOKED's comedy editor. Select the single funniest candidate.
+The requested output language is {language}; the requested humor style is {style}.
+Judge whether each candidate sounds natural in that language and fits that style.
 
 Judge by these priorities:
 1. Specific connection to the supplied situation (not a generic insult).
