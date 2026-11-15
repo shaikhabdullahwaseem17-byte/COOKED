@@ -55,6 +55,54 @@ def _is_usable_candidate(candidate: str) -> bool:
     return True
 
 
+NUMBER_WORDS = {
+    "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4,
+    "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9,
+    "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13,
+    "fourteen": 14, "fifteen": 15, "sixteen": 16, "seventeen": 17,
+    "eighteen": 18, "nineteen": 19, "twenty": 20, "thirty": 30,
+    "forty": 40, "fifty": 50, "sixty": 60, "seventy": 70,
+    "eighty": 80, "ninety": 90, "hundred": 100,
+}
+
+
+def _number_mentions(text: str) -> set[int]:
+    """Extract simple numeric facts so candidate wording cannot alter stated counts."""
+    tokens = re.findall(
+        r"\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|"
+        r"eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|"
+        r"eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|"
+        r"eighty|ninety|hundred",
+        text.casefold(),
+    )
+    values: set[int] = set()
+    index = 0
+    while index < len(tokens):
+        token = tokens[index]
+        if token.isdigit():
+            values.add(int(token))
+        elif token in {"twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"}:
+            value = NUMBER_WORDS[token]
+            if index + 1 < len(tokens) and tokens[index + 1] in NUMBER_WORDS:
+                unit = NUMBER_WORDS[tokens[index + 1]]
+                if 1 <= unit <= 9:
+                    value += unit
+                    index += 1
+            values.add(value)
+        else:
+            values.add(NUMBER_WORDS[token])
+        index += 1
+    return values
+
+
+def _is_fact_consistent_candidate(candidate: str, context: str) -> bool:
+    """Reject outputs that change explicit numeric facts from the user's situation."""
+    stated_numbers = _number_mentions(context)
+    if not stated_numbers:
+        return True
+    return _number_mentions(candidate).issubset(stated_numbers)
+
+
 def _quality_score(candidate: str, context: str) -> float:
     """A deliberately simple anti-slop heuristic, not a humor detector."""
     text = candidate.strip().strip("\"'“”‘’")
@@ -210,6 +258,7 @@ async def generate(
         and item.strip()
         and is_valid_output(item.strip())
         and _is_usable_candidate(item.strip())
+        and _is_fact_consistent_candidate(item.strip(), context)
     ]
     if not candidates:
         errors = [str(item) for item in results if isinstance(item, Exception)]
