@@ -46,7 +46,7 @@ Example JSON:
 {"text":"He said he is the CEO of replying late.","style":"instagram","intensity":3}
 ```
 
-Styles: `instagram`, `dry`, `desi`, `absurd`. The API accepts English-only output; unsupported legacy language fields are rejected by request validation. Interactive API docs: http://127.0.0.1:8000/docs.
+Styles: `instagram`, `dry`, `desi`, `absurd`. The API has no language selector and prompts for English. Output validation rejects non-Latin scripts, but it is a script check—not a language detector—so non-English text written in Latin letters can still pass. Interactive API docs: http://127.0.0.1:8000/docs.
 
 ## Humor principles
 
