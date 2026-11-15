@@ -180,3 +180,38 @@ def test_editor_receives_requested_language_and_style(monkeypatch):
     assert result == "A clever reply that fits this particular situation."
     assert "requested output language is ur-rom" in seen_editor_prompt[0]
     assert "requested humor style is desi" in seen_editor_prompt[0]
+
+
+def test_provider_rejects_non_text_model_output(monkeypatch):
+    import asyncio
+    import app.providers as providers
+
+    class FakeResponse:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"message": {"content": {"unexpected": "object"}}}
+
+    class FakeClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            return None
+
+        async def post(self, *args, **kwargs):
+            return FakeResponse()
+
+    monkeypatch.setattr(providers.config, "PROVIDER", "ollama")
+    monkeypatch.setattr(providers.httpx, "AsyncClient", FakeClient)
+
+    try:
+        asyncio.run(providers._complete("prompt", 0.5))
+    except providers.ProviderError as exc:
+        assert "unexpected response" in str(exc)
+    else:
+        raise AssertionError("Non-text provider output must be rejected.")
