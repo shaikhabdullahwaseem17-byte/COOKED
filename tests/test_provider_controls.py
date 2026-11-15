@@ -118,3 +118,41 @@ def test_candidate_shape_filter_accepts_a_short_grounded_comment():
     assert providers._is_usable_candidate(
         "His ETA is apparently measured in outfit changes."
     )
+
+
+def test_gemma4_uses_fast_thinking_mode_and_bounded_output(monkeypatch):
+    payloads = []
+    timeouts = []
+
+    class _GemmaResponse:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"message": {"content": "One concise comment."}}
+
+    class _GemmaClient:
+        def __init__(self, *args, **kwargs):
+            timeouts.append(kwargs.get("timeout"))
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            return None
+
+        async def post(self, url, json):
+            payloads.append(json)
+            return _GemmaResponse()
+
+    monkeypatch.setattr(providers.config, "PROVIDER", "ollama")
+    monkeypatch.setattr(providers.config, "MODEL", "gemma4:e2b")
+    monkeypatch.setattr(providers.config, "REQUEST_TIMEOUT", 180)
+    monkeypatch.setattr(providers.httpx, "AsyncClient", _GemmaClient)
+
+    result = asyncio.run(providers._complete("Write one concise comment.", 0.9))
+
+    assert result == "One concise comment."
+    assert payloads[0]["think"] is False
+    assert payloads[0]["options"]["num_predict"] == 48
+    assert timeouts == [90]
