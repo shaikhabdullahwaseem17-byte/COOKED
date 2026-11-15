@@ -142,7 +142,7 @@ async def _complete(prompt: str, temperature: float) -> str:
 
     if not isinstance(result, str):
         raise ProviderError("The model provider returned an unexpected response.")
-    result = result.strip().strip("\\"'“”‘’").strip()
+    result = result.strip().strip("\"'“”‘’").strip()
     if not result:
         raise ProviderError("The model returned an empty response. Try again.")
     return result
