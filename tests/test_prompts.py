@@ -126,7 +126,8 @@ def test_editor_invalid_response_uses_heuristic_fallback(monkeypatch):
 
 def test_example_retrieval_never_borrows_a_different_style():
     from app.examples import select_examples
-    assert select_examples("A friend has a huge ego.", "absurd") == []
+    examples = select_examples("A friend has a huge ego.", "absurd")
+    assert all(item["style"] == "absurd" for item in examples)
 
 
 def test_editor_receives_style(monkeypatch):
