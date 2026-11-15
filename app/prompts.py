@@ -1,7 +1,7 @@
 from app.examples import select_examples
 
 STYLE = {
-    "instagram": "comment-section wit: compact, instantly readable, specific, surprising, casually sharp",
+    "instagram": "high-signal Instagram comment wit: a one-line reaction that feels typed by a naturally funny person in the comments; sharply specific, socially observant, quotable, and instantly legible",
     "dry": "understated deadpan; the line should sound almost casual, with the joke hiding in the observation",
     "desi": "English-language South Asian internet humor; use culturally recognizable situations and idiom naturally, never perform a fake accent or force slang",
     "absurd": "unexpected, surreal comparison that still connects clearly to the supplied context",
@@ -9,7 +9,7 @@ STYLE = {
 
 ANGLES = (
     "Find a small contradiction in the context and flip it into a punchline.",
-    "Make one unexpected, concrete comparison that fits the context; avoid familiar meme templates.",
+    "Turn the most revealing detail into a short, unexpected comparison or consequence; avoid familiar meme templates.",
     "Use a compact deadpan observation or double meaning; make it feel effortless.",
 )
 
@@ -40,7 +40,7 @@ Write exactly ONE original, playful comeback in natural contemporary English.
 STYLE: {STYLE[style]}.
 SPICE: {intensity}/5 (sharpness, not cruelty).
 
-THE COOKED QUALITY BAR:
+INSTAGRAM MODE (when selected):\n- Write like a top-tier comment under a viral post: the joke should feel effortless, socially perceptive, and instantly understood without setup.\n- React to the exact situation, not the person with a generic insult. Notice the funniest implication, timing, hypocrisy, overreaction, or tiny detail.\n- Aim for one clean punchline with a sharp turn. Prefer a specific image or consequence over abstract words like confidence, personality, energy, or vibes.\n- Make it sound like a real comment someone would screenshot: conversational, compact, and not overly polished. A little attitude is fine; try-hard slang is not.\n- Avoid explaining the premise back to the reader. Do not force a punchline if the context does not support one.\n\nTHE COOKED QUALITY BAR:
 - Find a real detail, contradiction, odd choice, or implication in the context. Build the joke around THAT.
 - Prefer a clever observation, reversal, analogy, or double meaning over a generic insult.
 - Make the punchline land quickly. Usually 5–18 words; shorter is fine if it genuinely lands.
