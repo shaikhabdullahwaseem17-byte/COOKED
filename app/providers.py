@@ -173,9 +173,9 @@ async def generate(
     ]
     if not candidates:
         errors = [str(item) for item in results if isinstance(item, Exception)]
-        detail = errors[0] if errors else "All candidates were empty or used the wrong writing system."
+        detail = errors[0] if errors else "All candidates were empty or failed English output validation."
         raise ProviderError(
-            f"No usable candidate in the requested language/script. {detail}"
+            f"No usable English-language candidate. {detail}"
         )
 
     unique = list(dict.fromkeys(candidates))
@@ -192,7 +192,7 @@ Judge whether each candidate sounds natural in English and fits that style.
 
 Judge by these priorities:
 1. Specific connection to the supplied situation (not a generic insult).
-2. A surprising, clear punchline that sounds natural in the requested language.
+2. A surprising, clear punchline that sounds natural in English.
 3. Originality; reject stale templates, forced slang, and chatbot phrasing.
 4. Brevity without sacrificing the joke.
 
