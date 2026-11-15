@@ -197,3 +197,14 @@ def test_style_editor_guidance_exists_for_every_style():
     assert set(providers.STYLE_EDITOR_GUIDANCE) == {
         "instagram", "dry", "desi", "absurd"
     }
+
+
+def test_candidate_filter_rejects_generic_praise_and_metaphor_words():
+    for candidate in (
+        "Taking a break but replying instantly is a whole new level of commitment.",
+        "Forty replies for no context? That's a whole thesis.",
+        "A tiny update turned into a 23-message novel.",
+        "Ninety minutes for cutting meetings? That's practically a full day.",
+        "86 greetings means someone is hitting send on auto-pilot.",
+    ):
+        assert not providers._is_usable_candidate(candidate)
