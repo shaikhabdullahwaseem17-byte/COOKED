@@ -169,3 +169,10 @@ def test_fact_consistency_rejects_changed_explicit_numbers():
     assert providers._is_fact_consistent_candidate(
         "The explanation became its own discussion.", context
     )
+
+
+def test_numeric_extraction_does_not_read_numbers_inside_words():
+    context = "He replied to 40 comments on his phone."
+    assert providers._is_fact_consistent_candidate(
+        "His phone was still getting notifications.", context
+    )
