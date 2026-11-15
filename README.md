@@ -69,4 +69,10 @@ pytest -q
 PYTHONPATH=. python scripts/humor_benchmark.py
 ```
 
+## Live benchmark
+
+The GitHub Actions live benchmark runs the fixed, English-only cases against the configured local model and saves a JSON report plus a readable Markdown report as workflow artifacts. The report records all candidate outputs and per-call latency so that model behaviour can be reviewed rather than judged from a single selected line.
+
+The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Benchmark results require human review and do not establish that comments will perform well on Instagram.
+
 Code is MIT-licensed. The underlying model and third-party datasets retain their own licenses and terms; see MODEL_CARD.md.
