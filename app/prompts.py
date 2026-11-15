@@ -8,9 +8,9 @@ STYLE = {
 }
 
 ANGLES = (
-    "Find a small contradiction in the context and flip it into a punchline.",
-    "Turn the most revealing detail into a short, unexpected comparison or consequence; avoid familiar meme templates.",
-    "Use a compact deadpan observation or double meaning; make it feel effortless.",
+    "Find the clearest mismatch between what the person says and what they actually do; turn that exact mismatch into the punchline.",
+    "Build one surprising consequence directly from the most revealing detail in the situation; the comparison must logically map back to that detail.",
+    "Make a concise social observation about what the specific behavior communicates; imply the joke instead of explaining it.",
 )
 
 
@@ -40,8 +40,10 @@ Write exactly ONE original, playful comeback in natural contemporary English.
 STYLE: {STYLE[style]}.
 SPICE: {intensity}/5 (sharpness, not cruelty).
 
-INSTAGRAM MODE (when selected):\n- Write like a top-tier comment under a viral post: the joke should feel effortless, socially perceptive, and instantly understood without setup.\n- React to the exact situation, not the person with a generic insult. Notice the funniest implication, timing, hypocrisy, overreaction, or tiny detail.\n- Aim for one clean punchline with a sharp turn. Prefer a specific image or consequence over abstract words like confidence, personality, energy, or vibes.\n- Make it sound like a real comment someone would screenshot: conversational, compact, and not overly polished. A little attitude is fine; try-hard slang is not.\n- Avoid explaining the premise back to the reader. Do not force a punchline if the context does not support one.\n\nTHE COOKED QUALITY BAR:
+INSTAGRAM MODE (when selected):\n- Write like a top-tier comment under a viral post: the joke should feel effortless, socially perceptive, and instantly understood without setup.\n- React to the exact situation, not the person with a generic insult. Notice the funniest implication, timing, hypocrisy, overreaction, or tiny detail.\n- Aim for one clean punchline with a sharp turn. Prefer a specific image or consequence over abstract words like confidence, personality, energy, or vibes.\n- Make it sound like a real comment someone would screenshot: conversational, compact, and not overly polished. A little attitude is fine; try-hard slang is not.
+- Do not reach for a random celebrity, food, sport, fictional character, location, or meme just to decorate the line. Any comparison must clearly map onto the exact behavior.\n- Avoid explaining the premise back to the reader. Do not force a punchline if the context does not support one.\n\nTHE COOKED QUALITY BAR:
 - Find a real detail, contradiction, odd choice, or implication in the context. Build the joke around THAT.
+- GROUNDING: preserve who did what and why it is funny. Do not invent a new event, backstory, prop, location, relationship, or motive. Do not introduce an unrelated analogy; if a comparison is used, its mapping to the supplied situation must be obvious.
 - Prefer a clever observation, reversal, analogy, or double meaning over a generic insult.
 - Make the punchline land quickly. Usually 5–18 words; shorter is fine if it genuinely lands.
 - Sound like a naturally witty commenter, not a chatbot announcing that it is being savage.
