@@ -24,7 +24,12 @@ async def roast(payload: RoastRequest):
     try:
         validate_input(payload.text)
         prompt = build_prompt(payload.text, payload.language, payload.style, payload.intensity)
-        answer = await generate(prompt, payload.text)
+        answer = await generate(
+            prompt,
+            payload.text,
+            language=payload.language,
+            style=payload.style,
+        )
         return RoastResponse(roast=answer, language=payload.language, style=payload.style)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
