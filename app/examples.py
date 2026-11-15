@@ -51,11 +51,8 @@ def select_examples(
         item for item in all_examples
         if item.get("language") == language and item.get("style") == style
     ]
-    same_language = [
-        item for item in all_examples
-        if item.get("language") == language
-    ]
-    pool = exact if exact else same_language
+    # Never teach one style using an example from a different style.
+    pool = exact
     if not pool:
         return []
 
