@@ -4,16 +4,16 @@ from app.output_validation import is_valid_output
 
 
 @pytest.mark.parametrize(
-    ("text", "language", "expected"),
+    ("text", "expected"),
     [
-        ("That apology needs its own apology.", "en", True),
-        ("یہ فیصلہ خود بھی مشورہ مانگتا ہے۔", "en", False),
-        ("यह मीटिंग कभी खत्म नहीं होगी।", "en", False),
-        ("", "en", False),
-        ("123 !!!", "en", False),
-        ("This is English with a stray क character.", "en", False),
-        ("A normal English comeback.", "ur", False),
+        ("That apology needs its own apology.", True),
+        ("یہ فیصلہ خود بھی مشورہ مانگتا ہے۔", False),
+        ("यह मीटिंग कभी खत्म नहीं होगी।", False),
+        ("", False),
+        ("123 !!!", False),
+        ("This is English with a stray क character.", False),
+        ("A normal English comeback.", True),
     ],
 )
-def test_english_output_validation(text, language, expected):
-    assert is_valid_output(text, language) is expected
+def test_english_output_validation(text, expected):
+    assert is_valid_output(text) is expected
