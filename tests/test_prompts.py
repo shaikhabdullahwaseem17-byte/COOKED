@@ -194,8 +194,8 @@ def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
         style="instagram",
     ))
     assert result == "The apology got a director's cut. The lateness got four minutes."
-    assert "screenshot-worthiness" in seen[0]
-    assert "internet-native voice" in seen[0]
+    assert "immediate comedic payoff" in seen[0]
+    assert "Naturalness" in seen[0]
 
 
 def test_prompt_rejects_unrelated_joke_details():
@@ -224,9 +224,9 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
         style="instagram",
     ))
     assert result == "That 'interesting' was a polite exit with the door already closed."
-    assert "1. Grounding:" in seen[0]
-    assert "random comparisons" in seen[0]
-    assert "A simple, exact observation" in seen[0]
+    assert "Exact fit" in seen[0]
+    assert "facts, objects, motives, or relationships not in the situation" in seen[0]
+    assert "Prefer the most specific line" in seen[0]
 
 
 def test_example_retrieval_rejects_weak_generic_overlap():
