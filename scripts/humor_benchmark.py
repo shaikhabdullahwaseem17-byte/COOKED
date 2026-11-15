@@ -59,7 +59,11 @@ async def run_case(case: dict[str, str]) -> dict[str, Any]:
     for call in sorted((c for c in calls if c["kind"] == "candidate" and "output" in c),
                        key=lambda c: c["temperature"]):
         output = call["output"].strip()
-        if is_valid_output(output) and output not in seen:
+        if (
+            is_valid_output(output)
+            and providers._is_usable_candidate(output)
+            and output not in seen
+        ):
             seen.add(output)
             candidates.append(output)
     editor = [c for c in calls if c["kind"] == "editor"]
