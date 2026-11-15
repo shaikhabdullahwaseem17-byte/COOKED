@@ -31,7 +31,15 @@ GENERIC_PUNCH_PATTERNS = (
     r"\bexistential dread\b",
     r"\bwhole other kind of mood board\b",
     r"\ba serious commitment\b",
+    r"\bcommitment\b",
+    r"\b(?:dedicated|dedication)\b",
+    r"\b(?:novel|thesis|treatise|monologue|deep dive)\b",
+    r"\b(?:full day|full[- ]time job|peak performance)\b",
+    r"\bauto[- ]?pilot\b",
+    r"\bVIP spot\b",
+    r"\bwhole new level of\b",
 )
+
 STYLE_EDITOR_GUIDANCE = {
     "instagram": "Prefer an instantly recognizable, casual comment with a clean punch. Reject vague praise and metaphors that sound like a prepared stand-up routine.",
     "dry": "Prefer underplayed irony and precise wording. Reject long explanations, exclamation-heavy lines, and generic claims about efficiency.",
