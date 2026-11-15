@@ -169,4 +169,36 @@ async def generate(prompt: str, context: str) -> str:
         )
 
     unique = list(dict.fromkeys(candidates))
-    return max(unique, key=lambda item: _quality_score(item, context))
+    fallback = max(unique, key=lambda item: _quality_score(item, context))
+
+    # A separate editor pass judges only the generated candidates. It cannot
+    # invent a replacement, and a failed/invalid judge safely falls back.
+    numbered = "\\n".join(
+        f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
+    )
+    judge_prompt = f"""You are COOKED's comedy editor. Select the single funniest candidate.
+
+Judge by these priorities:
+1. Specific connection to the supplied situation (not a generic insult).
+2. A surprising, clear punchline that sounds natural in the requested language.
+3. Originality; reject stale templates, forced slang, and chatbot phrasing.
+4. Brevity without sacrificing the joke.
+
+Do not rewrite, explain, or invent a candidate. Choose only from the numbered list.
+Situation: {context}
+
+Candidates:
+{numbered}
+
+Reply with ONLY the candidate number."""
+    try:
+        decision = await _complete(judge_prompt, 0.12)
+        match = re.fullmatch(r"\\s*([1-9]\\d*)\\s*", decision)
+        if match:
+            selected = int(match.group(1))
+            if 1 <= selected <= len(unique):
+                return unique[selected - 1]
+    except Exception:
+        pass
+
+    return fallback
