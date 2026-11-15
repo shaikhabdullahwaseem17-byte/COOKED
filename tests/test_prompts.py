@@ -79,7 +79,11 @@ def test_prompt_includes_original_style_references():
 def test_example_retrieval_respects_style():
     from app.examples import select_examples
 
-    examples = select_examples("A friend has a huge ego.", "desi", limit=2)
+    examples = select_examples(
+        "He says he is two minutes away while he is still deciding what to wear.",
+        "desi",
+        limit=2,
+    )
     assert examples
     assert all(item["language"] == "en" for item in examples)
     assert all(item["style"] == "desi" for item in examples)
@@ -235,3 +239,25 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
     assert "1. Grounding:" in seen[0]
     assert "random comparisons" in seen[0]
     assert "A simple, exact observation" in seen[0]
+
+
+
+def test_example_retrieval_rejects_weak_generic_overlap():
+    from app.examples import select_examples
+
+    examples = select_examples(
+        "She posted 'no context' and then spent 40 replies explaining the context.",
+        "instagram",
+        limit=2,
+    )
+    assert not any("online shopping" in item["input"].casefold() for item in examples)
+
+
+def test_example_retrieval_requires_meaningful_overlap():
+    from app.examples import select_examples
+
+    assert select_examples(
+        "A completely unrelated situation with no shared details.",
+        "instagram",
+        limit=2,
+    ) == []
