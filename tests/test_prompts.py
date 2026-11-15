@@ -4,7 +4,7 @@ import app.providers as providers
 
 
 def test_prompt_uses_input_style_and_english():
-    prompt = providers.build_prompt("I am always right.", "dry", 2)
+    prompt = build_prompt("I am always right.", "dry", 2)
     assert "I am always right." in prompt
     assert "understated deadpan" in prompt
     assert "natural contemporary English" in prompt
@@ -18,7 +18,7 @@ def test_prompt_has_distinct_angles():
 
 
 def test_desi_style_is_south_asian_humor_written_in_english():
-    prompt = providers.build_prompt("He blames the Wi-Fi for every missed deadline.", "desi", 3)
+    prompt = build_prompt("He blames the Wi-Fi for every missed deadline.", "desi", 3)
     assert "English-language South Asian internet humor" in prompt
     assert "natural English" in prompt
 
@@ -69,7 +69,7 @@ def test_generate_tolerates_partial_provider_failure(monkeypatch):
 
 
 def test_prompt_includes_original_style_references():
-    prompt = providers.build_prompt("He announced his fifth social media break this month.", "instagram", 3)
+    prompt = build_prompt("He announced his fifth social media break this month.", "instagram", 3)
     assert "STYLE REFERENCES" in prompt
     assert "learn the technique, never copy their wording" in prompt
 
@@ -166,7 +166,7 @@ def test_provider_rejects_non_text_model_output(monkeypatch):
 
 
 def test_instagram_prompt_targets_native_comment_humor():
-    prompt = providers.build_prompt(
+    prompt = build_prompt(
         "He posted a 12-minute apology video for being four minutes late.",
         "instagram",
         3,
@@ -198,7 +198,7 @@ def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
 
 
 def test_prompt_rejects_unrelated_joke_details():
-    prompt = providers.build_prompt(
+    prompt = build_prompt(
         "He replied 'interesting' and immediately changed the subject.",
         "instagram",
         3,
@@ -248,6 +248,6 @@ def test_example_retrieval_requires_meaningful_overlap():
 
 
 def test_prompt_excludes_diagnosis_based_insults():
-    prompt = providers.build_prompt("He rewrote a caption nineteen times.", "instagram", 3)
+    prompt = build_prompt("He rewrote a caption nineteen times.", "instagram", 3)
     assert "medical or mental-health conditions" in prompt
     assert "Never use a diagnosis as an insult" in prompt
