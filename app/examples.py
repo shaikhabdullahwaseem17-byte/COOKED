@@ -5,6 +5,16 @@ from pathlib import Path
 
 DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "style_examples.jsonl"
 
+# Common words add little evidence that two situations are actually related.
+STOP_WORDS = {
+    "the", "and", "for", "with", "from", "that", "this", "then", "than",
+    "you", "your", "his", "her", "she", "him", "he", "they", "them",
+    "their", "was", "were", "are", "is", "has", "had", "have", "does",
+    "did", "but", "not", "just", "while", "when", "what", "who", "how",
+    "into", "onto", "about", "after", "before", "because", "still",
+    "posted", "post", "posts",
+}
+
 
 @lru_cache(maxsize=1)
 def load_examples() -> tuple[dict, ...]:
@@ -32,7 +42,7 @@ def _tokens(text: str) -> set[str]:
     return {
         token
         for token in re.findall(r"[^\W_]+", text.casefold(), flags=re.UNICODE)
-        if len(token) > 2
+        if len(token) > 2 and token not in STOP_WORDS
     }
 
 
@@ -41,7 +51,7 @@ def select_examples(
     style: str,
     limit: int = 2,
 ) -> list[dict]:
-    """Choose language/style-matched examples with the closest lexical context."""
+    """Choose examples only when they share meaningful situation-specific terms."""
     if limit <= 0:
         return []
 
@@ -61,7 +71,15 @@ def select_examples(
         example_tokens = _tokens(item["input"])
         if not context_tokens or not example_tokens:
             return 0.0
-        return len(context_tokens & example_tokens) / len(context_tokens | example_tokens)
+        # One shared generic word (for example, "posted") is not enough to
+        # establish that an example is relevant. It can otherwise inject an
+        # unrelated premise into the model's context and cause premise drift.
+        overlap = len(context_tokens & example_tokens)
+        if overlap < 2:
+            return 0.0
+        return overlap / len(context_tokens | example_tokens)
 
-    ranked = sorted(pool, key=relevance, reverse=True)
+    scored = [(relevance(item), item) for item in pool]
+    ranked = [item for score, item in sorted(scored, key=lambda pair: pair[0], reverse=True)
+              if score >= 0.12]
     return ranked[:limit]
