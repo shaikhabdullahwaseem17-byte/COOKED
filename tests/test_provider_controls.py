@@ -13,10 +13,11 @@ class _FakeResponse:
 
 def test_qwen35_candidate_uses_direct_short_output(monkeypatch):
     payloads = []
+    timeouts = []
 
     class _FakeClient:
         def __init__(self, *args, **kwargs):
-            pass
+            timeouts.append(kwargs.get("timeout"))
 
         async def __aenter__(self):
             return self
@@ -37,6 +38,7 @@ def test_qwen35_candidate_uses_direct_short_output(monkeypatch):
     assert result == "A concise comeback."
     assert payloads[0]["think"] is False
     assert payloads[0]["options"]["num_predict"] == 48
+    assert timeouts == [90]
 
 
 def test_qwen35_editor_gets_tiny_output_budget(monkeypatch):
