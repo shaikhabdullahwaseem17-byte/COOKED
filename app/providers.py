@@ -106,11 +106,15 @@ def _quality_score(candidate: str, context: str) -> float:
 
 async def _complete(prompt: str, temperature: float) -> str:
     try:
-        is_qwen35 = (
+        is_fast_thinking_model = (
             config.PROVIDER == "ollama"
-            and config.MODEL.casefold().startswith("qwen3.5")
+            and config.MODEL.casefold().startswith(("qwen3.5", "gemma4"))
         )
-        request_timeout = min(config.REQUEST_TIMEOUT, 90) if is_qwen35 else config.REQUEST_TIMEOUT
+        request_timeout = (
+            min(config.REQUEST_TIMEOUT, 90)
+            if is_fast_thinking_model
+            else config.REQUEST_TIMEOUT
+        )
         async with httpx.AsyncClient(timeout=request_timeout) as client:
             if config.PROVIDER == "ollama":
                 options = {
@@ -118,7 +122,7 @@ async def _complete(prompt: str, temperature: float) -> str:
                     "top_p": 0.92,
                     "repeat_penalty": 1.15,
                 }
-                if is_qwen35:
+                if is_fast_thinking_model:
                     # COOKED needs a short comment, not a long reasoning trace.
                     # Keep candidate generations and the editor response bounded.
                     options["num_predict"] = (
@@ -130,7 +134,7 @@ async def _complete(prompt: str, temperature: float) -> str:
                     "stream": False,
                     "options": options,
                 }
-                if is_qwen35:
+                if is_fast_thinking_model:
                     # Ollama documents this API-level switch for thinking models.
                     payload["think"] = False
                 response = await client.post(
