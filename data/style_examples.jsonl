@@ -9,3 +9,18 @@
 {"input":"The office ordered a second printer because the first one ran out of paper.","output":"A second printer: apparently refilling the tray was too ambitious.","style":"dry","language":"en","source":"original_example"}
 {"input":"She packed three suitcases for a one-night trip.","output":"She packed like the hotel was asking her to relocate.","style":"absurd","language":"en","source":"original_example"}
 {"input":"He arranged the sofa cushions by seniority.","output":"The sofa has an org chart.","style":"absurd","language":"en","source":"original_example"}
+{"input":"He wrote 'quick question' and sent a six-paragraph message.","output":"The question arrived with supporting documentation.","style":"instagram","language":"en","source":"original_example"}
+{"input":"She called the photo candid after arranging three lamps and asking for five retakes.","output":"Candid, with a production team.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He announced he'd left the group chat, then kept replying from notifications.","output":"The exit has a reply feature.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He wrote 'I don't care' and checked the post insights every minute.","output":"The analytics heard a different story.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He sent 'on my way' while the car was still parked in the driveway.","output":"The driveway is getting mixed signals.","style":"instagram","language":"en","source":"original_example"}
+{"input":"At a wedding, he said he'd leave after tea and stayed for dinner.","output":"The tea came with a sequel.","style":"desi","language":"en","source":"original_example"}
+{"input":"Every uncle asked about career plans before the food reached the table.","output":"The career interview comes with a side of dinner.","style":"desi","language":"en","source":"original_example"}
+{"input":"Someone said they weren't hungry, then packed leftovers for three people.","output":"The takeaway boxes heard a different answer.","style":"desi","language":"en","source":"original_example"}
+{"input":"A cousin said he was saving money while ordering dessert for the whole table.","output":"The budget has a sweet exception.","style":"desi","language":"en","source":"original_example"}
+{"input":"The team scheduled a follow-up to plan how to reduce follow-ups.","output":"The follow-up has already requested another follow-up.","style":"dry","language":"en","source":"original_example"}
+{"input":"He spent an hour choosing a font for a two-word reply.","output":"The reply now has a visual identity.","style":"dry","language":"en","source":"original_example"}
+{"input":"A spreadsheet that tracks other spreadsheets needed a new tab.","output":"It has become self-reporting.","style":"dry","language":"en","source":"original_example"}
+{"input":"He gave his basil plant a monthly performance review.","output":"Basil has been placed on a performance improvement plan.","style":"absurd","language":"en","source":"original_example"}
+{"input":"She assigned the fridge magnets designated parking spots.","output":"The magnet in the corner is clearly on probation.","style":"absurd","language":"en","source":"original_example"}
+{"input":"He made an onboarding checklist for a new houseplant.","output":"The fern is still waiting on IT access.","style":"absurd","language":"en","source":"original_example"}
