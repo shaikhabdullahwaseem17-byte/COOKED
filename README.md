@@ -75,7 +75,7 @@ The GitHub Actions live benchmark runs the fixed, English-only cases against the
 
 Benchmark situations are kept separate from the curated style examples, with an automated overlap check in the test suite.
 
-Gemma 4 E4B is currently being evaluated as a candidate model. It is not the default model; that decision depends on human review of the actual outputs and latency.
+Gemma 4 E2B is currently being evaluated as a candidate model. It is not the default model; that decision depends on human review of the actual outputs and latency.
 
 The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Benchmark results require human review and do not establish that comments will perform well on Instagram.
 
