@@ -169,3 +169,36 @@ def test_provider_rejects_non_text_model_output(monkeypatch):
         assert "unexpected response" in str(exc)
     else:
         raise AssertionError("Non-text provider output must be rejected.")
+
+
+def test_instagram_prompt_targets_native_comment_humor():
+    prompt = build_prompt(
+        "He posted a 12-minute apology video for being four minutes late.",
+        "instagram",
+        3,
+    )
+    assert "top-tier comment under a viral post" in prompt
+    assert "screenshot" in prompt
+    assert "exact situation" in prompt
+    assert "forced slang" in prompt
+
+
+def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
+    import app.providers as providers
+    seen = []
+
+    async def fake_complete(prompt, temperature):
+        if "comedy editor" in prompt:
+            seen.append(prompt)
+            return "1"
+        return "The apology got a director's cut. The lateness got four minutes."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(providers.generate(
+        "prompt",
+        "He posted a 12-minute apology video for being four minutes late.",
+        style="instagram",
+    ))
+    assert result == "The apology got a director's cut. The lateness got four minutes."
+    assert "screenshot-worthiness" in seen[0]
+    assert "internet-native voice" in seen[0]
