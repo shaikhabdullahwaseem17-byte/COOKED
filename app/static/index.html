@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#11100f"><meta name="description" content="COOKED — multilingual internet humor">
+<title>COOKED — Say less. Cook harder.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#11100f;--panel:#191817;--line:#302c29;--muted:#99918b;--ink:#f5f0e9;--orange:#ff7043;--orange2:#ff9a62}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#49231655,transparent 38%),var(--bg);color:var(--ink);font-family:"Space Grotesk",sans-serif;min-height:100vh}
+.wrap{max-width:1080px;margin:auto;padding:26px 24px 60px}.nav{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0 22px}
+.brand{font-weight:700;font-size:24px;letter-spacing:-1.5px}.brand span{color:var(--orange)}.nav small,.eyebrow,.mono{font-family:"DM Mono",monospace;color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.hero{padding:70px 0 40px;max-width:760px}.eyebrow{color:var(--orange)}h1{font-size:clamp(46px,8vw,88px);line-height:.94;letter-spacing:-.075em;margin:18px 0 20px}.hero p{color:#b8afa7;font-size:18px;line-height:1.55;max-width:600px;margin:0}
+.layout{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.card{background:linear-gradient(145deg,#1b1917,#151413);border:1px solid var(--line);border-radius:18px;padding:22px}
+label{display:block;font-size:12px;color:#c9c0b8;margin:0 0 9px}.input{width:100%;background:#100f0e;border:1px solid #39332e;border-radius:12px;color:var(--ink);padding:15px;font:15px "Space Grotesk";outline:none;resize:vertical;min-height:130px}.input:focus,select:focus{border-color:var(--orange)}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:18px}select{width:100%;background:#100f0e;color:var(--ink);border:1px solid #39332e;border-radius:10px;padding:12px;font:14px "Space Grotesk"}
+.range{display:flex;align-items:center;gap:12px}.range input{accent-color:var(--orange);width:100%}.range b{color:var(--orange);font:13px "DM Mono"}
+.go{margin-top:20px;width:100%;border:0;border-radius:11px;padding:15px;background:var(--orange);color:#1a100c;font:700 15px "Space Grotesk";cursor:pointer}.go:hover{background:var(--orange2)}.go:disabled{opacity:.55;cursor:wait}
+.result{min-height:315px;display:flex;flex-direction:column;justify-content:space-between}.result-top{display:flex;justify-content:space-between;align-items:center}.dot{width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block;margin-right:7px}.output{font-size:clamp(23px,3vw,34px);line-height:1.22;letter-spacing:-.045em;margin:35px 0;overflow-wrap:anywhere}.placeholder{color:#69615b}.result-bottom{display:flex;justify-content:space-between;align-items:center}.copy{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:9px;padding:9px 13px;cursor:pointer}.status{font-size:12px;color:var(--muted);min-height:18px;margin-top:10px}
+.footer{border-top:1px solid var(--line);margin-top:42px;padding-top:20px;display:flex;justify-content:space-between;color:#766e68;font:11px "DM Mono";gap:12px;flex-wrap:wrap}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.hero{padding:50px 0 30px}.result{min-height:230px}.wrap{padding:18px 16px 40px}}
+</style></head><body><div class="wrap">
+<nav class="nav"><div class="brand">COOKED<span>.</span></div><small>OPEN SOURCE HUMOR ENGINE</small></nav>
+<header class="hero"><div class="eyebrow">LESS BOT. MORE COMMENT SECTION.</div><h1>Say less.<br><span style="color:var(--orange)">Cook harder.</span></h1>
+<p>Short, specific, multilingual comebacks with actual comment-section timing. No paragraph-long AI speeches. No motivational-poster insults.</p></header>
+<main class="layout"><section class="card">
+<label for="input">GIVE COOKED THE CONTEXT</label><textarea id="input" class="input" maxlength="600" placeholder="Paste a caption, harmless situation, or something your friend said…"></textarea>
+<div class="controls"><div><label for="language">LANGUAGE</label><select id="language"><option value="en">English</option><option value="ur-rom">Roman Urdu</option><option value="ur">Urdu</option><option value="hi">Hindi</option></select></div>
+<div><label for="style">HUMOR STYLE</label><select id="style"><option value="instagram">Instagram comments</option><option value="dry">Dry / deadpan</option><option value="desi">Desi humor</option><option value="absurd">Absurd</option></select></div></div>
+<div style="margin-top:17px"><label for="intensity">SPICE LEVEL</label><div class="range"><input id="intensity" type="range" min="1" max="5" value="3"><b id="level">3 / 5</b></div></div>
+<button id="go" class="go">COOK THIS ↗</button><div id="status" class="status" role="status"></div></section>
+<section class="card result"><div class="result-top"><span class="mono"><i class="dot"></i>THE RESULT</span><span class="mono">01 / 01</span></div>
+<div id="output" class="output placeholder">Your next comment-section classic goes here.</div><div class="result-bottom"><span class="mono">KEEP IT PLAYFUL.</span><button class="copy" id="copy" disabled>Copy ↗</button></div></section></main>
+<section class="card" style="margin-top:18px"><b>Built for the punchline, not the prompt.</b><p style="color:var(--muted);font-size:13px;line-height:1.6">COOKED pushes for specificity, brevity and natural language. Choose a style, switch languages, and see what lands. Humor is subjective; the model can still miss.</p></section>
+<footer class="footer"><span>COOKED · OPEN SOURCE</span><span>DON'T BE A MENACE. BE FUNNY.</span></footer></div>
+<script>
+const $=id=>document.getElementById(id);$("intensity").addEventListener("input",()=>{$("level").textContent=$("intensity").value+" / 5"});
+let last="";$("go").addEventListener("click",async()=>{const text=$("input").value.trim();if(text.length<3){$("status").textContent="Give it a little more context.";return}
+$("go").disabled=true;$("go").textContent="COOKING…";$("status").textContent="Finding the angle…";$("output").classList.remove("placeholder");$("output").textContent="…";$("copy").disabled=true;
+try{const res=await fetch("/api/roast",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,language:$("language").value,style:$("style").value,intensity:Number($("intensity").value)})});const data=await res.json();if(!res.ok)throw new Error(data.detail||"Something went wrong.");last=data.roast;$("output").textContent=last;$("copy").disabled=false;$("status").textContent="Freshly cooked."}
+catch(e){$("output").textContent="";$("output").classList.add("placeholder");$("status").textContent=e.message}
+finally{$("go").disabled=false;$("go").textContent="COOK THIS ↗"}});
+$("copy").addEventListener("click",async()=>{if(!last)return;await navigator.clipboard.writeText(last);$("copy").textContent="Copied ✓";setTimeout(()=>$("copy").textContent="Copy ↗",1300)});
+</script></body></html>
