@@ -274,3 +274,16 @@ def test_prompt_rejects_empty_praise_as_a_punchline():
 def test_prompt_avoids_quote_markers_in_output():
     prompt = build_prompt("He said 'quick question' and wrote six paragraphs.", "instagram", 3)
     assert "Do not use quotation marks" in prompt
+
+
+def test_prompt_includes_style_voice_sample_without_importing_facts():
+    prompt = build_prompt("The fridge is making a strange noise.", "dry", 3)
+    assert "VOICE SAMPLE" in prompt
+    assert "The follow-up has already requested another follow-up." in prompt
+    assert "never borrow its facts, objects, structure, or wording" in prompt
+
+
+def test_each_style_has_its_own_original_anchor():
+    from app.prompts import STYLE_ANCHORS
+    assert set(STYLE_ANCHORS) == {"instagram", "dry", "desi", "absurd"}
+    assert len(set(STYLE_ANCHORS.values())) == 4
