@@ -97,9 +97,8 @@ def test_other_ollama_models_keep_existing_generation_controls(monkeypatch):
 
 
 def test_candidate_shape_filter_rejects_hashtags_runons_and_filler():
-    assert not providers._is_usable_candidate(
-        "This one is too long for a comment and keeps adding details without a punchline."
-    ) if False else True
+    too_long = "a " * 23
+    assert not providers._is_usable_candidate(too_long)
     assert not providers._is_usable_candidate(
         "A brief joke with padding. #MetaCommentary #PlotTwist"
     )
