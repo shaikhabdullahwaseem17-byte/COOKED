@@ -21,6 +21,23 @@ BOILERPLATE = (
     "here is", "here's", "sure,", "of course", "as an ai",
     "i hope this helps", "roast:", "comeback:",
 )
+GENERIC_PUNCH_PATTERNS = (
+    r"\bthat'?s commitment\b",
+    r"\bthat'?s dedication\b",
+    r"\bthat'?s a novel\b",
+    r"\bthat'?s inefficiency\b",
+    r"\bpeak efficiency\b",
+    r"\bexistential monologue\b",
+    r"\bexistential dread\b",
+    r"\bwhole other kind of mood board\b",
+    r"\ba serious commitment\b",
+)
+STYLE_EDITOR_GUIDANCE = {
+    "instagram": "Prefer an instantly recognizable, casual comment with a clean punch. Reject vague praise and metaphors that sound like a prepared stand-up routine.",
+    "dry": "Prefer underplayed irony and precise wording. Reject long explanations, exclamation-heavy lines, and generic claims about efficiency.",
+    "desi": "Use cultural context only when genuinely present. Reject forced slang, stereotypes, fake accents, and generic WhatsApp jokes.",
+    "absurd": "Make one surprising leap anchored to a real detail. Reject random technical jargon that does not create a clear image or joke.",
+}
 STOP_WORDS = {
     "this", "that", "with", "from", "have", "your", "you", "they",
     "them", "their", "what", "when", "where", "which", "while",
@@ -49,6 +66,8 @@ def _is_usable_candidate(candidate: str) -> bool:
     if "\n" in text or "#" in text:
         return False
     if text.count("!") > 1:
+        return False
+    if any(re.search(pattern, text, re.IGNORECASE) for pattern in GENERIC_PUNCH_PATTERNS):
         return False
     if re.search(r"\b(?:just kidding|wait, actually|or something like that)\b", text, re.IGNORECASE):
         return False
@@ -278,6 +297,7 @@ async def generate(
     judge_prompt = f"""You are COOKED's comedy editor and final quality gate.
 The requested humor style is {style}.
 Situation: {context}
+STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Choose a natural, specific line with an immediate punch.")}
 
 Choose the one candidate with the strongest immediate comedic payoff—the line a real person would actually leave as a comment.
 
