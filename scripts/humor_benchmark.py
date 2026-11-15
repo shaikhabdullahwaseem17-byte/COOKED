@@ -118,10 +118,19 @@ async def run_case(case: dict[str, str]) -> dict[str, Any]:
     finally:
         providers._complete = original_complete
 
-    candidates = [
+    raw_candidates = [
         item for item in recorded_calls if item["kind"] == "candidate"
     ]
-    candidates.sort(key=lambda item: item["temperature"])
+    raw_candidates.sort(key=lambda item: item["temperature"])
+    # The editor sees deduplicated candidates, so report its index in that
+    # same list rather than the raw call list (which may contain duplicates).
+    candidates = []
+    seen = set()
+    for item in raw_candidates:
+        output = item.get("output")
+        if output and output not in seen:
+            seen.add(output)
+            candidates.append(item)
     editor_calls = [item for item in recorded_calls if item["kind"] == "editor"]
     selected_index = None
     if answer is not None:
