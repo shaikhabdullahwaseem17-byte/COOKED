@@ -36,7 +36,7 @@ def test_qwen35_candidate_uses_direct_short_output(monkeypatch):
 
     assert result == "A concise comeback."
     assert payloads[0]["think"] is False
-    assert payloads[0]["options"]["num_predict"] == 72
+    assert payloads[0]["options"]["num_predict"] == 48
 
 
 def test_qwen35_editor_gets_tiny_output_budget(monkeypatch):
@@ -99,6 +99,7 @@ def test_other_ollama_models_keep_existing_generation_controls(monkeypatch):
 def test_candidate_shape_filter_rejects_hashtags_runons_and_filler():
     too_long = "a " * 23
     assert not providers._is_usable_candidate(too_long)
+    assert not providers._is_usable_candidate('This "quote is never closed.')
     assert not providers._is_usable_candidate(
         "A brief joke with padding. #MetaCommentary #PlotTwist"
     )
