@@ -89,18 +89,30 @@ async def _complete(prompt: str, temperature: float) -> str:
     try:
         async with httpx.AsyncClient(timeout=config.REQUEST_TIMEOUT) as client:
             if config.PROVIDER == "ollama":
+                is_qwen35 = config.MODEL.casefold().startswith("qwen3.5")
+                options = {
+                    "temperature": temperature,
+                    "top_p": 0.92,
+                    "repeat_penalty": 1.15,
+                }
+                if is_qwen35:
+                    # COOKED needs a short comment, not a long reasoning trace.
+                    # Keep candidate generations and the editor response bounded.
+                    options["num_predict"] = (
+                        6 if "You are COOKED's comedy editor" in prompt else 72
+                    )
+                payload = {
+                    "model": config.MODEL,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "stream": False,
+                    "options": options,
+                }
+                if is_qwen35:
+                    # Ollama documents this API-level switch for thinking models.
+                    payload["think"] = False
                 response = await client.post(
                     f"{config.OLLAMA_BASE_URL}/api/chat",
-                    json={
-                        "model": config.MODEL,
-                        "messages": [{"role": "user", "content": prompt}],
-                        "stream": False,
-                        "options": {
-                            "temperature": temperature,
-                            "top_p": 0.92,
-                            "repeat_penalty": 1.15,
-                        },
-                    },
+                    json=payload,
                 )
                 response.raise_for_status()
                 result = response.json().get("message", {}).get("content", "")
