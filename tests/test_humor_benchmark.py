@@ -4,7 +4,7 @@ from scripts.humor_benchmark import CASES, run_case
 
 
 def test_benchmark_covers_english_and_all_styles():
-    assert {case["language"] for case in CASES} == {"en"}
+    assert all(case["id"].startswith("en_") for case in CASES)
     assert {case["style"] for case in CASES} == {"instagram", "dry", "desi", "absurd"}
     assert len(CASES) == 8
     assert len({case["id"] for case in CASES}) == len(CASES)
