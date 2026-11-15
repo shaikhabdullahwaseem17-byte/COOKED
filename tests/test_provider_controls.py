@@ -156,3 +156,16 @@ def test_gemma4_uses_fast_thinking_mode_and_bounded_output(monkeypatch):
     assert payloads[0]["think"] is False
     assert payloads[0]["options"]["num_predict"] == 48
     assert timeouts == [90]
+
+
+def test_fact_consistency_rejects_changed_explicit_numbers():
+    context = "She spent 40 replies explaining the context."
+    assert not providers._is_fact_consistent_candidate(
+        "Four responses later, the story still needed explaining.", context
+    )
+    assert providers._is_fact_consistent_candidate(
+        "Forty replies later, the story still needed explaining.", context
+    )
+    assert providers._is_fact_consistent_candidate(
+        "The explanation became its own discussion.", context
+    )
