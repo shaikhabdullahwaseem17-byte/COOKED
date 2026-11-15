@@ -164,15 +164,20 @@ async def generate(
         for angle, temperature in zip(ANGLES, temperatures)
     ]
     results = await asyncio.gather(*tasks, return_exceptions=True)
+    from app.output_validation import is_valid_output
+
     candidates = [
         item.strip()
         for item in results
-        if isinstance(item, str) and item.strip()
+        if isinstance(item, str)
+        and item.strip()
+        and is_valid_output(item.strip(), language)
     ]
     if not candidates:
         errors = [str(item) for item in results if isinstance(item, Exception)]
+        detail = errors[0] if errors else "All candidates were empty or used the wrong writing system."
         raise ProviderError(
-            errors[0] if errors else "The model returned no usable candidates."
+            f"No usable candidate in the requested language/script. {detail}"
         )
 
     unique = list(dict.fromkeys(candidates))
