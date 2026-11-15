@@ -146,7 +146,12 @@ async def _complete(prompt: str, temperature: float) -> str:
     return result
 
 
-async def generate(prompt: str, context: str) -> str:
+async def generate(
+    prompt: str,
+    context: str,
+    language: str = "en",
+    style: str = "instagram",
+) -> str:
     """Generate independent angles concurrently; tolerate partial provider failures."""
     temperatures = (0.88, 0.98, 1.05)
     tasks = [
