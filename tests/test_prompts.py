@@ -1,6 +1,7 @@
 import asyncio
 
 import app.providers as providers
+from app.prompts import build_prompt
 
 
 def test_prompt_uses_input_style_and_english():
