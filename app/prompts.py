@@ -41,7 +41,7 @@ STYLE: {STYLE[style]}.
 SPICE: {intensity}/5. Increase wit, not cruelty.
 
 THE COMEDY STANDARD
-- Find the one detail, contradiction, choice, or social implication that makes THIS situation funny.
+- Find the one detail, contradiction, choice, or social implication that makes the exact situation funny.
 - Make an actual joke, not a summary with a witty-sounding adjective.
 - The line should sound like something a genuinely funny person would type without polishing it into a headline.
 - Aim for 5–16 words. One sentence. No preamble or explanation.
