@@ -9,7 +9,7 @@ import unicodedata
 
 
 def is_valid_output(text: str) -> bool:
-    """Accept predominantly Latin-script text; this is not an English fluency test."""
+    """Accept Latin-script text only; this is not an English fluency test."""
     letters = [
         char for char in text
         if unicodedata.category(char).startswith("L")
@@ -17,4 +17,4 @@ def is_valid_output(text: str) -> bool:
     if not letters:
         return False
     latin = sum("LATIN" in unicodedata.name(char, "") for char in letters)
-    return latin / len(letters) >= 0.9
+    return latin == len(letters)
