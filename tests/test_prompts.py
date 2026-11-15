@@ -147,3 +147,36 @@ def test_editor_invalid_response_uses_heuristic_fallback(monkeypatch):
     monkeypatch.setattr(providers, "_complete", fake_complete)
     result = asyncio.run(providers.generate("prompt", "40-slide presentation"))
     assert result == "The 40-slide deck had confidence; the evidence missed every meeting."
+
+
+def test_example_retrieval_never_borrows_a_different_style():
+    from app.examples import select_examples
+
+    examples = select_examples("A friend has a huge ego.", "en", "absurd")
+    assert examples == []
+
+
+def test_editor_receives_requested_language_and_style(monkeypatch):
+    import asyncio
+    import app.providers as providers
+
+    seen_editor_prompt = []
+
+    async def fake_complete(prompt, temperature):
+        if "comedy editor" in prompt:
+            seen_editor_prompt.append(prompt)
+            return "1"
+        return "A clever reply that fits this particular situation."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(
+        providers.generate(
+            "prompt",
+            "context",
+            language="ur-rom",
+            style="desi",
+        )
+    )
+    assert result == "A clever reply that fits this particular situation."
+    assert "requested output language is ur-rom" in seen_editor_prompt[0]
+    assert "requested humor style is desi" in seen_editor_prompt[0]
