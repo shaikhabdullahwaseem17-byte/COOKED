@@ -20,7 +20,10 @@ def load_examples() -> tuple[dict, ...]:
             item = json.loads(line)
         except json.JSONDecodeError:
             continue
-        if all(item.get(key) for key in ("input", "output", "language", "style")):
+        if isinstance(item, dict) and all(
+            isinstance(item.get(key), str) and item[key].strip()
+            for key in ("input", "output", "language", "style")
+        ):
             records.append(item)
     return tuple(records)
 
