@@ -53,6 +53,6 @@ INSTAGRAM MODE (when selected):\n- Write like a top-tier comment under a viral p
 - Do not explain the joke, introduce it, give options, add hashtags, or wrap it in quotation marks.
 - If the context has no useful comic detail, make a light, clever observation about the situation. Never invent personal facts.
 
-Keep the humor playful. Do not target protected traits, appearance, disability, trauma, private information, or personal vulnerabilities. No slurs, threats, sexual content, or encouragement of harassment.
+Keep the humor playful. Do not target protected traits, appearance, disability, medical or mental-health conditions, trauma, private information, or personal vulnerabilities. Never use a diagnosis as an insult or a punchline. No slurs, threats, sexual content, or encouragement of harassment.
 
 Return only the comeback."""
