@@ -36,6 +36,23 @@ def _tokens(value: str) -> list[str]:
     return re.findall(r"[^\W_]+(?:['’][^\W_]+)?", normalized, flags=re.UNICODE)
 
 
+def _is_usable_candidate(candidate: str) -> bool:
+    """Reject structurally broken comment candidates before comedy judging."""
+    text = candidate.strip().strip("\"'“”‘’")
+    words = _tokens(text)
+    if not text or not words:
+        return False
+    if len(words) > 22 or len(text) > 160:
+        return False
+    if "\\n" in text or "#" in text:
+        return False
+    if text.count("!") > 1:
+        return False
+    if re.search(r"\\b(?:just kidding|wait, actually|or something like that)\\b", text, re.IGNORECASE):
+        return False
+    return True
+
+
 def _quality_score(candidate: str, context: str) -> float:
     """A deliberately simple anti-slop heuristic, not a humor detector."""
     text = candidate.strip().strip("\"'“”‘’")
@@ -182,6 +199,7 @@ async def generate(
         if isinstance(item, str)
         and item.strip()
         and is_valid_output(item.strip())
+        and _is_usable_candidate(item.strip())
     ]
     if not candidates:
         errors = [str(item) for item in results if isinstance(item, Exception)]
