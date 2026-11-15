@@ -72,3 +72,78 @@ def test_generate_tolerates_partial_provider_failure(monkeypatch):
         "The 40-slide deck had confidence; the evidence missed every meeting.",
         "His presentation had more slides than supporting facts.",
     }
+
+
+def test_prompt_includes_original_style_references():
+    prompt = build_prompt(
+        "He announced his fifth social media break this month.",
+        "en",
+        "instagram",
+        3,
+    )
+    assert "STYLE REFERENCES" in prompt
+    assert "learn the technique, never copy their wording" in prompt
+
+
+def test_example_retrieval_respects_language_and_style():
+    from app.examples import select_examples
+
+    examples = select_examples(
+        "Woh har baat pe expert banta hai.",
+        "ur-rom",
+        "desi",
+        limit=2,
+    )
+    assert examples
+    assert all(item["language"] == "ur-rom" for item in examples)
+    assert all(item["style"] == "desi" for item in examples)
+
+
+def test_example_retrieval_returns_empty_for_unknown_language():
+    from app.examples import select_examples
+
+    assert select_examples("A context", "xx", "instagram") == []
+
+
+def test_example_retrieval_obeys_limit():
+    from app.examples import select_examples
+
+    assert len(select_examples("Anything", "en", "instagram", limit=0)) == 0
+
+
+def test_editor_selects_only_a_generated_candidate(monkeypatch):
+    import asyncio
+    import app.providers as providers
+
+    async def fake_complete(prompt, temperature):
+        if "comedy editor" in prompt:
+            return "2"
+        if temperature == 0.88:
+            return "Candidate one is clever but not quite connected."
+        if temperature == 0.98:
+            return "The 40-slide deck had confidence; the evidence missed every meeting."
+        return "Candidate three is a generic joke about confidence."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(
+        providers.generate("prompt", "He made a 40-slide presentation")
+    )
+    assert result == "The 40-slide deck had confidence; the evidence missed every meeting."
+
+
+def test_editor_invalid_response_uses_heuristic_fallback(monkeypatch):
+    import asyncio
+    import app.providers as providers
+
+    async def fake_complete(prompt, temperature):
+        if temperature == 0.88:
+            return "The 40-slide deck had confidence; the evidence missed every meeting."
+        if temperature == 0.98:
+            return "Even Google cannot find your personality."
+        if temperature == 1.05:
+            return "His presentation had more slides than supporting facts."
+        return "Candidate number two is best."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(providers.generate("prompt", "40-slide presentation"))
+    assert result == "The 40-slide deck had confidence; the evidence missed every meeting."
