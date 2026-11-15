@@ -210,7 +210,7 @@ Judge by these priorities, in this order:
 5. screenshot-worthiness: is there a memorable phrase or image without trying too hard?
 6. Originality and brevity: reject generic insults, recycled meme formats, forced slang, explanations, and padding. Prefer one clean line, but never reward shortness if the joke is weak.
 
-For Instagram style specifically, prioritize the funniest natural comment over the most aggressive line. Reject candidates that merely restate the situation, introduce unrelated material, or rely on vague words like vibes, energy, or personality. A simple, exact observation beats an elaborate joke that loses the context.
+For Instagram style specifically, prioritize the funniest natural comment over the most aggressive line. Reject candidates that merely restate the situation, introduce unrelated material, or rely on vague words like vibes, energy, or personality. Reject any candidate that uses a medical or mental-health diagnosis as an insult or punchline. A simple, exact observation beats an elaborate joke that loses the context.
 
 Do not rewrite, explain, or invent a candidate. Choose only from the numbered list.
 Situation: {context}
