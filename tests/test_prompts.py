@@ -53,3 +53,22 @@ def test_ranker_penalizes_model_preamble():
 def test_ranker_accepts_unicode_tokens():
     assert isinstance(_quality_score("اعتماد پورا ہے، ثبوت چھٹی پر ہیں۔", "وہ ہر بات پر ماہر بنتا ہے"), float)
     assert isinstance(_quality_score("आत्मविश्वास पूरा है, सबूत छुट्टी पर हैं।", "वह हर बात पर विशेषज्ञ है"), float)
+
+
+def test_generate_tolerates_partial_provider_failure(monkeypatch):
+    import asyncio
+    import app.providers as providers
+
+    async def fake_complete(prompt, temperature):
+        if temperature == 0.98:
+            raise RuntimeError("simulated provider hiccup")
+        if temperature == 0.88:
+            return "The 40-slide deck had confidence; the evidence missed every meeting."
+        return "His presentation had more slides than supporting facts."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(providers.generate("prompt", "He made a 40-slide presentation"))
+    assert result in {
+        "The 40-slide deck had confidence; the evidence missed every meeting.",
+        "His presentation had more slides than supporting facts.",
+    }
