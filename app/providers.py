@@ -191,10 +191,14 @@ The requested humor style is {style}.
 Judge whether each candidate sounds natural in English and fits that style.
 
 Judge by these priorities:
-1. Specific connection to the supplied situation (not a generic insult).
-2. A surprising, clear punchline that sounds natural in English.
-3. Originality; reject stale templates, forced slang, and chatbot phrasing.
-4. Brevity without sacrificing the joke.
+1. Specificity: does the line notice a detail or implication unique to this situation?
+2. Punch: is there a clear, surprising turn that lands immediately?
+3. Internet-native voice: does it sound like a genuinely witty comment, not a polished AI quip or scripted roast?
+4. screenshot-worthiness: is there a memorable phrase or image without trying too hard?
+5. Originality: reject generic insults, recycled meme formats, forced slang, and chatbot phrasing.
+6. Brevity: prefer one clean line; never reward shortness if the joke is weak.
+
+For Instagram style specifically, prioritize the funniest natural comment over the most aggressive line. Reject candidates that merely restate the situation or rely on vague words like vibes, energy, or personality.
 
 Do not rewrite, explain, or invent a candidate. Choose only from the numbered list.
 Situation: {context}
