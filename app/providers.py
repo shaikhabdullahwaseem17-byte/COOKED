@@ -190,15 +190,15 @@ async def generate(
 The requested humor style is {style}.
 Judge whether each candidate sounds natural in English and fits that style.
 
-Judge by these priorities:
-1. Specificity: does the line notice a detail or implication unique to this situation?
-2. Punch: is there a clear, surprising turn that lands immediately?
-3. internet-native voice: does it sound like a genuinely witty comment, not a polished AI quip or scripted roast?
-4. screenshot-worthiness: is there a memorable phrase or image without trying too hard?
-5. Originality: reject generic insults, recycled meme formats, forced slang, and chatbot phrasing.
-6. Brevity: prefer one clean line; never reward shortness if the joke is weak.
+Judge by these priorities, in this order:
+1. Grounding: can the joke be traced directly to a detail or relationship in the supplied situation? Reject random comparisons, unrelated objects or references, invented events, invented motives, and changed facts.
+2. Contextual fit: does the line make sense specifically for THIS situation, rather than fitting almost any prompt?
+3. Punch: is there a clear, surprising turn that lands immediately?
+4. internet-native voice: does it sound like a genuinely witty comment, not a polished AI quip or scripted roast?
+5. screenshot-worthiness: is there a memorable phrase or image without trying too hard?
+6. Originality and brevity: reject generic insults, recycled meme formats, forced slang, explanations, and padding. Prefer one clean line, but never reward shortness if the joke is weak.
 
-For Instagram style specifically, prioritize the funniest natural comment over the most aggressive line. Reject candidates that merely restate the situation or rely on vague words like vibes, energy, or personality.
+For Instagram style specifically, prioritize the funniest natural comment over the most aggressive line. Reject candidates that merely restate the situation, introduce unrelated material, or rely on vague words like vibes, energy, or personality. A simple, exact observation beats an elaborate joke that loses the context.
 
 Do not rewrite, explain, or invent a candidate. Choose only from the numbered list.
 Situation: {context}
