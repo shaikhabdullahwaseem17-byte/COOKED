@@ -15,6 +15,8 @@ label{display:block;font-size:12px;color:#c9c0b8;margin:0 0 9px}.input{width:100
 .controls{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:18px}select{width:100%;background:#100f0e;color:var(--ink);border:1px solid #39332e;border-radius:10px;padding:12px;font:14px "Space Grotesk"}
 .range{display:flex;align-items:center;gap:12px}.range input{accent-color:var(--orange);width:100%}.range b{color:var(--orange);font:13px "DM Mono"}
 .go{margin-top:20px;width:100%;border:0;border-radius:11px;padding:15px;background:var(--orange);color:#1a100c;font:700 15px "Space Grotesk";cursor:pointer}.go:hover{background:var(--orange2)}.go:disabled{opacity:.55;cursor:wait}
+.examples{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.example{border:1px solid var(--line);background:#141210;color:#cfc5bc;border-radius:999px;padding:8px 11px;font:12px "DM Mono",monospace;cursor:pointer}.example:hover{border-color:var(--orange);color:var(--orange)}
+.actions{display:flex;gap:8px}.copy:disabled{opacity:.45;cursor:not-allowed}
 .result{min-height:315px;display:flex;flex-direction:column;justify-content:space-between}.result-top{display:flex;justify-content:space-between;align-items:center}.dot{width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block;margin-right:7px}.output{font-size:clamp(23px,3vw,34px);line-height:1.22;letter-spacing:-.045em;margin:35px 0;overflow-wrap:anywhere}.placeholder{color:#69615b}.result-bottom{display:flex;justify-content:space-between;align-items:center}.copy{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:9px;padding:9px 13px;cursor:pointer}.status{font-size:12px;color:var(--muted);min-height:18px;margin-top:10px}
 .footer{border-top:1px solid var(--line);margin-top:42px;padding-top:20px;display:flex;justify-content:space-between;color:#766e68;font:11px "DM Mono";gap:12px;flex-wrap:wrap}
 @media(max-width:760px){.layout{grid-template-columns:1fr}.hero{padding:50px 0 30px}.result{min-height:230px}.wrap{padding:18px 16px 40px}}
@@ -24,20 +26,28 @@ label{display:block;font-size:12px;color:#c9c0b8;margin:0 0 9px}.input{width:100
 <p>Short, specific, multilingual comebacks with actual comment-section timing. No paragraph-long AI speeches. No motivational-poster insults.</p></header>
 <main class="layout"><section class="card">
 <label for="input">GIVE COOKED THE CONTEXT</label><textarea id="input" class="input" maxlength="600" placeholder="Paste a caption, harmless situation, or something your friend said…"></textarea>
+<div class="examples" aria-label="Try an example">
+<button class="example" type="button" data-example="He announced his fifth social media break this month.">Fifth social media break</button>
+<button class="example" type="button" data-example="My friend made a 40-slide presentation about why he is always right.">40-slide presentation</button>
+<button class="example" type="button" data-example="Woh har baat pe expert banta hai.">Roman Urdu example</button>
+</div>
 <div class="controls"><div><label for="language">LANGUAGE</label><select id="language"><option value="en">English</option><option value="ur-rom">Roman Urdu</option><option value="ur">Urdu</option><option value="hi">Hindi</option></select></div>
 <div><label for="style">HUMOR STYLE</label><select id="style"><option value="instagram">Instagram comments</option><option value="dry">Dry / deadpan</option><option value="desi">Desi humor</option><option value="absurd">Absurd</option></select></div></div>
 <div style="margin-top:17px"><label for="intensity">SPICE LEVEL</label><div class="range"><input id="intensity" type="range" min="1" max="5" value="3"><b id="level">3 / 5</b></div></div>
 <button id="go" class="go">COOK THIS ↗</button><div id="status" class="status" role="status"></div></section>
 <section class="card result"><div class="result-top"><span class="mono"><i class="dot"></i>THE RESULT</span><span class="mono">01 / 01</span></div>
-<div id="output" class="output placeholder">Your next comment-section classic goes here.</div><div class="result-bottom"><span class="mono">KEEP IT PLAYFUL.</span><button class="copy" id="copy" disabled>Copy ↗</button></div></section></main>
+<div id="output" class="output placeholder">Your next comment-section classic goes here.</div><div class="result-bottom"><span class="mono">KEEP IT PLAYFUL.</span><div class="actions"><button class="copy" id="copy" disabled>Copy ↗</button><button class="copy" id="share" disabled>Share ↗</button></div></div></section></main>
 <section class="card" style="margin-top:18px"><b>Built for the punchline, not the prompt.</b><p style="color:var(--muted);font-size:13px;line-height:1.6">COOKED pushes for specificity, brevity and natural language. Choose a style, switch languages, and see what lands. Humor is subjective; the model can still miss.</p></section>
 <footer class="footer"><span>COOKED · OPEN SOURCE</span><span>DON'T BE A MENACE. BE FUNNY.</span></footer></div>
 <script>
-const $=id=>document.getElementById(id);$("intensity").addEventListener("input",()=>{$("level").textContent=$("intensity").value+" / 5"});
+const $=id=>document.getElementById(id);
+document.querySelectorAll("[data-example]").forEach(button=>button.addEventListener("click",()=>{$("input").value=button.dataset.example;$("input").focus();$("status").textContent="Example loaded. Make it COOKED."}));
+$("intensity").addEventListener("input",()=>{$("level").textContent=$("intensity").value+" / 5"});
 let last="";$("go").addEventListener("click",async()=>{const text=$("input").value.trim();if(text.length<3){$("status").textContent="Give it a little more context.";return}
 $("go").disabled=true;$("go").textContent="COOKING…";$("status").textContent="Finding the angle…";$("output").classList.remove("placeholder");$("output").textContent="…";$("copy").disabled=true;
-try{const res=await fetch("/api/roast",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,language:$("language").value,style:$("style").value,intensity:Number($("intensity").value)})});const data=await res.json();if(!res.ok)throw new Error(data.detail||"Something went wrong.");last=data.roast;$("output").textContent=last;$("copy").disabled=false;$("status").textContent="Freshly cooked."}
+try{const res=await fetch("/api/roast",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,language:$("language").value,style:$("style").value,intensity:Number($("intensity").value)})});const data=await res.json();if(!res.ok)throw new Error(data.detail||"Something went wrong.");last=data.roast;$("output").textContent=last;$("copy").disabled=false;$("share").disabled=false;$("status").textContent="Freshly cooked."}
 catch(e){$("output").textContent="";$("output").classList.add("placeholder");$("status").textContent=e.message}
 finally{$("go").disabled=false;$("go").textContent="COOK THIS ↗"}});
 $("copy").addEventListener("click",async()=>{if(!last)return;await navigator.clipboard.writeText(last);$("copy").textContent="Copied ✓";setTimeout(()=>$("copy").textContent="Copy ↗",1300)});
+$("share").addEventListener("click",async()=>{if(!last)return;try{if(navigator.share){await navigator.share({title:"COOKED comeback",text:last});}else{await navigator.clipboard.writeText(last);$("share").textContent="Copied ✓";setTimeout(()=>$("share").textContent="Share ↗",1300)}}catch(e){if(e.name!=="AbortError")$("status").textContent="Sharing isn't available here. Try Copy."}});
 </script></body></html>
