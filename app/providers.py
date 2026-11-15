@@ -69,10 +69,10 @@ NUMBER_WORDS = {
 def _number_mentions(text: str) -> set[int]:
     """Extract simple numeric facts so candidate wording cannot alter stated counts."""
     tokens = re.findall(
-        r"\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|"
+        r"\d+|\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|"
         r"eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|"
         r"eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|"
-        r"eighty|ninety|hundred",
+        r"eighty|ninety|hundred)\b",
         text.casefold(),
     )
     values: set[int] = set()
