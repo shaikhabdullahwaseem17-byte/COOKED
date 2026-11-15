@@ -34,3 +34,27 @@ def test_benchmark_records_candidate_and_editor_flow(monkeypatch):
     assert result["editor_output"] == "2"
     assert result["selected_candidate_index"] == 2
     assert result["failure"] is None
+
+
+def test_benchmark_cases_do_not_duplicate_style_references():
+    import re
+    from app.examples import load_examples
+
+    def terms(text):
+        return {
+            token for token in re.findall(r"[^\\W_]+", text.casefold())
+            if len(token) > 2
+        }
+
+    for case in CASES:
+        benchmark_terms = terms(case["text"])
+        for example in load_examples():
+            if example["style"] != case["style"]:
+                continue
+            example_terms = terms(example["input"])
+            union = benchmark_terms | example_terms
+            overlap = len(benchmark_terms & example_terms) / len(union)
+            assert case["text"].casefold() != example["input"].casefold()
+            assert overlap < 0.6, (
+                f"{case['id']} is too close to a style example: {example['input']}"
+            )
