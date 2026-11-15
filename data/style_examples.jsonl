@@ -1,12 +1,12 @@
-{"input":"He announced he was taking a break from social media for the fifth time this month.","output":"At this point even Instagram thinks it's a seasonal subscription.","style":"instagram","language":"en","source":"original_example"}
-{"input":"My friend made a 40-slide presentation about why he is always right.","output":"The confidence had a whole slide deck. The evidence was on annual leave.","style":"dry","language":"en","source":"original_example"}
-{"input":"He says he is two minutes away while he is still deciding what to wear.","output":"His ETA is apparently measured in outfit changes.","style":"desi","language":"en","source":"original_example"}
-{"input":"She packed three suitcases for a one-night trip.","output":"She packed like the hotel was asking her to relocate.","style":"absurd","language":"en","source":"original_example"}
-{"input":"He posted a 12-minute apology video for being four minutes late.","output":"The apology had a longer runtime than the delay.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He announced he was taking a break from social media for the fifth time this month.","output":"The break has a renewal date already.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He says he is two minutes away while he is still deciding what to wear.","output":"His ETA is measured in outfit changes.","style":"desi","language":"en","source":"original_example"}
+{"input":"She posted 'no context' and then spent 40 replies explaining the context.","output":"The context arrived in 40 installments.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He posted a 12-minute apology video for being four minutes late.","output":"The apology outlasted the lateness by eight minutes.","style":"instagram","language":"en","source":"original_example"}
 {"input":"My friend made a spreadsheet to decide what to eat, then ordered the same lunch as always.","output":"The spreadsheet was just a very expensive way to confirm yesterday.","style":"dry","language":"en","source":"original_example"}
-{"input":"He posted a 12-minute apology video for being four minutes late.","output":"The apology got a director's cut. The lateness got four minutes.","style":"instagram","language":"en","source":"original_example"}
-{"input":"She said she was quitting online shopping, then posted a delivery unboxing.","output":"The comeback tour started before the boycott had a chance.","style":"instagram","language":"en","source":"original_example"}
-{"input":"He sends 'on my way' before getting out of bed.","output":"His location is a work of fiction.","style":"instagram","language":"en","source":"original_example"}
-{"input":"He replied 'interesting' and immediately changed the subject.","output":"That 'interesting' had a resignation letter attached.","style":"instagram","language":"en","source":"original_example"}
-{"input":"She made a five-part story explaining why she is not bothered.","output":"The unbothered press conference is still underway.","style":"instagram","language":"en","source":"original_example"}
-{"input":"He said the group chat was too distracting, then sent 38 messages.","output":"Announced his departure and became the main event.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He sent a six-minute voice note to say he would keep it brief.","output":"The brief version must still be in drafts.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He announced a phone break and posted every hour to document it.","output":"The break has a content calendar.","style":"instagram","language":"en","source":"original_example"}
+{"input":"She called the final caption spontaneous after twelve drafts.","output":"The spontaneity has version history.","style":"instagram","language":"en","source":"original_example"}
+{"input":"The family group chat sent 86 copies of the same good morning greeting.","output":"One good morning, 85 forwards.","style":"desi","language":"en","source":"original_example"}
+{"input":"The recurring meeting to discuss cutting meetings has been extended to 90 minutes.","output":"Cutting meetings is apparently a recurring commitment.","style":"dry","language":"en","source":"original_example"}
+{"input":"She made a seating chart for her houseplants before the dinner party.","output":"The fern has a reserved seat and still won't mingle.","style":"absurd","language":"en","source":"original_example"}
+{"input":"She packed three suitcases for a one-night trip.","output":"She packed like the hotel was asking her to relocate.","style":"absurd","language":"en","source":"original_example"}
