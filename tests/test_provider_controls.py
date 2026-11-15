@@ -31,6 +31,7 @@ def test_qwen35_candidate_uses_direct_short_output(monkeypatch):
 
     monkeypatch.setattr(providers.config, "PROVIDER", "ollama")
     monkeypatch.setattr(providers.config, "MODEL", "qwen3.5:4b")
+    monkeypatch.setattr(providers.config, "REQUEST_TIMEOUT", 180)
     monkeypatch.setattr(providers.httpx, "AsyncClient", _FakeClient)
 
     result = asyncio.run(providers._complete("Write one short comeback.", 0.9))
