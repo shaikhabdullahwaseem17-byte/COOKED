@@ -1,12 +1,10 @@
 from typing import Literal
 from pydantic import BaseModel, Field, field_validator
 
-Language = Literal["en", "ur", "ur-rom", "hi"]
 Style = Literal["instagram", "dry", "desi", "absurd"]
 
 class RoastRequest(BaseModel):
     text: str = Field(min_length=3, max_length=600)
-    language: Language = "en"
     style: Style = "instagram"
     intensity: int = Field(default=3, ge=1, le=5)
 
@@ -20,5 +18,4 @@ class RoastRequest(BaseModel):
 
 class RoastResponse(BaseModel):
     roast: str
-    language: Language
     style: Style
