@@ -75,7 +75,7 @@ The GitHub Actions live benchmark runs the fixed, English-only cases against the
 
 Benchmark situations are kept separate from the curated style examples, with an automated overlap check in the test suite.
 
-Gemma 4 E2B is the fast local evaluation candidate. It is not the default model unless its actual outputs meet the project's quality bar.
+Qwen 3.5 9B is the current local evaluation candidate. It is not the default model unless its actual outputs meet the project's quality bar.
 
 The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Benchmark results require human review and do not establish that comments will perform well on Instagram.
 
