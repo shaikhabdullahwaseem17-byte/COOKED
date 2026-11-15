@@ -1,12 +1,15 @@
+import asyncio
+
 from app.prompts import ANGLES, build_prompt
 from app.schemas import RoastRequest
 from app.providers import _quality_score
 
 
-def test_prompt_uses_input_and_style():
-    prompt = build_prompt("I am always right.", "en", "dry", 2)
+def test_prompt_uses_input_style_and_english():
+    prompt = build_prompt("I am always right.", "dry", 2)
     assert "I am always right." in prompt
     assert "understated deadpan" in prompt
+    assert "natural contemporary English" in prompt
     assert "5–18 words" in prompt
 
 
@@ -15,22 +18,17 @@ def test_prompt_has_distinct_angles():
     assert len(set(ANGLES)) == 3
 
 
-def test_urdu_prompt_requests_natural_urdu():
-    prompt = build_prompt("وہ ہر بات پر ماہر بنتا ہے", "ur", "desi", 3)
-    assert "natural, conversational Pakistani Urdu" in prompt
-
-
-def test_roman_urdu_prompt_requests_native_rhythm():
-    prompt = build_prompt("Woh har baat pe expert banta hai", "ur-rom", "desi", 3)
-    assert "natural Pakistani Roman Urdu" in prompt
-    assert "literal translation" in prompt
+def test_desi_style_is_south_asian_humor_written_in_english():
+    prompt = build_prompt("He blames the Wi-Fi for every missed deadline.", "desi", 3)
+    assert "South Asian internet humor" in prompt
+    assert "natural English" in prompt
 
 
 def test_request_defaults():
     request = RoastRequest(text="This is enough context.")
-    assert request.language == "en"
     assert request.style == "instagram"
     assert request.intensity == 3
+    assert not hasattr(request, "language")
 
 
 def test_ranker_penalizes_cliche():
@@ -50,13 +48,11 @@ def test_ranker_penalizes_model_preamble():
     assert _quality_score("Sure, here is a hilarious roast for you.", "late reply") < 0
 
 
-def test_ranker_accepts_unicode_tokens():
-    assert isinstance(_quality_score("اعتماد پورا ہے، ثبوت چھٹی پر ہیں۔", "وہ ہر بات پر ماہر بنتا ہے"), float)
-    assert isinstance(_quality_score("आत्मविश्वास पूरा है, सबूत छुट्टी पर हैं।", "वह हर बात पर विशेषज्ञ है"), float)
+def test_ranker_uses_english_tokens():
+    assert isinstance(_quality_score("The evidence took the day off.", "He is always right."), float)
 
 
 def test_generate_tolerates_partial_provider_failure(monkeypatch):
-    import asyncio
     import app.providers as providers
 
     async def fake_complete(prompt, temperature):
@@ -75,44 +71,26 @@ def test_generate_tolerates_partial_provider_failure(monkeypatch):
 
 
 def test_prompt_includes_original_style_references():
-    prompt = build_prompt(
-        "He announced his fifth social media break this month.",
-        "en",
-        "instagram",
-        3,
-    )
+    prompt = build_prompt("He announced his fifth social media break this month.", "instagram", 3)
     assert "STYLE REFERENCES" in prompt
     assert "learn the technique, never copy their wording" in prompt
 
 
-def test_example_retrieval_respects_language_and_style():
+def test_example_retrieval_respects_style():
     from app.examples import select_examples
 
-    examples = select_examples(
-        "Woh har baat pe expert banta hai.",
-        "ur-rom",
-        "desi",
-        limit=2,
-    )
+    examples = select_examples("A friend has a huge ego.", "desi", limit=2)
     assert examples
-    assert all(item["language"] == "ur-rom" for item in examples)
+    assert all(item["language"] == "en" for item in examples)
     assert all(item["style"] == "desi" for item in examples)
-
-
-def test_example_retrieval_returns_empty_for_unknown_language():
-    from app.examples import select_examples
-
-    assert select_examples("A context", "xx", "instagram") == []
 
 
 def test_example_retrieval_obeys_limit():
     from app.examples import select_examples
-
-    assert len(select_examples("Anything", "en", "instagram", limit=0)) == 0
+    assert select_examples("Anything", "instagram", limit=0) == []
 
 
 def test_editor_selects_only_a_generated_candidate(monkeypatch):
-    import asyncio
     import app.providers as providers
 
     async def fake_complete(prompt, temperature):
@@ -125,14 +103,11 @@ def test_editor_selects_only_a_generated_candidate(monkeypatch):
         return "Candidate three is a generic joke about confidence."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
-    result = asyncio.run(
-        providers.generate("prompt", "He made a 40-slide presentation")
-    )
+    result = asyncio.run(providers.generate("prompt", "He made a 40-slide presentation"))
     assert result == "The 40-slide deck had confidence; the evidence missed every meeting."
 
 
 def test_editor_invalid_response_uses_heuristic_fallback(monkeypatch):
-    import asyncio
     import app.providers as providers
 
     async def fake_complete(prompt, temperature):
@@ -151,64 +126,42 @@ def test_editor_invalid_response_uses_heuristic_fallback(monkeypatch):
 
 def test_example_retrieval_never_borrows_a_different_style():
     from app.examples import select_examples
-
-    examples = select_examples("A friend has a huge ego.", "en", "absurd")
-    assert examples == []
+    assert select_examples("A friend has a huge ego.", "absurd") == []
 
 
-def test_editor_receives_requested_language_and_style(monkeypatch):
-    import asyncio
+def test_editor_receives_style(monkeypatch):
     import app.providers as providers
-
-    seen_editor_prompt = []
+    seen = []
 
     async def fake_complete(prompt, temperature):
         if "comedy editor" in prompt:
-            seen_editor_prompt.append(prompt)
+            seen.append(prompt)
             return "1"
         return "A clever reply that fits this particular situation."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
-    result = asyncio.run(
-        providers.generate(
-            "prompt",
-            "context",
-            language="ur-rom",
-            style="desi",
-        )
-    )
+    result = asyncio.run(providers.generate("prompt", "context", style="desi"))
     assert result == "A clever reply that fits this particular situation."
-    assert "requested output language is ur-rom" in seen_editor_prompt[0]
-    assert "requested humor style is desi" in seen_editor_prompt[0]
+    assert "requested humor style is desi" in seen[0]
 
 
 def test_provider_rejects_non_text_model_output(monkeypatch):
-    import asyncio
     import app.providers as providers
 
     class FakeResponse:
         def raise_for_status(self):
             return None
-
         def json(self):
             return {"message": {"content": {"unexpected": "object"}}}
 
     class FakeClient:
-        def __init__(self, *args, **kwargs):
-            pass
-
-        async def __aenter__(self):
-            return self
-
-        async def __aexit__(self, *args):
-            return None
-
-        async def post(self, *args, **kwargs):
-            return FakeResponse()
+        def __init__(self, *args, **kwargs): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *args): return None
+        async def post(self, *args, **kwargs): return FakeResponse()
 
     monkeypatch.setattr(providers.config, "PROVIDER", "ollama")
     monkeypatch.setattr(providers.httpx, "AsyncClient", FakeClient)
-
     try:
         asyncio.run(providers._complete("prompt", 0.5))
     except providers.ProviderError as exc:
