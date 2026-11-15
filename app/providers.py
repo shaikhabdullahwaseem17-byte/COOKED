@@ -226,7 +226,7 @@ async def generate(
     numbered = "\n".join(
         f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
     )
-    judge_prompt = f"""You are COOKED's final comedy editor.
+    judge_prompt = f"""You are COOKED's comedy editor and final quality gate.
 The requested humor style is {style}.
 Situation: {context}
 
