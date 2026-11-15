@@ -23,14 +23,16 @@ COOKED uses an existing instruction model through Ollama. It is **not** a founda
 
 ## What it does
 
-- Generates three distinct comedic approaches concurrently and ranks the candidates.
-- Penalizes common AI-style preambles, stale templates, overlong outputs and list-like answers.
-- Rewards some context anchoring without rewarding simple copying.
+- Retrieves up to two locally curated, original examples matching the requested language and humor style.
+- Generates three distinct comedic approaches concurrently, then asks a separate editor pass to choose only among those candidates.
+- Uses a Unicode-aware heuristic as a fallback if the editor fails or returns an invalid choice.
+- Penalizes common AI-style preambles, stale templates, overlong outputs and list-like answers; rewards some context anchoring without rewarding simple copying.
+- Includes one-tap demo prompts and native sharing in the web interface.
 - Supports English, Urdu, Roman Urdu and Hindi output modes.
 - Offers Instagram, dry, desi and absurd styles.
 - Runs locally by default; no hosted API key is required.
 
-The ranker is a lightweight heuristic, not a humor detector. It cannot reliably determine whether a joke is funny. Output quality depends on the model and language; Urdu and Roman Urdu should be judged by fluent speakers.
+The heuristic ranker is a fallback, not a humor detector. The editor is still an LLM and can make subjective or incorrect choices; neither stage can guarantee that a joke is funny. Output quality depends on the model and language; Urdu and Roman Urdu should be judged by fluent speakers.
 
 ## API
 
