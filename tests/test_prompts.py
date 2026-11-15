@@ -202,3 +202,36 @@ def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
     assert result == "The apology got a director's cut. The lateness got four minutes."
     assert "screenshot-worthiness" in seen[0]
     assert "internet-native voice" in seen[0]
+
+
+
+def test_prompt_rejects_unrelated_joke_details():
+    prompt = build_prompt(
+        "He replied 'interesting' and immediately changed the subject.",
+        "instagram",
+        3,
+    )
+    assert "Do not invent a new event" in prompt
+    assert "comparison must clearly map" in prompt
+
+
+def test_instagram_editor_prioritizes_grounding(monkeypatch):
+    import app.providers as providers
+    seen = []
+
+    async def fake_complete(prompt, temperature):
+        if "comedy editor" in prompt:
+            seen.append(prompt)
+            return "1"
+        return "That 'interesting' was a polite exit with the door already closed."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(providers.generate(
+        "prompt",
+        "He replied 'interesting' and immediately changed the subject.",
+        style="instagram",
+    ))
+    assert result == "That 'interesting' was a polite exit with the door already closed."
+    assert "1. Grounding:" in seen[0]
+    assert "random comparisons" in seen[0]
+    assert "A simple, exact observation" in seen[0]
