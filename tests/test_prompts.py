@@ -252,3 +252,20 @@ def test_prompt_excludes_diagnosis_based_insults():
     prompt = build_prompt("He rewrote a caption nineteen times.", "instagram", 3)
     assert "medical or mental-health conditions" in prompt
     assert "Never use a diagnosis as an insult" in prompt
+
+
+def test_prompt_preserves_exact_numeric_facts():
+    prompt = build_prompt(
+        "She posted 'no context' and then spent 40 replies explaining the context.",
+        "instagram",
+        3,
+    )
+    assert "NUMERIC ACCURACY" in prompt
+    assert "40" in prompt
+    assert "copy the exact digits and unit" in prompt
+
+
+def test_prompt_rejects_empty_praise_as_a_punchline():
+    prompt = build_prompt("He sent a nine-minute voice note.", "instagram", 3)
+    assert "empty praise" in prompt
+    assert "that's commitment" in prompt
