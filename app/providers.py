@@ -1,6 +1,5 @@
 import asyncio
 import re
-import unicodedata
 
 import httpx
 
@@ -32,8 +31,8 @@ STOP_WORDS = {
 
 
 def _tokens(value: str) -> list[str]:
-    """Unicode-aware tokenization for English, Urdu, Hindi and Roman Urdu."""
-    normalized = unicodedata.normalize("NFKC", value).casefold()
+    """Tokenize English text."""
+    normalized = value.casefold()
     return re.findall(r"[^\W_]+(?:['’][^\W_]+)?", normalized, flags=re.UNICODE)
 
 
@@ -151,7 +150,6 @@ async def _complete(prompt: str, temperature: float) -> str:
 async def generate(
     prompt: str,
     context: str,
-    language: str = "en",
     style: str = "instagram",
 ) -> str:
     """Generate independent angles concurrently; tolerate partial provider failures."""
@@ -171,7 +169,7 @@ async def generate(
         for item in results
         if isinstance(item, str)
         and item.strip()
-        and is_valid_output(item.strip(), language)
+        and is_valid_output(item.strip())
     ]
     if not candidates:
         errors = [str(item) for item in results if isinstance(item, Exception)]
@@ -188,9 +186,9 @@ async def generate(
     numbered = "\n".join(
         f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
     )
-    judge_prompt = f"""You are COOKED's comedy editor. Select the single funniest candidate.
-The requested output language is {language}; the requested humor style is {style}.
-Judge whether each candidate sounds natural in that language and fits that style.
+    judge_prompt = f"""You are COOKED's comedy editor. Select the single funniest English-language candidate.
+The requested humor style is {style}.
+Judge whether each candidate sounds natural in English and fits that style.
 
 Judge by these priorities:
 1. Specific connection to the supplied situation (not a generic insult).
