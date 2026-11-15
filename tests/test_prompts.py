@@ -269,3 +269,8 @@ def test_prompt_rejects_empty_praise_as_a_punchline():
     prompt = build_prompt("He sent a nine-minute voice note.", "instagram", 3)
     assert "empty praise" in prompt
     assert "that's commitment" in prompt
+
+
+def test_prompt_avoids_quote_markers_in_output():
+    prompt = build_prompt("He said 'quick question' and wrote six paragraphs.", "instagram", 3)
+    assert "Do not use quotation marks" in prompt
