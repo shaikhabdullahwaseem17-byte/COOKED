@@ -62,6 +62,7 @@ async def run_case(case: dict[str, str]) -> dict[str, Any]:
         if (
             is_valid_output(output)
             and providers._is_usable_candidate(output)
+            and providers._is_fact_consistent_candidate(output, case["text"])
             and output not in seen
         ):
             seen.add(output)
