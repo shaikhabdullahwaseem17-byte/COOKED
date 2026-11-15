@@ -1,26 +1,39 @@
-from fastapi.testclient import TestClient
+import asyncio
+
+import httpx
 
 from app.main import app
 from app.providers import ProviderError
 
-client = TestClient(app)
+
+def request(method, path, **kwargs):
+    async def send():
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(
+            transport=transport,
+            base_url="http://test",
+        ) as client:
+            return await client.request(method, path, **kwargs)
+
+    return asyncio.run(send())
 
 
 def test_health_endpoint():
-    response = client.get("/api/health")
+    response = request("GET", "/api/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok", "app": "COOKED"}
 
 
 def test_homepage_serves_the_web_interface():
-    response = client.get("/")
+    response = request("GET", "/")
     assert response.status_code == 200
     assert "COOKED" in response.text
     assert 'id="go"' in response.text
 
 
 def test_roast_rejects_private_contact_details():
-    response = client.post(
+    response = request(
+        "POST",
         "/api/roast",
         json={"text": "Reply to person@example.com"},
     )
@@ -29,7 +42,8 @@ def test_roast_rejects_private_contact_details():
 
 
 def test_roast_rejects_invalid_language():
-    response = client.post(
+    response = request(
+        "POST",
         "/api/roast",
         json={"text": "A sufficiently long harmless context", "language": "fr"},
     )
@@ -44,7 +58,8 @@ def test_roast_returns_structured_result(monkeypatch):
         return "The situation brought its own plot twist."
 
     monkeypatch.setattr("app.main.generate", fake_generate)
-    response = client.post(
+    response = request(
+        "POST",
         "/api/roast",
         json={"text": "A harmless test situation."},
     )
@@ -61,7 +76,8 @@ def test_roast_maps_provider_errors_to_service_unavailable(monkeypatch):
         raise ProviderError("The model provider timed out. Try again.")
 
     monkeypatch.setattr("app.main.generate", fake_generate)
-    response = client.post(
+    response = request(
+        "POST",
         "/api/roast",
         json={"text": "A harmless test situation."},
     )
