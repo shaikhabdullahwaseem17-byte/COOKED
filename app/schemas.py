@@ -1,9 +1,11 @@
 from typing import Literal
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 Style = Literal["instagram", "dry", "desi", "absurd"]
 
 class RoastRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     text: str = Field(min_length=3, max_length=600)
     style: Style = "instagram"
     intensity: int = Field(default=3, ge=1, le=5)
