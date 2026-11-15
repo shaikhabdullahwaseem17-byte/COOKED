@@ -19,12 +19,12 @@ ANGLES = (
 def build_prompt(text: str, style: str, intensity: int) -> str:
     examples = select_examples(text, style, limit=2)
     example_block = ""
-    digit_tokens = re.findall(r"\\d+(?:,\\d{3})*(?:\\.\\d+)?", text)
+    digit_tokens = re.findall(r"\d+(?:,\d{3})*(?:\.\d+)?", text)
     number_block = ""
     if digit_tokens:
         exact_digits = ", ".join(dict.fromkeys(digit_tokens))
         number_block = (
-            "\\n\\nNUMERIC ACCURACY: The exact numerals in the situation are "
+            "\n\nNUMERIC ACCURACY: The exact numerals in the situation are "
             f"{exact_digits}. If you mention a count or time, copy the exact "
             "digits and unit. Never convert the number into a different number."
         )
