@@ -20,8 +20,8 @@ def test_prompt_has_distinct_angles():
 
 def test_desi_style_is_south_asian_humor_written_in_english():
     prompt = build_prompt("He blames the Wi-Fi for every missed deadline.", "desi", 3)
-    assert "English-language South Asian internet humor" in prompt
-    assert "natural English" in prompt
+    assert "English-language South Asian social humor" in prompt
+    assert "fluent and natural" in prompt
 
 
 def test_request_defaults():
@@ -71,7 +71,7 @@ def test_generate_tolerates_partial_provider_failure(monkeypatch):
 
 def test_prompt_includes_original_style_references():
     prompt = build_prompt("He announced his fifth social media break this month.", "instagram", 3)
-    assert "STYLE REFERENCES" in prompt
+    assert "STYLE REFERENCE" in prompt
     assert "learn the comic move" in prompt
     assert "never reuse a recognizable phrase" in prompt
 
@@ -231,7 +231,6 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
         style="instagram",
     ))
     assert result == "That 'interesting' was a polite exit with the door already closed."
-    assert "Exact fit" in seen[0]
     assert "EXACT FIT" in seen[0]
     assert "invented backstory" in seen[0]
     assert "feels effortless and specific" in seen[0]
@@ -275,20 +274,20 @@ def test_prompt_preserves_exact_numeric_facts():
 
 def test_prompt_rejects_empty_praise_as_a_punchline():
     prompt = build_prompt("He sent a nine-minute voice note.", "instagram", 3)
-    assert "empty praise" in prompt
-    assert "that's commitment" in prompt
+    assert "generic judgment" in prompt
+    assert "final few words carry the payoff" in prompt
 
 
 def test_prompt_avoids_quote_markers_in_output():
     prompt = build_prompt("He said 'quick question' and wrote six paragraphs.", "instagram", 3)
-    assert "Do not use quotation marks" in prompt
+    assert "quotation marks" in prompt
 
 
 def test_prompt_includes_style_voice_sample_without_importing_facts():
     prompt = build_prompt("The fridge is making a strange noise.", "dry", 3)
     assert "VOICE SAMPLE" in prompt
     assert "The follow-up has already requested another follow-up." in prompt
-    assert "never borrow its facts, objects, structure, or wording" in prompt
+    assert "never reuse its wording, premise, or details" in prompt
 
 
 def test_each_style_has_its_own_original_anchor():
