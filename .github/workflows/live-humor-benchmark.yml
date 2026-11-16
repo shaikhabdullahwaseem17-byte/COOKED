@@ -35,11 +35,11 @@ jobs:
             if ollama list >/dev/null 2>&1; then break; fi
             sleep 2
           done
-          ollama pull qwen2.5:3b
+          ollama pull gemma4:12b
       - name: Run live benchmark
         env:
           COOKED_PROVIDER: ollama
-          COOKED_MODEL: qwen2.5:3b
+          COOKED_MODEL: gemma4:12b
           REQUEST_TIMEOUT: "120"
         run: |
           PYTHONPATH=. python scripts/humor_benchmark.py --output-dir benchmark-results
