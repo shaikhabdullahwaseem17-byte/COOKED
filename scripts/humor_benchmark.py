@@ -19,7 +19,7 @@ CASES: tuple[dict[str, str], ...] = (
     # Five fresh Instagram cases: deliberately distinct from the style-reference inputs.
     {"id": "en_instagram_voice_note", "style": "instagram", "text": "He described a nine-minute voice note as 'just a quick thought'."},
     {"id": "en_instagram_no_context", "style": "instagram", "text": "She posted 'no context' and then spent 40 replies explaining the context."},
-    {"id": "en_instagram_effortless_caption", "style": "instagram", "text": "He called the caption 'effortless' after rewriting it nineteen times."},
+    {"id": "en_instagram_eta", "style": "instagram", "text": "He described a 35-minute drive as 'basically next door'."},
     {"id": "en_instagram_phone_break", "style": "instagram", "text": "He said he was taking a break from his phone, then replied to every comment within seconds."},
     {"id": "en_instagram_tiny_update", "style": "instagram", "text": "She promised a 'tiny update' and posted a 23-message thread."},
     {"id": "en_dry_meeting", "style": "dry", "text": "The recurring meeting to discuss cutting meetings has been extended to 90 minutes."},
