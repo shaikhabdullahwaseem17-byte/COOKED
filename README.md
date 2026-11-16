@@ -18,7 +18,7 @@ Paste a setup, choose a style, set the spice level, and get one line you can cop
 - A small FastAPI backend.
 - Local model support through Ollama. An OpenAI-compatible provider can also be configured.
 
-The first version had broader language ambitions. We cut it back to English because natural phrasing and comic timing mattered more than pretending to handle languages we had not tested properly.
+The first version included plans for more languages. I cut it back to English because natural phrasing and comic timing mattered more than adding languages I had not properly tested.
 
 ## Run it on your computer
 
@@ -141,7 +141,7 @@ I want the history of this project to be clear. COOKED did not appear as a finis
 
 ### Starting the project
 
-I created the GitHub repository called COOKED and decided to build the project there. I was doing the work entirely from my phone, using GitHub Codespaces. I did not have a normal computer setup or a local terminal to rely on, so I had to work through the Codespaces interface and follow the steps there.
+I created the GitHub repository called COOKED and decided to build the project there. I did the work from my phone using GitHub Codespaces. I had to set up and run the project through the Codespaces interface.
 
 At the beginning, I needed practical instructions. I opened a Codespace, checked the Python environment, ran the commands, and worked through the test output. I asked what the results meant and which files mattered when the test runner showed failures. I kept going through the checks instead of treating a successful-looking screen as proof that the app was finished.
 
