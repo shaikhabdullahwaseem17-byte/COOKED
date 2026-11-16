@@ -62,6 +62,7 @@ def test_playful_situation_based_context_is_allowed(text):
         ("That is a maxi-panties reveal.", False),
         ("The update came with a lingerie reveal.", False),
         ("The joke turned into a striptease reference.", False),
+        ("The 90-minute meeting gave everyone insomnia.", False),
         ("The meeting discussed disability access; the slide deck ran long.", True),
         ("His ETA needs wardrobe approval first.", True),
     ],
