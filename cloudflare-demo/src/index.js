@@ -180,7 +180,7 @@ export default {
             },
             { role: "user", content: buildPrompt(context, payload.style, payload.intensity) }
           ],
-          max_tokens: 100,
+          max_completion_tokens: 100,
           temperature: 0.92,
           top_p: 0.92,
           chat_template_kwargs: { enable_thinking: false },
