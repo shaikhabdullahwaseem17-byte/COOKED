@@ -1,5 +1,7 @@
 import asyncio
 
+import pytest
+
 import app.providers as providers
 
 
