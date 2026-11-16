@@ -75,8 +75,39 @@ export function validateOutput(output, context) {
   ];
   if (unsafe.some((pattern) => pattern.test(text))) return false;
   const contextWords = new Set(tokens(context));
+  const aliases = {
+    break: ["pause", "disconnect", "unplug", "offline", "away"],
+    phone: ["mobile", "screen", "refresh", "button", "scroll"],
+    comments: ["comment", "replies", "reply", "responses"],
+    replied: ["reply", "responded", "response"],
+    voice: ["audio", "recording", "spoken", "note"],
+    note: ["audio", "recording", "message", "thought"],
+    quick: ["brief", "short", "fast", "tiny"],
+    meeting: ["agenda", "calendar", "session", "schedule"],
+    plants: ["plant", "houseplants", "fern", "leaves", "leaf"],
+    houseplants: ["plant", "plants", "fern", "window", "seat", "chair"],
+    seating: ["seat", "chair", "spot", "window"],
+    chart: ["seating", "seat", "chair", "arrangement"],
+    presentation: ["slides", "slide", "deck"],
+    slides: ["slide", "deck", "presentation"],
+    family: ["relatives", "cousins", "uncles", "aunties"],
+    chat: ["group", "messages", "conversation", "thread"],
+    group: ["chat", "messages", "conversation", "thread"],
+    minute: ["minutes", "duration", "runtime", "time"],
+    drive: ["driving", "road", "route", "car", "trip", "commute", "journey"]
+  };
+  const expandedContext = new Set(contextWords);
+  for (const word of contextWords) {
+    for (const alias of aliases[word] || []) expandedContext.add(alias);
+  }
+  const contextPrefixes = new Set(
+    [...expandedContext].filter((word) => word.length >= 5).map((word) => word.slice(0, 5))
+  );
   const outputWords = tokens(text);
-  if (!outputWords.some((word) => contextWords.has(word))) return false;
+  const hasAnchor = outputWords.some((word) =>
+    expandedContext.has(word) || (word.length >= 5 && contextPrefixes.has(word.slice(0, 5)))
+  );
+  if (!hasAnchor) return false;
 
   const sourceNumbers = new Set((context.match(/\d+/g) || []).map(Number));
   const outputNumbers = (text.match(/\d+/g) || []).map(Number);
