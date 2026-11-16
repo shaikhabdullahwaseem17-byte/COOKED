@@ -324,12 +324,22 @@ Drafts:
 
 Return ONLY the finished comment. Do not return a draft number."""
     try:
-        decision = await _complete(judge_prompt, 0.12)
+        decision = await _complete(judge_prompt, 0.72)
         match = re.fullmatch(r"\s*([1-9]\d*)\s*", decision)
         if match:
             selected = int(match.group(1))
             if 1 <= selected <= len(unique):
                 return unique[selected - 1]
+
+        # The editor may return a fresh rewrite rather than a draft number.
+        edited = decision.strip()
+        if (
+            is_valid_output(edited)
+            and _is_usable_candidate(edited)
+            and is_safe_output(edited)
+            and _is_fact_consistent_candidate(edited, context)
+        ):
+            return edited
     except Exception:
         pass
 
