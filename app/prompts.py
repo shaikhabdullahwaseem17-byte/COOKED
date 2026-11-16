@@ -3,7 +3,7 @@ import re
 from app.examples import select_examples
 
 STYLE = {
-    "instagram": "a quick, natural Instagram comment: casual, sharp, recognisable, and funny without sounding like a scripted roast",
+    "instagram": "a quick, natural, sharp Instagram comment: casual, sharp, recognisable, and funny without sounding like a scripted roast",
     "dry": "understated deadpan: calm wording, precise implication, and no announcement that the line is a joke",
     "desi": "English-language South Asian social humor: familiar family or social rhythms only when this situation supports them; fluent, specific, never caricatured",
     "absurd": "playful surreal humor: one strange but logical consequence built from an exact detail in the situation",
@@ -69,25 +69,25 @@ BUILD A REAL JOKE
 1. Pick the single most revealing detail, contradiction, overreaction, or social tell in THIS situation.
 2. Choose one comic move that fits: reinterpret a phrase, expose the hidden social truth, or reveal a specific consequence.
 3. Change the reader's interpretation. Do not simply repeat what happened, say the person is wrong, or explain the obvious.
-4. Make the final few words deliver the turn. The line should still make sense on the first read.
+4. Make the final few words carry the payoff and deliver the turn. The line should still make sense on the first read.
 5. Make it sound typed, not written: natural contractions, clean rhythm, and no grand performance.
 
 QUALITY BAR
 - Aim for 5–16 words. One sentence or fragment. No preamble, explanation, hashtags, or quotation marks.
 - It must depend on a detail from THIS situation. If the same line could sit under twenty unrelated posts, discard it.
-- The comment must add a funny interpretation, not just rephrase the input with a synonym.
+- The comment must add a funny interpretation, not just rephrase the input with a synonym. It must land in one clean turn and depend on this exact situation.
 - Prefer an unexpected but logical payoff over a metaphor. A metaphor is allowed only when the link is immediate and specific.
 - Do not narrate mechanically with phrases such as "he is definitely wrong", "she clearly", or "that means".
 - Avoid filler endings such as "though", "either", "and that's it", or "because".
 - Avoid generic AI joke scaffolds: HR reviews, performance improvement plans, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and "that's commitment" unless that exact idea is unusually apt.
-- Never force slang, memes, fake internet dialect, or a pun that needs explaining.
+- Never reuse a recognizable phrase, premise, or punchline from the voice sample or style reference. Never force slang, memes, fake internet dialect, or a pun that needs explaining.
 - Casual beats polished. Specific beats clever-sounding. A short real laugh beats a long clever sentence.
 - If no strong joke exists, use a precise, lightly funny observation rather than inventing a premise.
 
 STYLE DETAILS
-- Instagram: write like a quick reply in a comment thread. Prioritise conversational rhythm and instant recognition over a polished one-liner.
+- Instagram: write like a quick reply in a comment thread with a clean punch. Prioritise conversational rhythm and instant recognition over a polished one-liner.
 - Dry: understate the absurdity and let the implication sit. No theatrical language.
-- Desi: use the actual family, food, wedding, or group-chat detail when present. No generic auntie/uncle/WhatsApp joke, forced slang, or fake accent.
+- Desi: use the actual family, food, wedding, or group-chat detail when present. No generic auntie/uncle/WhatsApp joke, forced slang, transliteration, or fake accent.
 - Absurd: make one grounded leap from a real object or action. Give the object a specific consequence, not a random job title.
 
 SAFETY
