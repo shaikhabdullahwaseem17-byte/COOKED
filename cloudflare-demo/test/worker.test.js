@@ -23,7 +23,8 @@ async function runWorkerWithOutputs(context, outputs) {
   const response = await worker.fetch(request, env);
   return { response, prompts };
 }
-\nconst valid = {
+
+const valid = {
   text: "He said he was taking a break from his phone, then replied to every comment within seconds.",
   style: "instagram",
   intensity: 3
