@@ -61,6 +61,7 @@ def test_playful_situation_based_context_is_allowed(text):
         ("Send the nudes.", False),
         ("The meeting discussed disability access; the slide deck ran long.", True),
         ("His ETA needs wardrobe approval first.", True),
+        ("The 90-minute meeting gave everyone insomnia.", False),
     ],
 )
 def test_generated_output_safety_guard(text, expected):
