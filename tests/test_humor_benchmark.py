@@ -30,7 +30,7 @@ def test_benchmark_records_candidate_and_editor_flow(monkeypatch):
     }
     result = asyncio.run(run_case(case))
     assert result["answer"] == "Four minutes late, twelve minutes of director's commentary."
-    assert len(result["candidate_outputs"]) == 3
+    assert len(result["candidate_outputs"]) == 2
     assert result["editor_output"] == "2"
     assert result["selected_candidate_index"] == 2
     assert result["selection_method"] == "editor"
@@ -61,12 +61,12 @@ def test_benchmark_cases_do_not_duplicate_style_references():
             )
 
 
-def test_benchmark_reports_single_candidate_without_editor(monkeypatch):
+def test_benchmark_reports_editor_rewrite_when_candidates_fail_grounding(monkeypatch):
     import app.providers as providers
 
     async def fake_complete(prompt, temperature):
         if "You are COOKED's comedy editor" in prompt:
-            raise AssertionError("Single candidate should not call the editor")
+            return "The meeting has scheduled its own encore."
         if temperature == 0.88:
             return "The calendar filed a complaint."
         return "That's commitment."
@@ -78,9 +78,9 @@ def test_benchmark_reports_single_candidate_without_editor(monkeypatch):
         "text": "He changed the meeting time again.",
     }
     result = asyncio.run(run_case(case))
-    assert result["answer"] == "The calendar filed a complaint."
-    assert result["editor_output"] is None
-    assert result["selection_method"] == "single_candidate"
+    assert result["answer"] == "The meeting has scheduled its own encore."
+    assert result["editor_output"] == result["answer"]
+    assert result["selection_method"] == "editor_rewrite"
 
 
 def test_human_review_csv_is_blind_and_has_empty_rating_fields(tmp_path):
