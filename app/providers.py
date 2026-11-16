@@ -41,10 +41,10 @@ GENERIC_PUNCH_PATTERNS = (
 )
 
 STYLE_EDITOR_GUIDANCE = {
-    "instagram": "Prefer an instantly recognizable, casual comment with a clean punch. Reject vague praise and metaphors that sound like a prepared stand-up routine.",
-    "dry": "Prefer underplayed irony and precise wording. Reject long explanations, exclamation-heavy lines, and generic claims about efficiency.",
-    "desi": "Use cultural context only when genuinely present. Reject forced slang, stereotypes, fake accents, and generic WhatsApp jokes.",
-    "absurd": "Make one surprising leap anchored to a real detail. Reject random technical jargon that does not create a clear image or joke.",
+    "instagram": "Choose the line that feels most like a real person's quick comment: instantly recognizable, naturally phrased, and finished on its punch. Reject anything that reads like a headline or scripted roast.",
+    "dry": "Choose the quietest line with the sharpest implication. It should sound almost matter-of-fact, not like it is announcing a joke.",
+    "desi": "Choose a line that understands the specific family or social rhythm in the situation. Reject outsider caricature, generic family jokes, and forced slang.",
+    "absurd": "Choose the strangest line that still follows cleanly from one real detail. Reject randomness disguised as creativity.",
 }
 STOP_WORDS = {
     "this", "that", "with", "from", "have", "your", "you", "they",
@@ -270,7 +270,7 @@ async def generate(
     temperatures = (0.88, 0.98, 1.05)
     tasks = [
         _complete(
-            prompt + "\n\nTry this distinct comedic approach: " + angle,
+            prompt + "\n\nGENERATION LENS (apply silently): " + angle + " Return only the one comment requested above.",
             temperature,
         )
         for angle, temperature in zip(ANGLES, temperatures)
@@ -306,31 +306,32 @@ async def generate(
     numbered = "\n".join(
         f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
     )
-    judge_prompt = f"""You are COOKED's comedy editor and final quality gate.
+    judge_prompt = f"""You are COOKED's final comedy editor. You are choosing which line a person would actually post, not grading a writing exercise.
 The requested humor style is {style}.
 Situation: {context}
-STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Choose a natural, specific line with an immediate punch.")}
+STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Choose a natural, specific line with a real punch.")}
 
-Choose the one candidate with the strongest immediate comedic payoff—the line a real person would actually leave as a comment.
+Choose the strongest candidate by judging in this order:
+1. ACTUAL FUN: Would this make someone laugh, smirk, or instantly recognize the behavior? Being clever is not enough.
+2. EXACT FIT: Does the line work because of a detail in THIS situation, rather than being reusable under almost any post?
+3. HUMAN VOICE: Would someone type it naturally? Prefer conversational rhythm over polished slogans, headlines, or stand-up phrasing.
+4. PAYOFF: Does the final phrase deliver a clear, surprising turn without needing explanation?
+5. RESTRAINT: Is every word earning its place? Shorter is not automatically funnier.
 
-Judge in this order:
-1. Actual punch: does it create a fresh laugh or sharp recognition, rather than merely sounding clever?
-2. Exact fit: does the joke work because of a detail in THIS situation?
-3. Naturalness: could a person type it casually, without sounding like a headline, slogan, or scripted roast?
+Reject a candidate if it:
+- merely repeats the situation with a different adjective;
+- ends in a vague judgment such as "iconic", "commitment", "dedication", or "that's a mood";
+- relies on an unrelated metaphor, random detail, or invented backstory;
+- sounds like a stale meme, generic AI roast, or overworked one-liner;
+- needs a second sentence to explain why it is funny;
+- targets a protected trait, appearance, diagnosis, trauma, or personal vulnerability.
 
-Reject candidates that:
-- merely restate the input or add a witty-sounding adjective;
-- rely on facts, objects, motives, or relationships not in the situation;
-- use a generic analogy (a thesis, movie, episode, novel, podcast, or corporate meeting) without a specific reason;
-- use a stale template, forced slang, filler, or excessive polish;
-- use a diagnosis or personal vulnerability as an insult.
-
-Do not reward a line just because it is short or metaphorical. Prefer the most specific line that genuinely lands. Do not rewrite or invent a candidate.
+Do not reward fancy wording over a real laugh. Prefer the line that feels effortless and specific. Do not rewrite, combine, or invent a candidate.
 
 Candidates:
 {numbered}
 
-Reply with ONLY its number."""
+Reply with ONLY its number.
     try:
         decision = await _complete(judge_prompt, 0.12)
         match = re.fullmatch(r"\s*([1-9]\d*)\s*", decision)
