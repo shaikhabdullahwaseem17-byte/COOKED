@@ -137,12 +137,14 @@ def test_editor_receives_style(monkeypatch):
             seen.append(prompt)
             return "1"
         if temperature == 0.88:
-            return "A clever reply that fits this particular situation."
+            return "That 'interesting' reply changed the subject."
         return "The calendar filed a complaint."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
-    result = asyncio.run(providers.generate("prompt", "context", style="desi"))
-    assert result == "A clever reply that fits this particular situation."
+    result = asyncio.run(providers.generate(
+        "prompt", "He replied 'interesting' and immediately changed the subject.", style="desi"
+    ))
+    assert result == "That 'interesting' reply changed the subject."
     assert "requested humor style is desi" in seen[0]
 
 
@@ -221,7 +223,7 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
             seen.append(prompt)
             return "1"
         if temperature == 0.88:
-            return "That 'interesting' was a polite exit with the door already closed."
+            return "That 'interesting' reply changed the subject."
         return "The conversation changed lanes without signalling."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
@@ -230,7 +232,7 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
         "He replied 'interesting' and immediately changed the subject.",
         style="instagram",
     ))
-    assert result == "That 'interesting' was a polite exit with the door already closed."
+    assert result == "That 'interesting' reply changed the subject."
     assert "EXACT FIT" in seen[0]
     assert "invented backstory" in seen[0]
     assert "feels effortless and specific" in seen[0]
