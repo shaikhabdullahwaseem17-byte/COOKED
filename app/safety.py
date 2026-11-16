@@ -36,9 +36,13 @@ UNSAFE_OUTPUT_PATTERNS = (
         r"(?:kill|hurt|attack|shoot|stab|beat)\b",
         re.IGNORECASE,
     ),
-    # Keep explicit sexual material out of this all-ages comment generator.
+    # Keep sexual or suggestive material out of this all-ages comment generator.
+    # Clothing/underwear terms catch euphemistic outputs that evade narrower
+    # words such as "porn" or "nude".
     re.compile(
-        r"\b(?:porn(?:ography)?|nudes?|orgasm|explicit sexual|sexual intercourse|hook[- ]?up)\b",
+        r"\b(?:porn(?:ography)?|nudes?|orgasm|explicit sexual|sexual intercourse|"
+        r"hook[- ]?up|sex(?:ual(?:ized|ising|izing)?)?|pant(?:y|ies)|lingerie|"
+        r"underwear|bra|thong|striptease|fetish|sext(?:ing)?)\b",
         re.IGNORECASE,
     ),
 )
