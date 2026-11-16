@@ -8,7 +8,7 @@ The demo is live at:
 
 https://cooked.hazar128373-206.workers.dev/
 
-The live endpoint was checked at `/api/health`, and a comment was generated through the page. If you change the browser code, check the Cloudflare deployment page to make sure the new version has actually gone live. A GitHub commit by itself does not prove that Cloudflare has deployed it.
+The live endpoint was checked at `/api/health`, and a comment was generated through the page on 16 November 2026. If you change the browser code, check the Cloudflare deployment page to make sure the new version has actually gone live. A GitHub commit by itself does not prove that Cloudflare has deployed it.
 
 The browser demo is not the same as the local Python app. It makes one Gemma 4 call for each request. The local app can generate several drafts and use a separate editor pass. The two versions can return different results. Neither has been shown to produce consistently excellent humour. People still need to review real outputs.
 
