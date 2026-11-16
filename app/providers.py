@@ -158,8 +158,9 @@ CONTEXT_ALIASES = {
     "tiny": {"tiny", "small", "little", "short", "brief", "mini"},
     "update": {"update", "thread", "message", "messages", "post", "posts", "status"},
     "thread": {"thread", "messages", "replies", "posts", "update"},
-    "meeting": {"meeting", "meetings", "agenda", "calendar", "session", "schedule", "call"},
+    "meeting": {"meeting", "meetings", "agenda", "calendar", "session", "schedule", "scheduled", "rescheduled", "call"},
     "cutting": {"cutting", "reduce", "reduction", "fewer", "less"},
+    "time": {"time", "calendar", "schedule", "scheduled", "rescheduled", "duration", "deadline"},
     "extended": {"extended", "extension", "duration", "minutes", "longer"},
     "family": {"family", "relatives", "cousins", "uncles", "aunties"},
     "group": {"group", "chat", "conversation", "messages", "thread"},
@@ -172,7 +173,7 @@ CONTEXT_ALIASES = {
     "houseplants": {"houseplants", "houseplant", "plants", "plant", "fern", "window", "seat", "chair"},
     "seating": {"seating", "seat", "chair", "spot", "window", "chart"},
     "chart": {"chart", "seating", "seat", "chair", "arrangement", "colour", "color"},
-    "presentation": {"presentation", "slides", "slide", "deck"},
+    "presentation": {"presentation", "slides", "slide", "deck", "evidence", "facts"},
     "slides": {"slides", "slide", "deck", "presentation"},
     "deck": {"deck", "slides", "slide", "presentation"},
 }
@@ -193,7 +194,7 @@ def _has_context_anchor(candidate: str, context: str) -> bool:
         if len(word) > 2 and word not in STOP_WORDS
     }
     anchored = candidate_words & expanded
-    if len(anchored) < 3:
+    if len(anchored) < 2:
         return False
     if any(
         term in candidate_words and term not in context_words
