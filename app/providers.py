@@ -306,6 +306,11 @@ Situation: {context}
 STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Write a natural, specific line with a real punch.")}
 
 The drafts below are raw material, NOT a quality standard. They may all be weak.
+Judge the rewrite by this rubric:
+- ACTUAL FUN: it should trigger a laugh or a strong, immediate smirk, not just sound clever.
+- EXACT FIT: the line must depend on this exact situation and its most revealing detail.
+- HUMAN VOICE: it should feel effortless and specific, like a comment typed in one pass.
+- PAYOFF: the ending must change the interpretation, not merely repeat the setup.
 Your task:
 - Find the one detail in the situation with the strongest comic potential.
 - Create a fresh line with a genuinely different and funnier interpretation.
@@ -313,7 +318,7 @@ Your task:
 - Prefer a clean reframe, a recognisable social truth, or a precise unexpected consequence.
 - Make the last few words do the work. Use conversational English that sounds typed, not performed.
 - If the drafts contain a useful idea, sharpen it. Do not preserve bad wording just because it is in a draft.
-- Do not add facts, relationships, places, motives, counts, or events that the situation does not supply.
+- Do not invent a backstory or add facts, relationships, places, motives, counts, or events that the situation does not supply.
 - Do not explain the joke, narrate what happened, or tell the reader that someone is wrong.
 - Avoid generic AI scaffolds such as HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and vague "that's commitment" endings.
 - Keep it to one comment of 5–16 words, with no preamble, quotation marks, labels, or explanation.
