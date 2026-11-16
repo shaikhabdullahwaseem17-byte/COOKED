@@ -13,6 +13,23 @@ const STOP = new Set([
   "said","says","someone","person","every","all"
 ]);
 
+// Closely related terms let short, broad setups pass grounding without
+// accepting comments that have no meaningful connection to the input.
+const CONTEXT_CONCEPTS = [
+  new Set([
+    "eat","eats","eating","ate","eaten","food","foods","snack","snacks",
+    "meal","meals","dinner","lunch","breakfast","plate","plates","fork",
+    "fridge","kitchen","buffet","menu","restaurant","bite","bites","chew",
+    "chewing","stomach","appetite"
+  ]),
+  new Set([
+    "talk","talks","talking","talked","speak","speaks","speaking","spoke",
+    "speech","chat","chats","chatting","conversation","conversations",
+    "word","words","voice","mic","microphone","podcast","yap","yaps",
+    "yapping","chatter","monologue","silence","quiet","pause","airtime","noise"
+  ])
+];
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -97,6 +114,11 @@ export function validateOutput(output, context) {
     drive: ["driving", "road", "route", "car", "trip", "commute", "journey"]
   };
   const expandedContext = new Set(contextWords);
+  for (const concept of CONTEXT_CONCEPTS) {
+    if ([...contextWords].some((word) => concept.has(word))) {
+      for (const related of concept) expandedContext.add(related);
+    }
+  }
   for (const word of contextWords) {
     for (const alias of aliases[word] || []) expandedContext.add(alias);
   }
@@ -132,6 +154,7 @@ export function buildPrompt(text, style, intensity) {
     "Find the most revealing detail, contradiction, overreaction or social tell in this exact setup.",
     "Make a clean comic turn. The ending should supply the payoff.",
     "The line must depend on this situation; do not invent a new place, event, relationship, number, motive or backstory.",
+    "For a very short setup, build on its main action with a simple, recognisable comic leap; do not require extra backstory.",
     "Prefer recognisable social truth, precise re-interpretation or an unexpected but logical consequence.",
     "Write 5–16 words if possible. Use one sentence or fragment.",
     "Sound typed in one pass: natural, conversational and specific.",
@@ -192,7 +215,7 @@ export default {
           : result?.response || result?.choices?.[0]?.message?.content || "";
         const output = String(raw).trim().replace(/^["'“”‘’]+|["'“”‘’]+$/g, "").trim();
         if (!validateOutput(output, context)) {
-          return json({ detail: "That one didn't pass COOKED's checks. Try a more specific setup." }, 503);
+          return json({ detail: "COOKED couldn't find a clean, relevant line this time. Try again." }, 503);
         }
         return json({ roast: output, style: payload.style });
       } catch {
