@@ -226,7 +226,7 @@ def _has_context_anchor(candidate: str, context: str) -> bool:
 
 
 def _quality_score(candidate: str, context: str) -> float:
-    """A deliberately simple anti-slop heuristic, not a humor detector."""
+    """A simple text-quality check, not a humor detector."""
     text = candidate.strip().strip("\"'“”‘’")
     words = _tokens(text)
     count = len(words)

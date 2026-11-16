@@ -1,72 +1,74 @@
-# COOKED launch material
+# COOKED launch notes
 
-This is a preparation pack, not a claim that COOKED is already live or that the model is consistently funny. Do not publish a demo link until the browser Worker has actually been deployed and checked.
+The browser demo is live:
 
-## What the browser version is
+https://cooked.hazar128373-206.workers.dev/
 
-The browser preview is a single-pass Gemma 4 call hosted through Cloudflare Workers AI. It does not use the local Python version's three-draft generation and editor pass. Keep that distinction visible when talking about it.
+This file contains ideas for showing the real app. It is not a claim that every result is funny or ready to post.
 
-## Twenty-second screen-recording plan
+## What the browser demo does
 
-Record the actual running site on a phone after the public URL is live. Keep the whole browser screen visible; do not add fake output, fake likes, or simulated loading.
+The browser version uses one Gemma 4 call through Cloudflare Workers AI for each request. It does not use the local Python app's draft generation and editor pass. The two versions can return different results.
 
-| Time | Screen |
+## Short screen recording
+
+Record the actual site on a phone. Keep the real page and its loading state visible. Do not add fake comments, likes or loading screens.
+
+| Time | What to show |
 |---|---|
-| 0–3 sec | Open the real COOKED browser demo. Let the liquid-glass interface sit on screen briefly. |
-| 3–7 sec | Paste one ordinary, fictional situation. Example: “He said ‘quick question’ and sent a six-paragraph message.” |
-| 7–9 sec | Select Instagram style. Leave spice at 3. |
-| 9–12 sec | Tap Write a Comment and keep the real loading state visible. |
-| 12–17 sec | Show the comment the live model actually returned. Hold long enough to read it. |
-| 17–20 sec | Tap Copy. End on “COOKED — open source. Try it. Break it.” |
+| 0–3 sec | Open the live COOKED page. |
+| 3–7 sec | Enter a harmless, fictional situation. For example: “He said ‘quick question’ and sent a six-paragraph message.” |
+| 7–9 sec | Choose Instagram and leave the intensity at 3. |
+| 9–12 sec | Tap Roast and show the real loading state. |
+| 12–17 sec | Show the comment the app actually returned. |
+| 17–20 sec | Use Copy. Leave the COOKED page on screen. |
 
-Use the first clean, on-topic result from the deployed demo. If it misses, do not quietly replace it with a line written elsewhere and imply it came from the app. Run it again or choose a different setup, and keep the final clip honest.
+Use a real result that fits the setup. If the result is weak, do not replace it with a line written by hand and pretend the app made it. Try another setup or leave the miss visible.
 
-## Actual output currently on record
+## A real result from the local test
 
-One real output from the older local Qwen 2.5 3B diagnostic run:
+This is from an earlier Qwen 2.5 3B test, not from the current browser demo.
 
-**Setup:** He said he was taking a break from his phone, then replied to every comment within seconds.
+**Situation:** He said he was taking a break from his phone, then replied to every comment within seconds.
 
-**COOKED output:** “The refresh button won't let him unplug.”
+**Comment:** “The refresh button won't let him unplug.”
 
-**Review:** The line was on-topic, but the repository's editorial audit called it predictable and not especially original. It is an authentic test result, not a showcase-quality result. Do not use it as proof that COOKED has reached its humour target.
+**Review:** It fits the situation, but the audit found it predictable and not very original. It is a real test result, not proof that COOKED has reached its humour target.
 
-The same audit recorded weak or off-context lines and a safety miss. Those were kept in the audit rather than hidden. Wait for the browser build to be live, collect real outputs from that model, and have people review them before selecting a showcase clip.
+The audits also record weak results, failed generations and a safety miss. They are kept in the repository so people can see what did not work.
 
-## Instagram caption — after a real output is reviewed
+## Short caption
 
 COOKED turns a caption or everyday situation into a short comment.
 
-Four styles. One setup. You decide whether the line lands.
+Choose a style, enter a setup and see what it comes up with. Some results land. Some do not.
 
-It's open source, English-only, and still being tested. Try it, share the result, and tell us when it misses.
+It's open source and English-only. Try it and tell me when it gets something wrong.
 
-[Add the live demo URL only after deployment.]
+Demo: https://cooked.hazar128373-206.workers.dev/
 
-## Reddit / developer-community post — after deployment
+## Post for a developer community
 
-I built COOKED, a small open-source comment writer for captions and everyday situations.
+I built COOKED, an open-source tool that writes short comments about captions and everyday situations.
 
-It has four styles: Instagram, dry, Desi and absurd. The browser preview runs without installing Python or a local model. The project also has a local version for people who want to run it themselves.
+It has four styles: Instagram, Dry, Desi and Absurd. The browser version works without installing anything. There is also a local version for people who want to run it themselves.
 
-I'm not claiming it writes viral comments or that every result is funny. The current browser preview is a single-pass model call, and I'm looking for real examples where it sounds generic, misses the context or goes too far.
+I'm not claiming it writes viral comments or that every result is funny. The browser version makes one model call per request. I'm looking for examples where it sounds unnatural, misses the situation or goes too far.
 
-Try it here: [add the real deployed URL]
+Try it: https://cooked.hazar128373-206.workers.dev/
 
-If it fails, please share the fictional setup and output with private details removed. The code, tests and contribution guide are public too.
+If it gets something wrong, share the fictional setup and the actual output. Remove names and private details first.
 
-## Ask people to break it
+## What feedback is useful
 
-A useful prompt for the community:
+A good test is a harmless situation where the important detail is easy for a person to notice but easy for the model to miss. Share the setup and the actual result. Do not include real names, private messages or personal details.
 
-> Give COOKED a harmless situation where the funny detail is easy for a person to notice but easy for a model to miss. Share the setup and the actual output. No real names, private conversations or personal details. The best misses become regression tests.
+Useful feedback points to one problem: the wrong context, an invented detail, unnatural wording, a weak ending, the wrong style or a safety issue.
 
-Good feedback should identify one failure: wrong context, invented detail, unnatural phrasing, weak payoff, wrong style or a safety problem.
-
-## Keep the launch honest
+## Keep posts honest
 
 - Do not promise likes, virality or a particular humour score.
-- Do not use synthetic examples or manually written jokes as if the model generated them.
-- Do not hide failures from the benchmark record.
-- Do not post private conversations or screenshots that expose personal details.
-- Do not claim the browser preview has the same generation pipeline as the local app.
+- Do not show a hand-written joke as if the model generated it.
+- Do not hide failed tests or weak outputs.
+- Do not post private conversations or screenshots with personal details.
+- Do not say the browser demo uses the same generation process as the local app.

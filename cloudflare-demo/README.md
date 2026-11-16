@@ -1,57 +1,57 @@
 # COOKED browser demo
 
-This folder contains the browser version of COOKED. It serves the same liquid-glass interface from a Cloudflare Worker and calls Cloudflare Workers AI from the server. Visitors do not install Python or Ollama and do not need an API key.
+This folder contains the browser version of COOKED. A Cloudflare Worker serves the page and sends comment requests to Cloudflare Workers AI. Visitors do not need to install Python or Ollama, and they do not need their own model API key.
 
-## Status
+## Current status
 
-The code is prepared, but **the public URL does not exist until a Cloudflare account owner deploys it**. The app is not being described as live before that happens.
+The demo is live at:
 
-This is a public-preview backend, not a byte-for-byte copy of the local Python generation pipeline. It uses one carefully prompted Gemma 4 call per request rather than the local app's multiple drafts and editor pass. Its humour quality still needs real blind human review.
+https://cooked.hazar128373-206.workers.dev/
 
-This code is ready for an adult account owner to review and deploy. Cloudflare's privacy policy says its own services are not designed to attract people under 18. A parent or guardian must decide whether this hosting arrangement is appropriate, own and supervise any account, and review the terms and privacy obligations. Do not create an account by misrepresenting age or bypassing an eligibility rule.
+The live endpoint was checked at `/api/health`, and a comment was generated through the page on 16 November 2026. If you change the browser code, check the Cloudflare deployment page to make sure the new version has actually gone live. A GitHub commit by itself does not prove that Cloudflare has deployed it.
 
-## Model and limits
+The browser demo is not the same as the local Python app. It makes one Gemma 4 call for each request. The local app can generate several drafts and use a separate editor pass. The two versions can return different results. Neither has been shown to produce consistently excellent humour. People still need to review real outputs.
+
+A parent or guardian must decide whether the hosting arrangement is suitable, own and supervise any Cloudflare account, and review the provider's terms and billing settings. Do not create an account by giving a false age or bypassing an eligibility rule. Do not share account credentials.
+
+## Model, limits and privacy
 
 - Model: `@cf/google/gemma-4-26b-a4b-it`.
-- Cloudflare currently lists this model as Cloudflare-hosted with zero data retention.
-- The Worker Free plan currently includes 10,000 AI Neurons per day. Once that allowance is used, new generations fail until the daily reset. Do not enable a paid plan for this initial demo.
-- The app also applies an approximate four-generation-per-minute rate limit per IP address. Cloudflare says this rate limiter is approximate and operates separately in each Cloudflare location.
-- The demo does not have a prompt database, login system, analytics database or persistent conversation history. The request is processed by Cloudflare Workers AI. Avoid entering names, contact information or private conversations.
+- The Worker applies an approximate limit of four generations per minute per IP address. Cloudflare's rate limiter works separately in each Cloudflare location, so this is not a precise global limit.
+- Workers AI has a daily free Neuron allowance. The amount used depends on the model and request. Check the current [Workers AI pricing page](https://developers.cloudflare.com/workers-ai/platform/pricing/) and the account dashboard before relying on the free allowance. Do not enable paid usage without the account owner's decision.
+- The Worker does not save prompts to a COOKED database or keep an app conversation history. It sends the request to Cloudflare Workers AI, with `store: false` in the model call. This does not mean the request never passes through or is processed by the provider.
+- Do not enter names, contact details, private messages or other personal information.
 
-These provider limits and terms can change; check the linked Cloudflare pages before launch:
-- [Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/)
-- [Gemma 4 26B model details](https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/)
-- [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/)
+Cloudflare's model details and terms can change. Check the [Gemma 4 model page](https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/) and [Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/) before making changes.
 
-## Deploy from GitHub (dashboard method)
+## Deploy or reconnect it from GitHub
 
-Cloudflare's Git integration supports deploying Workers from a GitHub repository. A parent or guardian should own and supervise the Cloudflare account and review the provider terms and billing settings. Do not share account credentials.
+These steps are for the adult account owner or someone they supervise. They are also useful if the current deployment needs to be recreated.
 
-1. Have the adult account owner open [Cloudflare Dashboard](https://dash.cloudflare.com/) and go to **Workers & Pages**.
-2. Select **Create application**, then **GitHub**. Connect the COOKED repository and choose the `main` branch.
-3. Set **Root directory** to the repository root (leave it blank/default, or use `.`). Do not set it to `cloudflare-demo` for this command.
-4. Leave the optional build command empty.
-5. Set the **Deploy command** exactly to:
+1. Open the [Cloudflare Dashboard](https://dash.cloudflare.com/) and go to **Workers & Pages**.
+2. Choose **Create application**, then **GitHub**. Connect this repository and select the `main` branch.
+3. Set **Root directory** to the repository root. Leave it blank or use `.`. Do not set it to `cloudflare-demo` when using the command below.
+4. Leave the build command empty.
+5. Use this deploy command:
 
    ```sh
    npx wrangler@4.102.0 deploy --config cloudflare-demo/wrangler.jsonc
    ```
 
-   This explicitly selects the demo's Wrangler configuration. The failed build log shows Cloudflare ran `npx wrangler deploy` from the repository root, where it did not find `cloudflare-demo/wrangler.jsonc`; it then tried to treat the project as a static-assets project and could not find the expected directory. The explicit `--config` path fixes that configuration lookup. The assets directory in the config is `./public`, resolved relative to the config file.
-6. Make sure the Worker name is `cooked-public-demo`, matching `cloudflare-demo/wrangler.jsonc`.
-7. Keep the account on the **Workers Free** plan for this trial. Do not opt into paid usage or add a paid billing plan for the demo.
-8. Save and deploy. Cloudflare will provide a `workers.dev` URL.
-9. Open the URL and check `/api/health`. It should return a JSON status and the model ID. Then test one example in the page.
+   The explicit config path matters because the Wrangler file is inside `cloudflare-demo/`. Its assets directory is `./public`, resolved relative to that config file.
+6. The Worker name should be `cooked-public-demo`, as set in `cloudflare-demo/wrangler.jsonc`.
+7. Review the account's plan and billing settings before deploying. The repository does not require a paid plan for its current setup.
+8. After deployment, open the Worker URL and check `/api/health`. Then generate a comment in the page. Check the Cloudflare deployment history whenever you need to confirm which code is live.
 
-Cloudflare's documentation: [Connect a Worker to a GitHub repository](https://developers.cloudflare.com/workers/ci-cd/builds/).
+Cloudflare's guide: [Connect a Worker to a GitHub repository](https://developers.cloudflare.com/workers/ci-cd/builds/).
 
-## Tests
+## Run the browser tests
 
-From this folder, run:
+From this folder:
 
 ```sh
 npm install
 npm test
 ```
 
-The test suite uses Node's built-in test runner. It checks input validation, privacy filters, targeted-abuse rejection, prompt construction and final-output checks. It does not test model humour quality.
+The tests use Node's built-in test runner. They check request validation, privacy filters, targeted-abuse checks, prompt construction and output checks. They do not measure whether the model's comments are funny.
