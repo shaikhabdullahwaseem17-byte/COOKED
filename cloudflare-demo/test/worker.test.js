@@ -1,8 +1,29 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildPrompt, buildRetryPrompt, validateInput, validateOutput } from "../src/index.js";
+import worker, { buildPrompt, buildRetryPrompt, validateInput, validateOutput } from "../src/index.js";
 
-const valid = {
+
+async function runWorkerWithOutputs(context, outputs) {
+  const prompts = [];
+  const env = {
+    ROAST_LIMITER: { limit: async () => ({ success: true }) },
+    AI: {
+      run: async (_model, options) => {
+        prompts.push(options.messages[1].content);
+        const index = Math.min(prompts.length - 1, outputs.length - 1);
+        return { response: outputs[index] };
+      }
+    }
+  };
+  const request = new Request("https://cooked.test/api/roast", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ text: context, style: "instagram", intensity: 3 })
+  });
+  const response = await worker.fetch(request, env);
+  return { response, prompts };
+}
+\nconst valid = {
   text: "He said he was taking a break from his phone, then replied to every comment within seconds.",
   style: "instagram",
   intensity: 3
@@ -68,4 +89,34 @@ test("rejects an unrelated, unsafe or overlong comment", () => {
   assert.equal(validateOutput("The refresh button gave everyone insomnia.", valid.text), false);
   assert.equal(validateOutput("The refresh button says hurt yourself right now.", valid.text), false);
   assert.equal(validateOutput("refresh ".repeat(30), valid.text), false);
+});
+
+
+test("request handler retries once when the first comment fails relevance", async () => {
+  const { response, prompts } = await runWorkerWithOutputs(
+    "He eats alot.",
+    ["The airport opens at dawn today.", "Fridge gets him."]
+  );
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).roast, "Fridge gets him.");
+  assert.equal(prompts.length, 2);
+  assert.match(prompts[1], /RETRY:/);
+});
+
+test("request handler skips the retry when the first comment passes", async () => {
+  const { response, prompts } = await runWorkerWithOutputs(
+    "He eats alot.",
+    ["Fridge gets him."]
+  );
+  assert.equal(response.status, 200);
+  assert.equal(prompts.length, 1);
+});
+
+test("request handler returns the existing error when both attempts fail", async () => {
+  const { response, prompts } = await runWorkerWithOutputs(
+    "He eats alot.",
+    ["The airport opens at dawn today.", "A completely unrelated weather report."]
+  );
+  assert.equal(response.status, 503);
+  assert.equal(prompts.length, 2);
 });
