@@ -35,7 +35,7 @@ COOKED uses an existing instruction model through Ollama. It is **not** a founda
 - Includes one-tap demo prompts and native sharing in the web interface.
 - Runs locally by default; no hosted API key is required.
 
-The heuristic ranker is a fallback, not a humor detector. The editor is still an LLM and can make subjective or incorrect choices; neither stage can guarantee that a joke is funny. Output quality depends on the selected model.
+The heuristic ranker is a fallback, not a humor detector. The editor is still an LLM and can make subjective or incorrect choices; neither stage can guarantee that a joke is funny. Output quality depends heavily on the selected model. The lightweight default (`qwen2.5:3b`) has failed the project's initial quality audit and should be treated as a compatibility/demo setting, not as evidence of release-quality humor.
 
 ## API
 
@@ -80,7 +80,7 @@ The GitHub Actions live benchmark runs the fixed, English-only cases against the
 
 Benchmark situations are kept separate from the curated style examples, with an automated overlap check in the test suite.
 
-Qwen 3.5 9B is the current local evaluation candidate. It is not the default model unless its actual outputs meet the project's quality bar.
+Gemma 4 12B is the current live quality challenger. It is not the runtime default unless its actual outputs meet the project's quality bar. Qwen 3.5 9B was previously tested but was too slow and inconsistent for the current workflow. The initial Qwen 2.5 3B benchmark produced only 6 of 8 outputs; the six returned lines were mostly weak, off-context, or unsuitable. See `benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md`.
 
 The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Follow `HUMAN_REVIEW.md` to score humor, context fit, naturalness, originality and safety. Eight cases are a small diagnostic set and do not establish that comments will perform well on Instagram.
 
