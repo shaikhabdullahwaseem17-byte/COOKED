@@ -1,6 +1,6 @@
 import pytest
 
-from app.safety import validate_input
+from app.safety import is_safe_output, validate_input
 
 
 @pytest.mark.parametrize(
@@ -46,3 +46,19 @@ def test_targeted_harassment_and_vulnerability_based_roasts_are_rejected(text):
 )
 def test_playful_situation_based_context_is_allowed(text):
     validate_input(text)
+
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("Mock her because she has depression.", False),
+        ("Roast him for being disabled.", False),
+        ("Send the reply to person@example.com", False),
+        ("Call me at +1 202 555 0199", False),
+        ("The meeting discussed disability access; the slide deck ran long.", True),
+        ("His ETA needs wardrobe approval first.", True),
+    ],
+)
+def test_generated_output_safety_guard(text, expected):
+    assert is_safe_output(text) is expected
