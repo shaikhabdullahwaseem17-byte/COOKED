@@ -36,6 +36,11 @@ UNSAFE_OUTPUT_PATTERNS = (
         r"(?:kill|hurt|attack|shoot|stab|beat)\b",
         re.IGNORECASE,
     ),
+    # Do not use medical or mental-health conditions as joke punchlines.
+    re.compile(
+        r"\b(?:insomnia|depression|anxiety|adhd|autism|ocd|ptsd|bipolar|schizophrenia)\b",
+        re.IGNORECASE,
+    ),
     # Keep sexual or suggestive material out of this all-ages comment generator.
     # Clothing/underwear terms catch euphemistic outputs that evade narrower
     # words such as "porn" or "nude".
