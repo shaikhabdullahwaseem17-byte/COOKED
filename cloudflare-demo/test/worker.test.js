@@ -42,9 +42,9 @@ test("prompt preserves the selected style, situation and spice level", () => {
 
 test("retry prompt makes relevance clearer without changing the setup", () => {
   const prompt = buildRetryPrompt("He eats alot.", "instagram", 3);
-  assert.match(prompt, /He eats alot\\./i);
-  assert.match(prompt, /previous attempt did not pass/i);
-  assert.match(prompt, /concrete word or close synonym/i);
+  assert.ok(prompt.includes("He eats alot."));
+  assert.ok(prompt.includes("previous attempt did not pass"));
+  assert.ok(prompt.includes("concrete word or close synonym"));
 });
 
 test("accepts a context-grounded, safe comment", () => {
