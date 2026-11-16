@@ -43,7 +43,7 @@ def test_benchmark_cases_do_not_duplicate_style_references():
 
     def terms(text):
         return {
-            token for token in re.findall(r"[^\\W_]+", text.casefold())
+            token for token in re.findall(r"[^\W_]+", text.casefold())
             if len(token) > 2
         }
 
@@ -81,3 +81,32 @@ def test_benchmark_reports_single_candidate_without_editor(monkeypatch):
     assert result["answer"] == "The calendar filed a complaint."
     assert result["editor_output"] is None
     assert result["selection_method"] == "single_candidate"
+
+
+def test_human_review_csv_is_blind_and_has_empty_rating_fields(tmp_path):
+    import csv
+    from scripts.humor_benchmark import write_human_review_csv
+
+    report = {
+        "provider": "ollama",
+        "model": "private-model-label",
+        "results": [{
+            "id": "case_one",
+            "style": "instagram",
+            "text": "He called a 12-minute video a quick update.",
+            "answer": "The update came with a runtime.",
+        }],
+    }
+    path = tmp_path / "human-review.csv"
+    write_human_review_csv(report, path)
+    with path.open(encoding="utf-8", newline="") as handle:
+        row = next(csv.DictReader(handle))
+
+    assert row["output"] == "The update came with a runtime."
+    assert row["humor_1_5"] == ""
+    assert row["context_fit_1_5"] == ""
+    assert row["naturalness_1_5"] == ""
+    assert row["originality_1_5"] == ""
+    assert row["safety_pass"] == ""
+    assert "provider" not in row
+    assert "model" not in row

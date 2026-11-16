@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import csv
+import hashlib
 import json
 import re
 import time
@@ -17,7 +19,7 @@ CASES: tuple[dict[str, str], ...] = (
     # Five fresh Instagram cases: deliberately distinct from the style-reference inputs.
     {"id": "en_instagram_voice_note", "style": "instagram", "text": "He described a nine-minute voice note as 'just a quick thought'."},
     {"id": "en_instagram_no_context", "style": "instagram", "text": "She posted 'no context' and then spent 40 replies explaining the context."},
-    {"id": "en_instagram_effortless_caption", "style": "instagram", "text": "He called the caption 'effortless' after rewriting it nineteen times."},
+    {"id": "en_instagram_eta", "style": "instagram", "text": "He described a 35-minute drive as 'basically next door'."},
     {"id": "en_instagram_phone_break", "style": "instagram", "text": "He said he was taking a break from his phone, then replied to every comment within seconds."},
     {"id": "en_instagram_tiny_update", "style": "instagram", "text": "She promised a 'tiny update' and posted a 23-message thread."},
     {"id": "en_dry_meeting", "style": "dry", "text": "The recurring meeting to discuss cutting meetings has been extended to 90 minutes."},
@@ -123,6 +125,36 @@ def render_markdown(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def write_human_review_csv(report: dict[str, Any], path: Path) -> None:
+    """Write a model-blind worksheet for independent human scoring."""
+    fields = (
+        "reviewer", "review_item", "case_id", "style", "situation", "output",
+        "humor_1_5", "context_fit_1_5", "naturalness_1_5",
+        "originality_1_5", "safety_pass", "notes",
+    )
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for row in report["results"]:
+            answer = row.get("answer") or ""
+            review_key = f"{row['id']}\\0{answer}"
+            review_item = hashlib.sha256(review_key.encode("utf-8")).hexdigest()[:10]
+            writer.writerow({
+                "reviewer": "",
+                "review_item": review_item,
+                "case_id": row["id"],
+                "style": row["style"],
+                "situation": row["text"],
+                "output": answer,
+                "humor_1_5": "",
+                "context_fit_1_5": "",
+                "naturalness_1_5": "",
+                "originality_1_5": "",
+                "safety_pass": "",
+                "notes": "",
+            })
+
+
 async def main(output_dir: Path) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     results = []
@@ -142,6 +174,7 @@ async def main(output_dir: Path) -> int:
     (output_dir / "humor-benchmark.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (output_dir / "humor-benchmark.md").write_text(render_markdown(report), encoding="utf-8")
+    write_human_review_csv(report, output_dir / "human-review.csv")
     successes = sum(bool(row["answer"]) for row in results)
     print(f"\nSUMMARY: {successes}/{len(results)} cases produced an output.", flush=True)
     return 0 if successes == len(results) else 1

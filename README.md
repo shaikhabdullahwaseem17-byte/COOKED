@@ -27,7 +27,7 @@ COOKED uses an existing instruction model through Ollama. It is **not** a founda
 
 - Supports English output across four distinct humor styles: Instagram, dry, Desi and absurd.
 - Desi is a cultural humor style written in natural English, not a separate language mode.
-- Retrieves up to two locally curated, original English examples matching the requested humor style.
+- Retrieves at most one locally curated, original English example when the situation has meaningful overlap with it.
 - Generates three distinct comedic approaches concurrently, then asks a separate editor pass to choose only among those candidates.
 - Uses a lightweight heuristic as a fallback if the editor fails or returns an invalid choice.
 - Penalizes common AI-style preambles, stale templates, overlong outputs and list-like answers; rewards some context anchoring without rewarding simple copying.
@@ -51,11 +51,15 @@ Styles: `instagram`, `dry`, `desi`, `absurd`. The API has no language selector a
 ## Humor principles
 
 1. Specificity beats generic aggression.
-2. One punchline, usually 5–18 words.
+2. One punchline, usually 5–16 words.
 3. No preamble, explanation, hashtags, emoji spam or forced slang.
 4. Avoid tired meme templates and fake internet dialect.
 5. Desi humor should feel culturally grounded without forced slang or fake accents.
 6. Keep it playful and do not target protected traits, private information or personal vulnerabilities.
+
+## Human evaluation
+
+Run the same fixed cases with the same model version and settings when comparing prompt revisions. The benchmark creates `human-review.csv` with blank rating fields and no model/provider label. Give reviewers that CSV without the metadata-rich JSON/Markdown report, collect independent ratings from at least two people, and follow [`HUMAN_REVIEW.md`](HUMAN_REVIEW.md). Keep individual ratings and safety checks; do not turn the heuristic score into a claim about humor or virality.
 
 ## Data provenance
 
@@ -71,12 +75,12 @@ PYTHONPATH=. python scripts/humor_benchmark.py
 
 ## Live benchmark
 
-The GitHub Actions live benchmark runs the fixed, English-only cases against the configured local model and saves a JSON report plus a readable Markdown report as workflow artifacts. The report records all candidate outputs and per-call latency so that model behaviour can be reviewed rather than judged from a single selected line.
+The GitHub Actions live benchmark runs the fixed, English-only cases against the configured local model and saves a JSON report plus a readable Markdown report as workflow artifacts. The JSON and Markdown reports record all candidate outputs and per-call latency. The workflow also creates a model-blind `human-review.csv` worksheet for independent ratings.
 
 Benchmark situations are kept separate from the curated style examples, with an automated overlap check in the test suite.
 
 Qwen 3.5 9B is the current local evaluation candidate. It is not the default model unless its actual outputs meet the project's quality bar.
 
-The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Benchmark results require human review and do not establish that comments will perform well on Instagram.
+The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Follow `HUMAN_REVIEW.md` to score humor, context fit, naturalness, originality and safety. Eight cases are a small diagnostic set and do not establish that comments will perform well on Instagram.
 
 Code is MIT-licensed. The underlying model and third-party datasets retain their own licenses and terms; see MODEL_CARD.md.
