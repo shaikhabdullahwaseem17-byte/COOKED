@@ -68,6 +68,7 @@ async def run_case(case: dict[str, str]) -> dict[str, Any]:
             and providers._is_usable_candidate(output)
             and is_safe_output(output)
             and providers._is_fact_consistent_candidate(output, case["text"])
+            and providers._has_context_anchor(output, case["text"])
             and output not in seen
         ):
             seen.add(output)

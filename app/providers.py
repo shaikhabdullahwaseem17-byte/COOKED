@@ -156,6 +156,75 @@ def _is_fact_consistent_candidate(candidate: str, context: str) -> bool:
     return _number_mentions(candidate).issubset(stated_numbers)
 
 
+
+
+CONTEXT_ALIASES = {
+    "voice": {"voice", "audio", "recording", "spoken", "talk", "note"},
+    "note": {"note", "voice", "audio", "recording", "message", "thought"},
+    "quick": {"quick", "brief", "short", "fast", "tiny"},
+    "thought": {"thought", "idea", "opinion", "message", "note"},
+    "minute": {"minute", "minutes", "time", "duration", "runtime", "long", "late"},
+    "drive": {"drive", "driving", "road", "route", "car", "trip", "commute", "journey"},
+    "next": {"next", "door", "nearby", "close", "distance"},
+    "door": {"door", "next", "nearby", "close", "distance"},
+    "phone": {"phone", "mobile", "screen", "refresh", "button", "scroll", "notifications", "unplug", "offline"},
+    "break": {"break", "pause", "disconnect", "unplug", "offline", "away"},
+    "replied": {"replied", "reply", "responded", "response", "comment", "comments", "notification", "notifications"},
+    "reply": {"reply", "replied", "responded", "response", "comment", "comments"},
+    "replies": {"replies", "reply", "comments", "responses", "explanations"},
+    "comments": {"comments", "comment", "replies", "responses", "notifications"},
+    "explaining": {"explaining", "explained", "explanation", "details", "context", "clarification"},
+    "context": {"context", "explanation", "details", "clarification", "background"},
+    "tiny": {"tiny", "small", "little", "short", "brief", "mini"},
+    "update": {"update", "thread", "message", "messages", "post", "posts", "status"},
+    "thread": {"thread", "messages", "replies", "posts", "update"},
+    "meeting": {"meeting", "meetings", "agenda", "calendar", "session", "schedule", "scheduled", "rescheduled", "call"},
+    "cutting": {"cutting", "reduce", "reduction", "fewer", "less"},
+    "time": {"time", "calendar", "schedule", "scheduled", "rescheduled", "duration", "deadline"},
+    "extended": {"extended", "extension", "duration", "minutes", "longer"},
+    "family": {"family", "relatives", "cousins", "uncles", "aunties"},
+    "group": {"group", "chat", "conversation", "messages", "thread"},
+    "chat": {"chat", "group", "messages", "conversation", "thread"},
+    "unread": {"unread", "notifications", "messages", "pings"},
+    "morning": {"morning", "sunrise", "day", "greeting"},
+    "greeting": {"greeting", "morning", "sunrise", "day"},
+    "plants": {"plants", "plant", "houseplants", "fern", "leaves", "leaf"},
+    "plant": {"plant", "plants", "houseplant", "fern", "leaves", "leaf", "pot"},
+    "houseplants": {"houseplants", "houseplant", "plants", "plant", "fern", "window", "seat", "chair"},
+    "seating": {"seating", "seat", "chair", "spot", "window", "chart"},
+    "chart": {"chart", "seating", "seat", "chair", "arrangement", "colour", "color"},
+    "presentation": {"presentation", "slides", "slide", "deck", "evidence", "facts"},
+    "slides": {"slides", "slide", "deck", "presentation"},
+    "deck": {"deck", "slides", "slide", "presentation"},
+}
+
+UNSUPPORTED_SCENE_TERMS = {
+    "wedding", "honeymoon", "mansion", "beverly", "tiktok", "tiktoks",
+    "airport", "courtroom", "celebrity", "podcast",
+}
+
+
+def _has_context_anchor(candidate: str, context: str) -> bool:
+    """Require at least two meaningful links to the supplied situation."""
+    context_words = set(_tokens(context))
+    expanded = set(context_words)
+    for word in context_words:
+        expanded.update(CONTEXT_ALIASES.get(word, ()))
+    candidate_words = {
+        word for word in _tokens(candidate)
+        if len(word) > 2 and word not in STOP_WORDS
+    }
+    anchored = candidate_words & expanded
+    if len(anchored) < 2:
+        return False
+    if any(
+        term in candidate_words and term not in context_words
+        for term in UNSUPPORTED_SCENE_TERMS
+    ):
+        return False
+    return True
+
+
 def _quality_score(candidate: str, context: str) -> float:
     """A deliberately simple anti-slop heuristic, not a humor detector."""
     text = candidate.strip().strip("\"'“”‘’")
@@ -300,37 +369,45 @@ async def generate(
     results = await asyncio.gather(*tasks, return_exceptions=True)
     from app.output_validation import is_valid_output
 
-    candidates = [
+    # Retain only safe source-language drafts. The editor can repair length,
+    # numeric, and context issues, but it cannot bypass the final validators.
+    raw_drafts = [
         item.strip()
         for item in results
         if isinstance(item, str)
         and item.strip()
         and is_valid_output(item.strip())
-        and _is_usable_candidate(item.strip())
         and is_safe_output(item.strip())
-        and _is_fact_consistent_candidate(item.strip(), context)
     ]
-    if not candidates:
+    if not raw_drafts:
         errors = [str(item) for item in results if isinstance(item, Exception)]
-        detail = errors[0] if errors else "All candidates were empty or failed English output validation."
-        raise ProviderError(
-            f"No usable English-language candidate. {detail}"
-        )
+        detail = errors[0] if errors else "All drafts failed language or safety validation."
+        raise ProviderError(f"No safe English-language drafts. {detail}")
 
+    candidates = [
+        item for item in raw_drafts
+        if _is_usable_candidate(item)
+        and _is_fact_consistent_candidate(item, context)
+        and _has_context_anchor(item, context)
+    ]
     unique = list(dict.fromkeys(candidates))
-    fallback = max(unique, key=lambda item: _quality_score(item, context))
-
-    # The finishing pass is allowed to improve the drafts, not merely rank them.
-    # This matters most when generation/validation leaves only one usable option.
+    fallback = (
+        max(unique, key=lambda item: _quality_score(item, context))
+        if unique else None
+    )
+    # If all drafts fail one of these checks, the editor still gets safe raw
+    # material and must write from the original situation rather than echo it.
+    drafts_for_editor = unique or list(dict.fromkeys(raw_drafts))
     numbered = "\n".join(
-        f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
+        f"{index}. {candidate}"
+        for index, candidate in enumerate(drafts_for_editor, start=1)
     )
     judge_prompt = f"""You are COOKED's comedy editor and final writing pass. Your job is to turn rough drafts into one comment worth posting.
 The requested humor style is {style}.
 Situation: {context}
 STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Write a natural, specific line with a real punch.")}
 
-The drafts below are raw material, NOT a quality standard. They may all be weak.
+The drafts below are untrusted raw material, NOT a quality standard. They may be too long, off-topic, or contain invented details. The situation above is the only source of truth. Never copy a new number, place, event, relationship, or backstory from a draft unless the situation itself states it.
 Judge the rewrite by this rubric:
 - ACTUAL FUN: it should trigger a laugh or a strong, immediate smirk, not just sound clever.
 - EXACT FIT: the line must depend on this exact situation and its most revealing detail.
@@ -371,9 +448,14 @@ Return ONLY the finished comment. Do not return a draft number."""
             and _is_usable_candidate(edited)
             and is_safe_output(edited)
             and _is_fact_consistent_candidate(edited, context)
+            and _has_context_anchor(edited, context)
         ):
             return edited
     except Exception:
         pass
 
-    return fallback
+    if fallback is not None:
+        return fallback
+    raise ProviderError(
+        "No safe, fact-consistent, context-grounded comment could be produced. Try a clearer situation."
+    )
