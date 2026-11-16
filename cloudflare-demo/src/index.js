@@ -82,7 +82,7 @@ export function validateOutput(output, context) {
   const text = output.trim().replace(/^["'“”‘’]+|["'“”‘’]+$/g, "").trim();
   if (!text || text.length > 170 || text.includes("\n") || text.includes("#")) return false;
   const words = text.split(/\s+/);
-  if (words.length < 4 || words.length > 22 || (text.match(/!/g) || []).length > 1) return false;
+  if (words.length < 3 || words.length > 22 || (text.match(/!/g) || []).length > 1) return false;
 
   const unsafe = [
     /\b(?:self[- ]?harm|suicid\w*|kill yourself|hurt yourself|end your life)\b/i,
