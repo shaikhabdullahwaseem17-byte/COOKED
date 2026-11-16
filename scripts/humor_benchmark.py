@@ -69,10 +69,23 @@ async def run_case(case: dict[str, str]) -> dict[str, Any]:
             candidates.append(output)
     editor = [c for c in calls if c["kind"] == "editor"]
     selected = candidates.index(answer) + 1 if answer in candidates else None
+    editor_output = editor[-1].get("output") if editor else None
+    editor_choice = None
+    if editor_output:
+        match = re.fullmatch(r"\s*([1-9]\d*)\s*", editor_output)
+        if match:
+            editor_choice = int(match.group(1))
+    if len(candidates) == 1 and answer == candidates[0]:
+        selection_method = "single_candidate"
+    elif selected is not None and editor_choice == selected:
+        selection_method = "editor"
+    else:
+        selection_method = "heuristic_fallback"
     return {
         **case, "language": "en", "answer": answer, "failure": failure,
         "candidate_outputs": candidates,
-        "editor_output": editor[-1].get("output") if editor else None,
+        "editor_output": editor_output,
+        "selection_method": selection_method,
         "selected_candidate_index": selected,
         "heuristic_score": providers._quality_score(answer, case["text"]) if answer else None,
         "elapsed_seconds": round(time.perf_counter() - started, 3),
@@ -98,7 +111,7 @@ def render_markdown(report: dict[str, Any]) -> str:
             f"## {row['id']} — English / {row['style']}", "",
             f"**Input:** {row['text']}", "",
             f"**COOKED output:** {row['answer'] or '[FAILED]'}", "",
-            f"**Candidate selection:** {row['selected_candidate_index'] or 'fallback / unavailable'}", "",
+            f"**Candidate selection:** {row['selected_candidate_index'] or 'fallback / unavailable'} ({row['selection_method']})", "",
         ]
         lines += [f"- Candidate {i}: {candidate}" for i, candidate in enumerate(row["candidate_outputs"], 1)]
         if row["editor_output"]:
