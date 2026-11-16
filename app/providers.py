@@ -5,6 +5,7 @@ import httpx
 
 from app import config
 from app.prompts import ANGLES
+from app.safety import is_safe_output
 
 
 class ProviderError(RuntimeError):
@@ -285,6 +286,7 @@ async def generate(
         and item.strip()
         and is_valid_output(item.strip())
         and _is_usable_candidate(item.strip())
+        and is_safe_output(item.strip())
         and _is_fact_consistent_candidate(item.strip(), context)
     ]
     if not candidates:
