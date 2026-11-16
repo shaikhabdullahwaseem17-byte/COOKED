@@ -9,8 +9,8 @@ PRIVATE_PATTERNS = (
 # appearance, health condition, trauma, or another personal vulnerability.
 ABUSE_VERBS = r"(?:roast|mock|make fun of|insult|humiliate|bully|shame|drag)"
 TARGET_TRAITS = (
-    r"(?:race|ethnicity|religion|faith|nationality|sexual orientation|"
-    r"gender identity|disability|disabled|autistic|autism|adhd|"
+    r"(?:race|ethnicity|religion|faith|muslim|christian|jewish|hindu|sikh|buddhist|atheist|nationality|sexual orientation|"
+    r"gender identity|disability|disabled|autistic|autism|adhd|hijab|kippah|turban|"
     r"down syndrome|blind|deaf|wheelchair user|depression|anxiety|"
     r"mental health|trauma|appearance|looks|body|weight|height|face|"
     r"skin|hair|acne|ugly|fat|skinny)"
@@ -18,7 +18,7 @@ TARGET_TRAITS = (
 TARGETED_ABUSE_PATTERNS = (
     re.compile(
         rf"\b{ABUSE_VERBS}\b.{{0,80}}\b(?:for being|because\s+"
-        rf"(?:he|she|they|someone)\s+(?:is|are)|for\s+"
+        rf"(?:he|she|they|someone)\s+(?:is|are|has|have)|for\s+"
         rf"(?:their|his|her)|(?:their|his|her|a|an|the))\s+"
         rf"{TARGET_TRAITS}\b",
         re.IGNORECASE,
