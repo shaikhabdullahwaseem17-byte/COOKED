@@ -15,3 +15,19 @@
 {"input":"He announced his fifth social media break this month.","output":"The break has a renewal date already.","style":"instagram","language":"en","source":"original_example"}
 {"input":"He says he is two minutes away while he is still deciding what to wear.","output":"The ETA is waiting for the outfit to approve it.","style":"desi","language":"en","source":"original_example"}
 {"input":"He said quick question and sent a six-paragraph message.","output":"The question came with its own appendix.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He warned everyone about spoilers, then explained the ending before the film started.","output":"The spoiler warning arrived after the credits.","style":"instagram","language":"en","source":"original_example"}
+{"input":"She announces a brand-new routine every Monday and forgets it by Tuesday.","output":"The routine has a pilot episode every Monday.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He calls every restaurant a hidden gem if finding parking was easy.","output":"The parking spot is getting the five-star review.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He asked for a poll, then argued with everyone who chose the other option.","output":"The poll was apparently a test with one correct answer.","style":"instagram","language":"en","source":"original_example"}
+{"input":"A guest says no more food, then accepts another serving when the plate comes around.","output":"The refusal was polite; the plate knew better.","style":"desi","language":"en","source":"original_example"}
+{"input":"The host says make yourself at home, then tells everyone not to open the fridge.","output":"Home access ends at the sofa.","style":"desi","language":"en","source":"original_example"}
+{"input":"Everyone says they are leaving after chai, then starts another long conversation.","output":"The goodbye has a second sitting.","style":"desi","language":"en","source":"original_example"}
+{"input":"The relatives arranged seven cars for a short trip everyone could share.","output":"The convoy has more planning than the destination.","style":"desi","language":"en","source":"original_example"}
+{"input":"The team scheduled a quick sync with eight attendees and a full agenda.","output":"Quick has been used without supervision.","style":"dry","language":"en","source":"original_example"}
+{"input":"Someone replied all to ask everyone not to reply all.","output":"The instruction has become the thread's newest reply.","style":"dry","language":"en","source":"original_example"}
+{"input":"An app sent a notification to announce that notifications were disabled.","output":"One last notification to announce the silence.","style":"dry","language":"en","source":"original_example"}
+{"input":"The team postponed the planning meeting to schedule a meeting about planning.","output":"Planning is now waiting for calendar approval.","style":"dry","language":"en","source":"original_example"}
+{"input":"The cat sat directly on the meeting agenda while everyone waited.","output":"The minutes have been approved by weight.","style":"absurd","language":"en","source":"original_example"}
+{"input":"A potato left in the pantry started growing new shoots.","output":"The potato has quietly entered its next chapter.","style":"absurd","language":"en","source":"original_example"}
+{"input":"Someone put a tiny hat on the kettle and left it on the counter.","output":"The kettle now expects to be introduced first.","style":"absurd","language":"en","source":"original_example"}
+{"input":"The office traffic cone was given a chair at the team meeting.","output":"The cone has somehow secured a permanent seat.","style":"absurd","language":"en","source":"original_example"}
