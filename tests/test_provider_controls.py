@@ -157,7 +157,7 @@ def test_gemma4_uses_fast_thinking_mode_and_bounded_output(monkeypatch):
     assert result == "One concise comment."
     assert payloads[0]["think"] is False
     assert payloads[0]["options"]["num_predict"] == 32
-    assert timeouts == [90]
+    assert timeouts == [180]
 
 
 def test_fact_consistency_rejects_changed_explicit_numbers():
