@@ -33,6 +33,7 @@ def test_benchmark_records_candidate_and_editor_flow(monkeypatch):
     assert len(result["candidate_outputs"]) == 3
     assert result["editor_output"] == "2"
     assert result["selected_candidate_index"] == 2
+    assert result["selection_method"] == "editor"
     assert result["failure"] is None
 
 
@@ -58,3 +59,25 @@ def test_benchmark_cases_do_not_duplicate_style_references():
             assert overlap < 0.6, (
                 f"{case['id']} is too close to a style example: {example['input']}"
             )
+
+
+def test_benchmark_reports_single_candidate_without_editor(monkeypatch):
+    import app.providers as providers
+
+    async def fake_complete(prompt, temperature):
+        if "You are COOKED's comedy editor" in prompt:
+            raise AssertionError("Single candidate should not call the editor")
+        if temperature == 0.88:
+            return "The calendar filed a complaint."
+        return "That's commitment."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    case = {
+        "id": "single_candidate",
+        "style": "instagram",
+        "text": "He changed the meeting time again.",
+    }
+    result = asyncio.run(run_case(case))
+    assert result["answer"] == "The calendar filed a complaint."
+    assert result["editor_output"] is None
+    assert result["selection_method"] == "single_candidate"
