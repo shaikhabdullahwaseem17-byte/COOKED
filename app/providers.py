@@ -186,11 +186,7 @@ async def _complete(prompt: str, temperature: float) -> str:
             config.PROVIDER == "ollama"
             and config.MODEL.casefold().startswith(("qwen3.5", "gemma4"))
         )
-        request_timeout = (
-            min(config.REQUEST_TIMEOUT, 90)
-            if is_fast_thinking_model
-            else config.REQUEST_TIMEOUT
-        )
+        request_timeout = config.REQUEST_TIMEOUT
         async with httpx.AsyncClient(timeout=request_timeout) as client:
             if config.PROVIDER == "ollama":
                 options = {
@@ -202,7 +198,7 @@ async def _complete(prompt: str, temperature: float) -> str:
                     # COOKED needs a short comment, not a long reasoning trace.
                     # Keep candidate generations and the editor response bounded.
                     options["num_predict"] = (
-                        6 if "You are COOKED's comedy editor" in prompt else 32
+                        48 if "You are COOKED's comedy editor" in prompt else 32
                     )
                 payload = {
                     "model": config.MODEL,
@@ -299,41 +295,34 @@ async def generate(
     unique = list(dict.fromkeys(candidates))
     fallback = max(unique, key=lambda item: _quality_score(item, context))
 
-    # Do not spend another model call when validation leaves only one choice.
-    if len(unique) == 1:
-        return unique[0]
-
-    # A separate editor pass judges only the generated candidates. It cannot
-    # invent a replacement, and a failed/invalid judge safely falls back.
+    # The finishing pass is allowed to improve the drafts, not merely rank them.
+    # This matters most when generation/validation leaves only one usable option.
     numbered = "\n".join(
         f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
     )
-    judge_prompt = f"""You are COOKED's comedy editor and final quality gate. You are choosing which line a person would actually post, not grading a writing exercise.
+    judge_prompt = f"""You are COOKED's comedy editor and final writing pass. Your job is to turn rough drafts into one comment worth posting.
 The requested humor style is {style}.
 Situation: {context}
-STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Choose a natural, specific line with a real punch.")}
+STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Write a natural, specific line with a real punch.")}
 
-Choose the strongest candidate by judging in this order:
-1. ACTUAL FUN: Would this make someone laugh, smirk, or instantly recognize the behavior? Being clever is not enough.
-2. EXACT FIT: Does the line work because of a detail in THIS situation, rather than being reusable under almost any post?
-3. HUMAN VOICE: Would someone type it naturally? Prefer conversational rhythm over polished slogans, headlines, or stand-up phrasing.
-4. PAYOFF: Does the final phrase deliver a clear, surprising turn without needing explanation?
-5. RESTRAINT: Is every word earning its place? Shorter is not automatically funnier.
+The drafts below are raw material, NOT a quality standard. They may all be weak.
+Your task:
+- Find the one detail in the situation with the strongest comic potential.
+- Create a fresh line with a genuinely different and funnier interpretation.
+- Make the joke depend on that exact detail, not a generic insult or a summary.
+- Prefer a clean reframe, a recognisable social truth, or a precise unexpected consequence.
+- Make the last few words do the work. Use conversational English that sounds typed, not performed.
+- If the drafts contain a useful idea, sharpen it. Do not preserve bad wording just because it is in a draft.
+- Do not add facts, relationships, places, motives, counts, or events that the situation does not supply.
+- Do not explain the joke, narrate what happened, or tell the reader that someone is wrong.
+- Avoid generic AI scaffolds such as HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and vague "that's commitment" endings.
+- Keep it to one comment of 5–16 words, with no preamble, quotation marks, labels, or explanation.
+- Respect the safety rules: no attacks on identity, appearance, disability, health, trauma, private information, or personal vulnerabilities.
 
-Reject a candidate if it:
-- merely repeats the situation with a different adjective;
-- ends in a vague judgment such as "iconic", "commitment", "dedication", or "that's a mood";
-- relies on an unrelated metaphor, random detail, or invented backstory;
-- sounds like a stale meme, generic AI roast, or overworked one-liner;
-- needs a second sentence to explain why it is funny;
-- targets a protected trait, appearance, diagnosis, trauma, or personal vulnerability.
-
-Do not reward fancy wording over a real laugh. Prefer the line that feels effortless and specific. Do not rewrite, combine, or invent a candidate.
-
-Candidates:
+Drafts:
 {numbered}
 
-Reply with ONLY its number."""
+Return ONLY the finished comment. Do not return a draft number."""
     try:
         decision = await _complete(judge_prompt, 0.12)
         match = re.fullmatch(r"\s*([1-9]\d*)\s*", decision)
