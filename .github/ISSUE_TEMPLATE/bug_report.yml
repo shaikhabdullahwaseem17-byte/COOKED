@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a reproducible problem in COOKED.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Remove names, contact details and private conversations before submitting."
+  - type: textarea
+    id: setup
+    attributes:
+      label: Setup
+      description: What did you enter? Use a fictional or anonymised example.
+      placeholder: "A harmless situation..."
+    validations:
+      required: true
+  - type: dropdown
+    id: style
+    attributes:
+      label: Style
+      options:
+        - Instagram
+        - Dry
+        - Desi
+        - Absurd
+        - Browser demo / unsure
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output or error
+      description: Paste the generated line or exact error, with private details removed.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
