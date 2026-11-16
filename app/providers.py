@@ -201,7 +201,7 @@ async def _complete(prompt: str, temperature: float) -> str:
                     # COOKED needs a short comment, not a long reasoning trace.
                     # Keep candidate generations and the editor response bounded.
                     options["num_predict"] = (
-                        6 if "final comedy editor" in prompt else 32
+                        6 if "You are COOKED's comedy editor" in prompt else 32
                     )
                 payload = {
                     "model": config.MODEL,
@@ -306,7 +306,7 @@ async def generate(
     numbered = "\n".join(
         f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
     )
-    judge_prompt = f"""You are COOKED's final comedy editor. You are choosing which line a person would actually post, not grading a writing exercise.
+    judge_prompt = f"""You are COOKED's comedy editor and final quality gate. You are choosing which line a person would actually post, not grading a writing exercise.
 The requested humor style is {style}.
 Situation: {context}
 STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Choose a natural, specific line with a real punch.")}
