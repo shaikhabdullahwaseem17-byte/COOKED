@@ -70,7 +70,7 @@ There is no account or signup flow in the local app. It runs on your machine. Th
 
 The default is `qwen2.5:3b`, mainly because it is small enough to run on more computers. It has **not** met the humour target. Two separate eight-case runs are recorded: an earlier run returned 8/8 outputs, but the comments were still weak; a later audited run returned 6/8, with two generation failures and several poor results. See the [first editorial review](benchmark-audits/2026-11-16-qwen2.5-3b-editorial-audit.md) and the [later output audit](benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md).
 
-`gemma4:12b` is being tested as a higher-capacity alternative. It is not certified as the best model for COOKED, and its results should be judged from the actual comments—not its size or name. To try it, pull it with `ollama pull gemma4:12b` and change `COOKED_MODEL=gemma4:12b` in your `.env` file.
+`gemma4:12b` is another local model being tested. It is not certified as the best model for COOKED, and its results should be judged from the actual comments—not its size or name. To try it, pull it with `ollama pull gemma4:12b` and change `COOKED_MODEL=gemma4:12b` in your `.env` file.
 
 A hosted OpenAI-compatible endpoint is optional. Set `COOKED_PROVIDER=openai_compatible` and fill in the endpoint, model, and key in `.env`. Any provider charges and data-handling terms belong to that provider. You do not need an API key to use the local Ollama setup.
 
