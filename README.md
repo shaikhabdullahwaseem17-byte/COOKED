@@ -68,7 +68,7 @@ There is no account or signup flow in the local app. It runs on your machine. Th
 
 ### Model notes
 
-The default is `qwen2.5:3b`, mainly because it is a relatively light starting point. It has **not** met the humour target. In the first eight-case check it returned six comments, and the editorial review found several weak or poorly matched lines. See the [Qwen 2.5 3B audit](benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md).
+The default is `qwen2.5:3b`, mainly because it is small enough to run on more computers. It has **not** met the humour target. Two separate eight-case runs are recorded: an earlier run returned 8/8 outputs, but the comments were still weak; a later audited run returned 6/8, with two generation failures and several poor results. See the [first editorial review](benchmark-audits/2026-11-16-qwen2.5-3b-editorial-audit.md) and the [later output audit](benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md).
 
 `gemma4:12b` is being tested as a higher-capacity alternative. It is not certified as the best model for COOKED, and its results should be judged from the actual comments—not its size or name. To try it, pull it with `ollama pull gemma4:12b` and change `COOKED_MODEL=gemma4:12b` in your `.env` file.
 
@@ -106,13 +106,13 @@ The request accepts:
 
 The response contains a `roast` string and the selected `style`.
 
-## What we learned while making it
+## What the tests have shown
 
-The first live run was a useful reality check. Qwen 2.5 3B returned 6 of 8 test cases. Some lines were generic, some wandered away from the situation, and one used wording that did not belong in an all-ages app. We kept the audit in the repository rather than presenting the run as a success.
+The two Qwen 2.5 3B reviews show why a completed run is not enough. One run returned all eight comments, but the comments were still weak. A later run returned six of eight. Some lines missed the situation, and one used wording that did not belong in an all-ages app. Both reviews are kept in the repository.
 
-That review led to several changes: separate writing angles, an editor that can rewrite rather than only pick a draft, checks for changed numbers and unrelated details, and broader output-safety tests. The test suite also caught regressions while those changes were being made.
+The code was then changed to try different writing angles, let the editor rewrite a draft, and check context, numbers, output format and safety. These checks catch some mistakes. They do not decide whether a joke is funny.
 
-As of **16 November 2026**, the latest verified GitHub Actions test run reported **98 passing tests**. That means the tested code paths passed; it is not a 4/5 humour rating. The live benchmark and independent human ratings are separate measures. The [human-review guide](HUMAN_REVIEW.md) explains how to rate humour, context fit, naturalness, originality, and safety without seeing which model wrote each line.
+In the 16 November 2026 checks for the browser redesign, the Python test suite passed with **98 tests**, and the browser demo tests also passed. These results show that the tested code worked as expected. They are not a humour rating. The [human-review guide](HUMAN_REVIEW.md) explains how people can rate humour, context fit, naturalness, originality and safety.
 
 ## If COOKED gets it wrong
 
@@ -122,7 +122,7 @@ You can also roast the repository back. We can take it.
 
 Use [Issues](https://github.com/shaikhabdullahwaseem17-byte/COOKED/issues) for reproducible bugs. Use Discussions for opinions, bad jokes, ideas, and general conversation.
 
-## Copy it, change it, sell your version
+## License
 
 The repository is released under the **MIT License**. You may use it privately or commercially, copy it, modify it, publish it, distribute it, and sell your own version. Keep the copyright notice and include the MIT licence text with copies or substantial portions of the software.
 
@@ -149,13 +149,13 @@ I wanted the work done properly, but I also said I did not want the project drag
 
 ### The first model and the quality problem
 
-The first live local benchmark used Ollama with Qwen 2.5 3B and eight test situations. It returned eight outputs, but that did not mean it was producing good comedy. The lines were often generic or awkward, and the attempts at Urdu, Hindi, and Roman Urdu were not reliable. The benchmark itself also made clear that its heuristic score was only a debugging signal, not a real humour score.
+The first live local benchmark used Ollama with Qwen 2.5 3B and eight English test situations. It returned eight outputs, but that did not mean the comments were good. They were often generic or awkward. Earlier attempts to add Urdu, Hindi and Roman Urdu were also unreliable. The benchmark score was only a debugging signal, not a measure of humour.
 
 I wanted the actual comments judged, not a nice-looking test count. I pushed for better output quality, stronger context fit, more natural wording, and originality. I also challenged the choice to keep relying on a weaker model when the goal was to get the best result we could. I told the assistant to use a better model directly for the work rather than repeatedly treating the weak default as if it were good enough. The project history should be honest about that: the initial model choice was a practical starting point, not a quality decision I approved as the final standard.
 
-Different local models were then tried and compared, including larger Qwen and Gemma options. The results were mixed. A bigger model was not automatically a funnier model, and a successful generation was not automatically a usable comment. Some runs were slow, some were inconsistent, and some produced lines that still missed the situation. I did not accept model size, output count, or a passing test suite as a substitute for reading the actual results.
+Different local models were then tried, including larger Qwen and Gemma models. The results were mixed. A bigger model was not automatically funnier, and a generated comment was not automatically worth using. Some runs were slow, some were inconsistent, and some produced lines that still missed the situation. I did not accept model size, output count, or a passing test suite as a substitute for reading the actual results.
 
-The default local model remains a lightweight starting option, not a claim that COOKED has already reached its humour target. The audit is kept in the repository so people can see the shortcomings instead of being asked to trust a promotional claim.
+The default local model remains a small starting option. It is not a claim that COOKED has reached its humour target. The audit is kept in the repository so people can see the shortcomings instead of being asked to trust a promotional claim.
 
 ### Cutting the language scope back
 
