@@ -1,6 +1,6 @@
 # COOKED model integration
 
-COOKED is an English-language humor application and prompt/style layer around an existing instruction-tuned model. Default local integration: Ollama with `qwen2.5:3b` for lightweight compatibility. This default has not met the project's quality bar: its first fixed-case live benchmark returned 6/8 outputs, with most returned comments weak or poorly grounded. `gemma4:12b` is under evaluation as a higher-capability local challenger; it is not yet certified for production.
+COOKED is an English-language humor application and prompt/style layer around an existing instruction-tuned model. Default local integration: Ollama with `qwen2.5:3b` for lightweight compatibility. This default has not met the project's humour target. One eight-case run returned 8/8 outputs, but the comments were weak. A later run returned 6/8, with two generation failures. Both reviews are in `benchmark-audits/`. `gemma4:12b` is being tested as another local option. It has not been shown to be better and is not the default.
 
 This repository does not contain a foundation model trained from random initialization and does not claim the default model was trained by COOKED contributors.
 
