@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildPrompt, validateInput, validateOutput } from "../src/index.js";
+import { buildPrompt, buildRetryPrompt, validateInput, validateOutput } from "../src/index.js";
 
 const valid = {
   text: "He said he was taking a break from his phone, then replied to every comment within seconds.",
@@ -38,6 +38,13 @@ test("prompt preserves the selected style, situation and spice level", () => {
   assert.match(prompt, /Instagram-comment energy/i);
   assert.match(prompt, /4\/5/);
   assert.match(prompt, /Return only the comment/i);
+});
+
+test("retry prompt makes relevance clearer without changing the setup", () => {
+  const prompt = buildRetryPrompt("He eats alot.", "instagram", 3);
+  assert.match(prompt, /He eats alot\\./i);
+  assert.match(prompt, /previous attempt did not pass/i);
+  assert.match(prompt, /concrete word or close synonym/i);
 });
 
 test("accepts a context-grounded, safe comment", () => {
