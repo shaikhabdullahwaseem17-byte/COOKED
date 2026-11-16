@@ -14,3 +14,6 @@
 {"input":"He arranged the sofa cushions by seniority.","output":"The youngest cushion has filed an appeal.","style":"absurd","language":"en","source":"original_example"}
 {"input":"She assigned the fridge magnets designated parking spaces.","output":"The blue magnet has disputed its parking fine.","style":"absurd","language":"en","source":"original_example"}
 {"input":"He gave his basil plant a monthly performance review.","output":"The basil wants its targets measured in sunlight hours.","style":"absurd","language":"en","source":"original_example"}
+{"input":"He announced his fifth social media break this month.","output":"The break has a renewal date already.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He says he is two minutes away while he is still deciding what to wear.","output":"The ETA is waiting for the outfit to approve it.","style":"desi","language":"en","source":"original_example"}
+{"input":"He said quick question and sent a six-paragraph message.","output":"The question came with its own appendix.","style":"instagram","language":"en","source":"original_example"}
