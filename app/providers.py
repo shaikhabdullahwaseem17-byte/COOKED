@@ -201,7 +201,7 @@ async def _complete(prompt: str, temperature: float) -> str:
                     # COOKED needs a short comment, not a long reasoning trace.
                     # Keep candidate generations and the editor response bounded.
                     options["num_predict"] = (
-                        6 if "You are COOKED's comedy editor" in prompt else 48
+                        6 if "You are COOKED's comedy editor" in prompt else 32
                     )
                 payload = {
                     "model": config.MODEL,
@@ -296,6 +296,10 @@ async def generate(
 
     unique = list(dict.fromkeys(candidates))
     fallback = max(unique, key=lambda item: _quality_score(item, context))
+
+    # Do not spend another model call when validation leaves only one choice.
+    if len(unique) == 1:
+        return unique[0]
 
     # A separate editor pass judges only the generated candidates. It cannot
     # invent a replacement, and a failed/invalid judge safely falls back.
