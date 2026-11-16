@@ -177,7 +177,7 @@ export function buildRetryPrompt(text, style, intensity) {
     "Use at least one concrete word or close synonym tied to that action.",
     "Do not switch to an unrelated topic or invent background details.",
     "Keep it natural, short and funny. Return only the comment."
-  ].join("\\n");
+  ].join("\n");
 }
 
 export default {
