@@ -121,7 +121,7 @@ let last="";
 function setCopyState(enabled){$("copy").disabled=!enabled;$("copy-top").disabled=!enabled;$("share").disabled=!enabled;}
 async function copyLast(button){
   if(!last)return;
-  try{await navigator.clipboard.writeText(last);button.textContent="Copied ✓";setTimeout(()=>{button.textContent=button.id==="copy-top"?"": "Copy";},1300);}
+  try{await navigator.clipboard.writeText(last);if(button.id==="copy-top"){button.setAttribute("aria-label","Copied");setTimeout(()=>button.setAttribute("aria-label","Copy comment"),1300);}else{button.textContent="Copied ✓";setTimeout(()=>button.textContent="Copy",1300);}}
   catch(e){$("status").textContent="Clipboard access is unavailable. Select the comment to copy it.";}
 }
 $("copy").addEventListener("click",()=>copyLast($("copy")));
