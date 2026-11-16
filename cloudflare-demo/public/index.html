@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05050a">
+<meta name="description" content="COOKED — a small English-only comment writer for fun.">
+<title>COOKED — Comment writer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --ink:#f5f4fb;
+  --muted:#a6a5b7;
+  --quiet:#77778b;
+  --base:#05050a;
+  --glass:rgba(20,19,34,.54);
+  --glass-strong:rgba(20,20,37,.74);
+  --stroke:rgba(202,199,255,.16);
+  --violet:#9b7cff;
+  --blue:#66a5ff;
+  --cyan:#77e7f5;
+  --pink:#ed8bce;
+  --mono:"DM Mono",monospace;
+  --sans:"Space Grotesk",sans-serif;
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--base)}
+body{
+  margin:0;min-height:100vh;overflow-x:hidden;color:var(--ink);font-family:var(--sans);
+  background:
+    radial-gradient(ellipse 46rem 35rem at 5% -8%,rgba(101,62,190,.25),transparent 68%),
+    radial-gradient(ellipse 40rem 30rem at 96% 8%,rgba(28,119,192,.20),transparent 70%),
+    radial-gradient(ellipse 34rem 30rem at 65% 94%,rgba(154,49,134,.14),transparent 72%),
+    linear-gradient(145deg,#07070e 0%,#090914 48%,#06060d 100%);
+}
+body:before,body:after{content:"";position:fixed;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(75px);opacity:.42}
+body:before{width:25rem;height:25rem;left:-14rem;top:35%;background:rgba(105,75,235,.23)}
+body:after{width:28rem;height:28rem;right:-16rem;top:45%;background:rgba(44,170,210,.15)}
+button,input,textarea,select{font:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.wrap{width:min(1120px,100% - 48px);margin:0 auto;padding:28px 0 42px}
+.nav{height:52px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(211,207,255,.12);padding:0 2px 19px}
+.brand{font-size:25px;font-weight:700;letter-spacing:-1.8px}
+.brand .period{color:var(--cyan);text-shadow:0 0 18px rgba(119,231,245,.58)}
+.nav-right{display:flex;align-items:center;gap:17px}
+.nav-note,.eyebrow,.mono,.micro{font-family:var(--mono);text-transform:uppercase;letter-spacing:.13em}
+.nav-note{font-size:10px;color:#a6a4bb}
+.live-mark{width:6px;height:6px;display:inline-block;border-radius:50%;background:#8ee7da;box-shadow:0 0 12px rgba(142,231,218,.8);margin:0 8px 1px 0}
+.hero{position:relative;padding:76px 0 38px;max-width:800px}
+.eyebrow{display:flex;align-items:center;gap:11px;color:#b8a8ff;font-size:10px}
+.eyebrow:before{content:"";width:25px;height:1px;background:linear-gradient(90deg,var(--violet),var(--cyan));box-shadow:0 0 12px rgba(155,124,255,.5)}
+h1{font-size:clamp(49px,8.2vw,91px);font-weight:600;line-height:.94;letter-spacing:-.085em;margin:20px 0 19px;max-width:760px}
+h1 .shine{background:linear-gradient(105deg,#f7f3ff 4%,#c7b6ff 38%,#8de4f4 76%,#e6a9e5 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:560px;color:#b4b2c4;font-size:16px;line-height:1.65;margin:0}
+.hero-orb{position:absolute;right:8%;top:52px;width:174px;aspect-ratio:1;border-radius:50%;pointer-events:none;opacity:.8;
+  background:radial-gradient(circle at 32% 25%,rgba(255,255,255,.8) 0,rgba(214,207,255,.34) 4%,rgba(125,100,255,.25) 19%,rgba(46,123,209,.2) 38%,rgba(15,14,35,.05) 63%,transparent 72%);
+  box-shadow:inset -10px -12px 35px rgba(105,75,235,.12),0 0 70px rgba(94,80,224,.13),0 0 110px rgba(70,176,226,.09);
+  filter:saturate(1.1)
+}
+.hero-orb:before{content:"";position:absolute;inset:13%;border-radius:50%;border:1px solid rgba(220,222,255,.16);transform:rotate(-28deg) scaleX(1.3);box-shadow:0 0 24px rgba(120,170,255,.11)}
+.hero-orb:after{content:"";position:absolute;width:42%;height:19%;top:13%;left:16%;border-radius:50%;background:rgba(255,255,255,.16);filter:blur(12px);transform:rotate(-35deg)}
+.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:17px;align-items:stretch}
+.glass{
+  position:relative;isolation:isolate;overflow:hidden;border:1px solid transparent;border-radius:23px;
+  background:linear-gradient(145deg,rgba(23,22,41,.78),rgba(11,12,25,.74)) padding-box,
+    linear-gradient(135deg,rgba(226,220,255,.39),rgba(137,126,220,.13) 30%,rgba(103,202,226,.12) 68%,rgba(235,167,226,.22)) border-box;
+  box-shadow:0 22px 70px rgba(0,0,0,.28),0 2px 10px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.13),inset 0 -1px 0 rgba(255,255,255,.025);
+  -webkit-backdrop-filter:blur(26px) saturate(145%);backdrop-filter:blur(26px) saturate(145%);
+}
+.glass:before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,rgba(255,255,255,.055),transparent 27%,transparent 70%,rgba(122,190,255,.035))}
+.glass:after{content:"";position:absolute;z-index:-1;top:0;left:9%;width:48%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.48),rgba(153,180,255,.12),transparent);filter:blur(.2px)}
+.input-card{padding:25px 25px 22px;min-height:490px}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.card-title{font:10px var(--mono);letter-spacing:.15em;color:#c6c3d8;text-transform:uppercase}
+.card-index{font:10px var(--mono);color:#74738a;letter-spacing:.12em}
+label{display:block;font:10px var(--mono);color:#b4b0c8;letter-spacing:.13em;text-transform:uppercase;margin:0 0 10px}
+textarea{
+  width:100%;min-height:137px;resize:vertical;color:var(--ink);background:rgba(5,6,16,.55);
+  border:1px solid rgba(179,174,232,.16);border-radius:14px;padding:16px 16px;
+  font:15px/1.6 var(--sans);outline:none;transition:border-color .2s,box-shadow .2s,background .2s;
+  box-shadow:inset 0 2px 12px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.025)
+}
+textarea::placeholder{color:#747389}
+textarea:focus{border-color:rgba(154,136,255,.7);background:rgba(8,9,22,.78);box-shadow:0 0 0 3px rgba(139,116,255,.10),inset 0 2px 12px rgba(0,0,0,.2)}
+.examples{display:flex;gap:0;flex-wrap:wrap;margin:11px 0 24px}
+.example{border:0;border-bottom:1px solid rgba(178,173,225,.19);border-radius:0;background:transparent;color:#a9a5bd;padding:7px 11px 7px 0;margin:0 14px 5px 0;font:11px var(--mono);cursor:pointer;transition:color .2s,border-color .2s}
+.example:after{content:" ↗";color:#7974a0}
+.example:hover{color:#e3dcff;border-color:#a995ff}
+.controls{display:grid;grid-template-columns:minmax(0,1fr);gap:17px}
+select{
+  appearance:none;width:100%;color:#e9e7f5;background:rgba(7,8,19,.65) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23aaa4d0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 15px center;
+  border:1px solid rgba(179,174,232,.17);border-radius:11px;padding:12px 38px 12px 13px;font-size:13px;outline:none
+}
+select:focus{border-color:rgba(154,136,255,.7);box-shadow:0 0 0 3px rgba(139,116,255,.1)}
+.range-row{display:flex;align-items:center;gap:15px}
+.range-row input{width:100%;appearance:none;height:3px;border-radius:4px;background:linear-gradient(90deg,#9474ff,#64d9ec 55%,rgba(179,174,232,.22));outline:none}
+.range-row input::-webkit-slider-thumb{appearance:none;width:15px;height:15px;border-radius:50%;background:linear-gradient(145deg,#fff,#c7bcff 55%,#81ddea);border:1px solid rgba(255,255,255,.8);box-shadow:0 0 0 4px rgba(153,124,255,.15),0 0 17px rgba(119,202,255,.55);cursor:pointer}
+.range-row input::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:linear-gradient(145deg,#fff,#c7bcff 55%,#81ddea);border:1px solid rgba(255,255,255,.8);box-shadow:0 0 0 4px rgba(153,124,255,.15),0 0 17px rgba(119,202,255,.55);cursor:pointer}
+.level{min-width:44px;text-align:right;color:#bbaaff;font:11px var(--mono)}
+.go{
+  position:relative;overflow:hidden;margin-top:23px;width:100%;border:1px solid rgba(255,255,255,.45);border-radius:12px;padding:15px 18px;
+  color:#0a0a14;background:linear-gradient(105deg,#b9a5ff 0%,#8ebcff 48%,#9aebeb 100%);
+  font:700 12px var(--mono);letter-spacing:.12em;cursor:pointer;
+  box-shadow:0 9px 30px rgba(112,108,255,.22),inset 0 1px 0 rgba(255,255,255,.75),inset 0 -2px 4px rgba(30,31,100,.12);
+  transition:transform .2s,box-shadow .2s,filter .2s
+}
+.go:before{content:"";position:absolute;top:-100%;left:-30%;width:25%;height:300%;transform:rotate(24deg);background:rgba(255,255,255,.38);filter:blur(7px);transition:left .55s}
+.go:hover{transform:translateY(-1px);filter:saturate(1.1);box-shadow:0 12px 38px rgba(112,108,255,.31),inset 0 1px 0 rgba(255,255,255,.85)}
+.go:hover:before{left:120%}
+.go:active{transform:translateY(0)}
+.go:disabled{opacity:.58;cursor:wait;transform:none}
+.status{min-height:17px;margin:11px 0 0;color:#a7a5bc;font:10px var(--mono);letter-spacing:.04em}
+.result-card{min-height:490px;padding:25px 25px 22px;display:flex;flex-direction:column;background:linear-gradient(145deg,rgba(24,24,47,.79),rgba(10,14,29,.78)) padding-box,linear-gradient(135deg,rgba(133,145,255,.43),rgba(112,202,231,.17) 48%,rgba(226,142,217,.25)) border-box}
+.result-card:before{background:radial-gradient(ellipse 95% 54% at 100% 0%,rgba(97,105,231,.17),transparent 78%),linear-gradient(115deg,rgba(255,255,255,.045),transparent 30%,transparent 70%,rgba(122,190,255,.045))}
+.result-top{display:flex;align-items:center;justify-content:space-between}
+.result-label{display:flex;align-items:center;gap:10px;font:10px var(--mono);letter-spacing:.15em;color:#cfccdf}
+.result-dot{width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#be9fff,#79e7f0);box-shadow:0 0 12px rgba(135,182,255,.8)}
+.result-id{font:10px var(--mono);color:#77768f}
+.output-wrap{display:flex;flex:1;align-items:center;padding:28px 0}
+.output{font-size:clamp(26px,3vw,38px);line-height:1.23;letter-spacing:-.06em;font-weight:500;overflow-wrap:anywhere;white-space:pre-wrap;margin:0;max-width:100%}
+.output.placeholder{font-size:17px;letter-spacing:-.02em;color:#77768b;font-weight:400;line-height:1.5}
+.result-rule{height:1px;background:linear-gradient(90deg,rgba(184,171,255,.38),rgba(118,206,227,.16),transparent);margin-bottom:16px}
+.result-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.read-note{font:9px var(--mono);letter-spacing:.12em;color:#85839d}
+.actions{display:flex;gap:8px}
+.utility{border:1px solid rgba(186,181,233,.2);border-radius:9px;padding:8px 12px;color:#d8d4e8;background:rgba(255,255,255,.035);font:10px var(--mono);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.utility:hover:not(:disabled){background:rgba(155,132,255,.13);border-color:rgba(166,148,255,.5);color:white}
+.utility:disabled{opacity:.35;cursor:not-allowed}
+.note{margin-top:17px;padding:17px 20px;display:flex;align-items:flex-start;gap:13px}
+.note-mark{flex:0 0 auto;width:19px;height:19px;border-radius:7px;display:grid;place-items:center;border:1px solid rgba(134,206,227,.32);color:#8ddbe8;font:11px var(--mono)}
+.note-copy strong{display:block;color:#dedbed;font-size:12px;font-weight:600;margin:1px 0 5px}
+.note-copy p{margin:0;color:#9694aa;font-size:12px;line-height:1.6}
+.footer{border-top:1px solid rgba(211,207,255,.11);margin-top:37px;padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:#77768b;font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.footer-links{display:flex;gap:17px}.footer a{color:#a5a2b7;text-decoration:none;transition:color .2s}.footer a:hover{color:#c7baff}
+@media(max-width:780px){
+  .wrap{width:min(100% - 32px,580px);padding-top:19px}
+  .hero{padding:56px 0 27px}
+  .hero-orb{width:118px;right:2%;top:48px;opacity:.52}
+  h1{font-size:clamp(48px,12vw,76px);max-width:560px}
+  .layout{grid-template-columns:1fr;gap:13px}
+  .input-card{min-height:0}
+  .result-card{min-height:310px}
+  .output{font-size:clamp(27px,7vw,38px)}
+}
+@media(max-width:420px){
+  .wrap{width:calc(100% - 26px)}
+  .nav-note{font-size:8px;letter-spacing:.08em}
+  .nav-right{gap:8px}
+  .hero{padding-top:48px}
+  .hero p{font-size:14px;max-width:330px}
+  .input-card,.result-card{padding:19px 17px}
+  .result-bottom{align-items:flex-start;flex-direction:column}
+  .read-note{order:2}
+  .actions{order:1}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <div class="brand">COOKED<span class="period">.</span></div>
+    <div class="nav-right"><span class="nav-note"><i class="live-mark"></i>BROWSER DEMO · TRY IT HERE</span></div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow">SHORT COMMENTS. FOUR STYLES.</div>
+    <h1>Give it a setup.<br><span class="shine">Get a line.</span></h1>
+    <p>Paste a caption or a harmless situation. Pick a style and a spice level. COOKED writes one short comment; you decide whether it lands.</p>
+    <div class="hero-orb" aria-hidden="true"></div>
+  </header>
+
+  <main class="layout">
+    <section class="glass input-card" aria-labelledby="setup-heading">
+      <div class="card-head"><span class="card-title" id="setup-heading">THE SETUP</span><span class="card-index">01 / INPUT</span></div>
+      <label for="input">A caption, a moment, or something someone said</label>
+      <textarea id="input" maxlength="600" placeholder="He said “quick question” and sent a six-paragraph message…"></textarea>
+      <div class="examples" aria-label="Try an example">
+        <button class="example" type="button" data-example="He announced his fifth social media break this month.">Fifth social media break</button>
+        <button class="example" type="button" data-example="My friend made a 40-slide presentation about why he is always right.">40-slide presentation</button>
+        <button class="example" type="button" data-example="He volunteers to lead every group project, then blames the Wi-Fi at the deadline.">Group project expert</button>
+      </div>
+
+      <div class="controls">
+        <div><label for="style">STYLE</label>
+          <select id="style">
+            <option value="instagram">Instagram comments</option>
+            <option value="dry">Dry / deadpan</option>
+            <option value="desi">Desi humor</option>
+            <option value="absurd">Absurd</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:19px"><label for="intensity">SPICE LEVEL</label>
+        <div class="range-row"><input id="intensity" type="range" min="1" max="5" value="3"><b class="level" id="level">3 / 5</b></div>
+      </div>
+      <button id="go" class="go" type="button">WRITE A COMMENT <span aria-hidden="true">↗</span></button>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="glass result-card" aria-labelledby="result-heading">
+      <div class="result-top">
+        <span class="result-label" id="result-heading"><i class="result-dot"></i>YOUR COMMENT</span>
+        <span class="result-id">02 / OUTPUT</span>
+      </div>
+      <div class="output-wrap"><p id="output" class="output placeholder" aria-live="polite">Your comment will appear here.</p></div>
+      <div class="result-rule"></div>
+      <div class="result-bottom">
+        <span class="read-note">READ IT BEFORE POSTING.</span>
+        <div class="actions"><button class="utility" id="copy" type="button" disabled>Copy ↗</button><button class="utility" id="share" type="button" disabled>Share ↗</button></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="glass note">
+    <span class="note-mark" aria-hidden="true">i</span>
+    <div class="note-copy"><strong>A quick note</strong><p>This browser preview uses a single-pass model, so results can miss. Setups are sent to Cloudflare Workers AI for generation; COOKED does not save them to an app database. Do not enter names, contact details, or private conversations. Keep the joke about the situation, not someone's personal traits.</p></div>
+  </section>
+
+  <footer class="footer">
+    <span>COOKED · OPEN SOURCE</span>
+    <span class="footer-links"><a href="https://github.com/shaikhabdullahwaseem17-byte/COOKED">Code</a><a href="https://github.com/shaikhabdullahwaseem17-byte/COOKED/discussions">Discussions</a></span>
+  </footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+document.querySelectorAll("[data-example]").forEach(button=>button.addEventListener("click",()=>{
+  $("input").value=button.dataset.example;$("input").focus();$("status").textContent="Example loaded.";
+}));
+$("intensity").addEventListener("input",()=>{$("level").textContent=$("intensity").value+" / 5";});
+let last="";
+$("go").addEventListener("click",async()=>{
+  const text=$("input").value.trim();
+  if(text.length<3){$("status").textContent="Give it a little more context.";return;}
+  $("go").disabled=true;$("go").textContent="WRITING…";$("status").textContent="Writing…";
+  $("output").classList.remove("placeholder");$("output").textContent="…";
+  $("copy").disabled=true;$("share").disabled=true;last="";
+  try{
+    const res=await fetch("/api/roast",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,style:$("style").value,intensity:Number($("intensity").value)})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.detail||"Something went wrong.");
+    last=data.roast;$("output").textContent=last;$("copy").disabled=false;$("share").disabled=false;$("status").textContent="Done.";
+  }catch(e){
+    $("output").textContent="Your comment will appear here.";$("output").classList.add("placeholder");$("status").textContent=e.message;
+  }finally{$("go").disabled=false;$("go").innerHTML='WRITE A COMMENT <span aria-hidden="true">↗</span>';}
+});
+$("copy").addEventListener("click",async()=>{
+  if(!last)return;
+  try{await navigator.clipboard.writeText(last);$("copy").textContent="Copied ✓";setTimeout(()=>$("copy").textContent="Copy ↗",1300);}
+  catch(e){$("status").textContent="Clipboard access is unavailable. Select the comment to copy it.";}
+});
+$("share").addEventListener("click",async()=>{
+  if(!last)return;
+  try{if(navigator.share){await navigator.share({title:"COOKED comment",text:last});}
+    else{await navigator.clipboard.writeText(last);$("share").textContent="Copied ✓";setTimeout(()=>$("share").textContent="Share ↗",1300);}}
+  catch(e){if(e.name!=="AbortError")$("status").textContent="Sharing isn't available here. Try Copy.";}
+});
+</script>
+</body>
+</html>
