@@ -1,88 +1,154 @@
-# COOKED 🔥
-### Instagram-comment energy. No AI slop.
+# COOKED
 
-COOKED turns a caption, harmless situation, or fictional line into a short, specific English-language comeback. It aims for the rhythm of a great comment-section reply: natural, unexpected, and over before it gets embarrassing.
+A small English-only app for writing short, playful comments about captions and harmless situations.
 
-## Run locally
+Paste a setup, choose a style, set the spice level, and get one line you can copy or share. Sometimes it misses. Read the result before posting it.
 
-1. Install [Ollama](https://ollama.com).
-2. Pull the default model: `ollama pull qwen2.5:3b`.
-3. Install Python 3.10+ and dependencies:
+**COOKED is not hosted as a public website yet.** You download the project and run it on your own computer.
+
+[Download the source ZIP](https://github.com/shaikhabdullahwaseem17-byte/COOKED/archive/refs/heads/main.zip) · [Browse the code](https://github.com/shaikhabdullahwaseem17-byte/COOKED)
+
+## What you get
+
+- A simple browser interface with example situations, four writing styles, a 1–5 spice setting, and copy/share buttons.
+- **Instagram:** quick, conversational comment-style lines.
+- **Dry:** understated, deadpan replies.
+- **Desi:** English-language South Asian humour when the situation gives it something real to work with.
+- **Absurd:** one strange turn that grows out of a detail in the setup.
+- A small FastAPI backend.
+- Local model support through Ollama. An OpenAI-compatible provider can also be configured.
+
+The first version had broader language ambitions. We cut it back to English because natural phrasing and comic timing mattered more than pretending to handle languages we had not tested properly.
+
+## Run it on your computer
+
+You need Python 3.10 or later and [Ollama](https://ollama.com/download). The model runs separately from the app, so the first model download can take a while. Ollama's speed depends on your computer.
+
+### macOS or Linux
+
+Install Ollama first, then open a terminal:
 
 ```bash
 git clone https://github.com/shaikhabdullahwaseem17-byte/COOKED.git
 cd COOKED
-python -m venv .venv
-# Windows: .venv\\Scripts\\activate
-# macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+cp .env.example .env
+python -m pip install -r requirements.txt
+
+ollama pull qwen2.5:3b
 uvicorn app.main:app --reload
 ```
 
-4. Open http://127.0.0.1:8000. Keep Ollama running.
+### Windows PowerShell
 
-COOKED uses an existing instruction model through Ollama. It is **not** a foundation model trained from scratch. Hosted inference is also supported through an OpenAI-compatible endpoint; see `.env.example`.
+Install Ollama and Git, then run:
 
-## What it does
+```powershell
+git clone https://github.com/shaikhabdullahwaseem17-byte/COOKED.git
+cd COOKED
 
-- Supports English output across four distinct humor styles: Instagram, dry, Desi and absurd.
-- Desi is a cultural humor style written in natural English, not a separate language mode.
-- Retrieves at most one locally curated, original English example when the situation has meaningful overlap with it.
-- Generates three distinct comedic approaches concurrently, then asks a separate editor pass to rewrite the drafts into one stronger comment. The editor's output must pass safety, numeric-fact, length, and context-grounding checks; it is not trusted just because the model wrote it.
-- Uses a lightweight heuristic as a fallback if the editor fails or returns an invalid choice.
-- Penalizes common AI-style preambles, stale templates, overlong outputs and list-like answers; rewards some context anchoring without rewarding simple copying.
-- Filters generated comments for exposed contact details, targeted harassment, direct threats, sexual/suggestive material, and medical-condition punchlines. These narrow checks are a guardrail, not comprehensive moderation.
-- Requires final comments to remain anchored to details in the original situation and preserve explicit numeric facts. If no safe, fact-consistent, context-grounded line can be produced, the request returns an error rather than inventing a scene.
-- Includes one-tap demo prompts and native sharing in the web interface.
-- Runs locally by default; no hosted API key is required.
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
 
-The heuristic ranker is a fallback, not a humor detector. The editor is still an LLM and can make subjective or incorrect choices; neither stage can guarantee that a joke is funny. Output quality depends heavily on the selected model. The lightweight default (`qwen2.5:3b`) has failed the project's initial quality audit and should be treated as a compatibility/demo setting, not as evidence of release-quality humor.
+Copy-Item .env.example .env
+python -m pip install -r requirements.txt
 
-## API
-
-POST `/api/roast`
-
-Example JSON:
-
-```json
-{"text":"He said he is the CEO of replying late.","style":"instagram","intensity":3}
+ollama pull qwen2.5:3b
+uvicorn app.main:app --reload
 ```
 
-Styles: `instagram`, `dry`, `desi`, `absurd`. The API has no language selector and prompts for English. Output validation rejects non-Latin scripts, but it is a script check—not a language detector—so non-English text written in Latin letters can still pass. Interactive API docs: http://127.0.0.1:8000/docs.
+You can also use GitHub's **Code → Download ZIP** instead of `git clone`. Extract the ZIP, open a terminal in the extracted `COOKED` folder, and continue from the virtual-environment step.
 
-## Humor principles
+Keep Ollama running. Open **http://127.0.0.1:8000** in your browser. The API documentation is at **http://127.0.0.1:8000/docs**.
 
-1. Specificity beats generic aggression.
-2. One punchline, usually 5–16 words.
-3. No preamble, explanation, hashtags, emoji spam or forced slang.
-4. Avoid tired meme templates and fake internet dialect.
-5. Desi humor should feel culturally grounded without forced slang or fake accents.
-6. Keep it playful and do not target protected traits, private information or personal vulnerabilities.
+There is no account or signup flow. The app runs on your machine; it does not give you a public link for other people to use. A public demo would need to be deployed separately with a model provider behind it.
 
-## Human evaluation
+### Model notes
 
-Run the same fixed cases with the same model version and settings when comparing prompt revisions. The benchmark creates `human-review.csv` with blank rating fields and no model/provider label. Give reviewers that CSV without the metadata-rich JSON/Markdown report, collect independent ratings from at least two people, and follow [`HUMAN_REVIEW.md`](HUMAN_REVIEW.md). Keep individual ratings and safety checks; do not turn the heuristic score into a claim about humor or virality.
+The default is `qwen2.5:3b`, mainly because it is a relatively light starting point. It has **not** met the humour target. In the first eight-case check it returned six comments, and the editorial review found several weak or poorly matched lines. See the [Qwen 2.5 3B audit](benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md).
 
-## Data provenance
+`gemma4:12b` is being tested as a higher-capacity alternative. It is not certified as the best model for COOKED, and its results should be judged from the actual comments—not its size or name. To try it, pull it with `ollama pull gemma4:12b` and change `COOKED_MODEL=gemma4:12b` in your `.env` file.
 
-The examples in `data/style_examples.jsonl` are original illustrations written for this repository. They are not scraped Instagram comments. Only contribute material you have permission to redistribute, and document its source and license.
+A hosted OpenAI-compatible endpoint is optional. Set `COOKED_PROVIDER=openai_compatible` and fill in the endpoint, model, and key in `.env`. Any provider charges and data-handling terms belong to that provider. You do not need an API key to use the local Ollama setup.
 
-## Development
+## How a request moves through COOKED
+
+```mermaid
+flowchart TD
+    A[Paste a caption or situation] --> B[Choose style and spice]
+    B --> C[Check the input]
+    C --> D[Build the writing prompt]
+    D --> E[Generate a few drafts]
+    E --> F[Editor rewrites the strongest angle]
+    F --> G[Check safety, facts and context]
+    G --> H[Return one comment]
+```
+
+The editor is another model call, not a human. The checks catch some common problems, but they cannot prove that a line is funny or guarantee that every unsafe or irrelevant line will be caught.
+
+## Use the API
+
+Send a POST request to `/api/roast`:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/roast \
+  -H "Content-Type: application/json" \
+  -d '{"text":"He said quick question and sent a six-paragraph message.","style":"instagram","intensity":3}'
+```
+
+The request accepts:
+- `text`: English setup, from 3 to 600 characters.
+- `style`: `instagram`, `dry`, `desi`, or `absurd`.
+- `intensity`: an integer from 1 to 5.
+
+The response contains a `roast` string and the selected `style`.
+
+## What we learned while making it
+
+The first live run was a useful reality check. Qwen 2.5 3B returned 6 of 8 test cases. Some lines were generic, some wandered away from the situation, and one used wording that did not belong in an all-ages app. We kept the audit in the repository rather than presenting the run as a success.
+
+That review led to several changes: separate writing angles, an editor that can rewrite rather than only pick a draft, checks for changed numbers and unrelated details, and broader output-safety tests. The test suite also caught regressions while those changes were being made.
+
+As of **16 November 2026**, the latest verified GitHub Actions test run reported **98 passing tests**. That means the tested code paths passed; it is not a 4/5 humour rating. The live benchmark and independent human ratings are separate measures. The [human-review guide](HUMAN_REVIEW.md) explains how to rate humour, context fit, naturalness, originality, and safety without seeing which model wrote each line.
+
+## If COOKED gets it wrong
+
+Tell us. If a line misses the context, sounds painfully robotic, or goes too far, open a [Discussion](https://github.com/shaikhabdullahwaseem17-byte/COOKED/discussions) and show the setup and output. Remove names and private details first.
+
+You can also roast the repository back. We can take it.
+
+Use [Issues](https://github.com/shaikhabdullahwaseem17-byte/COOKED/issues) for reproducible bugs. Use Discussions for opinions, bad jokes, ideas, and general conversation.
+
+## Copy it, change it, sell your version
+
+The repository is released under the **MIT License**. You may use it privately or commercially, copy it, modify it, publish it, distribute it, and sell your own version. Keep the copyright notice and include the MIT licence text with copies or substantial portions of the software.
+
+To make your own version, fork the repository or download the ZIP, change the prompts in `app/prompts.py`, adjust the examples in `data/style_examples.jsonl`, and change the page in `app/static/index.html`. Run the tests with:
 
 ```bash
 pip install -r requirements-dev.txt
 pytest -q
-PYTHONPATH=. python scripts/humor_benchmark.py
 ```
 
-## Live benchmark
+The MIT licence for this repository does not replace the separate licences and terms for Ollama models, hosted model providers, Python packages, or other third-party software. Check those before redistributing a bundled model or service.
 
-The GitHub Actions live benchmark runs the fixed, English-only cases against the configured local model and saves a JSON report plus a readable Markdown report as workflow artifacts. The JSON and Markdown reports record all candidate outputs and per-call latency. The workflow also creates a model-blind `human-review.csv` worksheet for independent ratings.
+## Who did what
 
-Benchmark situations are kept separate from the curated style examples, with an automated overlap check in the test suite.
+The idea and product direction are the creator's: making a playful roasting tool, choosing the English-only scope, deciding how the four styles should sound, setting the quality and safety boundaries, and choosing to release the project openly.
 
-Gemma 4 12B is the current live quality challenger. It is not the runtime default unless its actual outputs meet the project's quality bar. Qwen 3.5 9B was previously tested but was too slow and inconsistent for the current workflow. The initial Qwen 2.5 3B benchmark produced only 6 of 8 outputs; the six returned lines were mostly weak, off-context, or unsuitable. See `benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md`.
+AI assisted with the implementation. It generated most of the application code, prompt code, tests, and GitHub Actions workflow files, and helped diagnose test and benchmark failures. GitHub Actions ran the automated checks and reported their results. The creator directed the work, made the product decisions, reviewed the changes, and remains responsible for the project.
 
-The heuristic score is a debugging signal only; it is not a measure of how funny an output is. Follow `HUMAN_REVIEW.md` to score humor, context fit, naturalness, originality and safety. Eight cases are a small diagnostic set and do not establish that comments will perform well on Instagram.
+COOKED uses existing instruction models. It is not a new foundation model trained by this repository. The examples in `data/style_examples.jsonl` are illustrative examples prepared for the project; they are not scraped Instagram comments.
 
-Code is MIT-licensed. The underlying model and third-party datasets retain their own licenses and terms; see MODEL_CARD.md.
+## Project files
+
+- [Model notes](MODEL_CARD.md)
+- [Human-review guide](HUMAN_REVIEW.md)
+- [Benchmark audits](benchmark-audits/)
+- [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security](SECURITY.md)
+- [MIT License](LICENSE)
