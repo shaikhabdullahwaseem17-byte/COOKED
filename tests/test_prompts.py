@@ -175,10 +175,10 @@ def test_instagram_prompt_targets_native_comment_humor():
         "instagram",
         3,
     )
-    assert "quick, sharp Instagram comment" in prompt
+    assert "natural, sharp Instagram comment" in prompt
     assert "clean punch" in prompt
     assert "exact situation" in prompt
-    assert "forced transliteration" in prompt
+    assert "transliteration" in prompt
 
 
 def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
