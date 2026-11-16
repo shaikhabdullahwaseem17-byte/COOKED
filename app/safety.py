@@ -49,3 +49,16 @@ def validate_input(text: str) -> None:
             "COOKED targets situations and choices, not identity, appearance, "
             "health conditions, trauma, or personal vulnerabilities."
         )
+
+
+
+def is_safe_output(text: str) -> bool:
+    """Apply the same privacy and targeted-abuse checks to generated comments.
+
+    This is a narrow deterministic guard, not a complete moderation system.
+    """
+    try:
+        validate_input(text)
+    except ValueError:
+        return False
+    return True
