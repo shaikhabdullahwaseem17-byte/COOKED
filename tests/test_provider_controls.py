@@ -41,10 +41,10 @@ def test_qwen35_candidate_uses_direct_short_output(monkeypatch):
     assert result == "A concise comeback."
     assert payloads[0]["think"] is False
     assert payloads[0]["options"]["num_predict"] == 32
-    assert timeouts == [90]
+    assert timeouts == [180]
 
 
-def test_qwen35_editor_gets_tiny_output_budget(monkeypatch):
+def test_qwen35_editor_gets_rewrite_output_budget(monkeypatch):
     payloads = []
 
     class _FakeClient:
@@ -71,7 +71,7 @@ def test_qwen35_editor_gets_tiny_output_budget(monkeypatch):
     ))
 
     assert payloads[0]["think"] is False
-    assert payloads[0]["options"]["num_predict"] == 6
+    assert payloads[0]["options"]["num_predict"] == 48
 
 
 def test_other_ollama_models_keep_existing_generation_controls(monkeypatch):
@@ -157,7 +157,7 @@ def test_gemma4_uses_fast_thinking_mode_and_bounded_output(monkeypatch):
     assert result == "One concise comment."
     assert payloads[0]["think"] is False
     assert payloads[0]["options"]["num_predict"] == 32
-    assert timeouts == [90]
+    assert timeouts == [180]
 
 
 def test_fact_consistency_rejects_changed_explicit_numbers():
@@ -212,13 +212,13 @@ def test_candidate_filter_rejects_generic_praise_and_metaphor_words():
         assert not providers._is_usable_candidate(candidate)
 
 
-def test_single_valid_candidate_skips_the_editor_call(monkeypatch):
+def test_single_valid_candidate_still_gets_a_comedy_rewrite(monkeypatch):
     calls = []
 
     async def fake_complete(prompt, temperature):
         calls.append(prompt)
         if "You are COOKED's comedy editor" in prompt:
-            raise AssertionError("Editor should be skipped for one candidate")
+            return "The calendar has rescheduled itself again."
         if temperature == 0.88:
             return "The calendar filed a complaint."
         return "That's commitment."
@@ -228,8 +228,8 @@ def test_single_valid_candidate_skips_the_editor_call(monkeypatch):
         "Write one short comment.", "He changed the meeting time again.", "instagram"
     ))
 
-    assert result == "The calendar filed a complaint."
-    assert len(calls) == 3
+    assert result == "The calendar has rescheduled itself again."
+    assert len(calls) == 4
 
 
 

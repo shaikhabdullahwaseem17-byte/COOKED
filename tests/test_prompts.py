@@ -286,7 +286,7 @@ def test_prompt_avoids_quote_markers_in_output():
 def test_prompt_includes_style_voice_sample_without_importing_facts():
     prompt = build_prompt("The fridge is making a strange noise.", "dry", 3)
     assert "VOICE SAMPLE" in prompt
-    assert "The follow-up has already requested another follow-up." in prompt
+    assert "The reduction has been moved to the next meeting." in prompt
     assert "never reuse its wording, premise, or details" in prompt
 
 
@@ -315,3 +315,28 @@ def test_prompt_uses_at_most_one_retrieved_example():
     prompt = build_prompt("He sent a quick question and wrote a six-paragraph message.", "instagram", 3)
     assert prompt.count("STYLE REFERENCE") == 1
     assert prompt.count("Comment:") <= 1
+
+
+
+def test_prompt_requires_a_real_comic_reinterpretation():
+    prompt = build_prompt(
+        "He said he was taking a phone break and replied to every comment.",
+        "instagram",
+        3,
+    )
+    assert "Change the reader's interpretation" in prompt
+    assert "not just rephrase the input" in prompt
+    assert "twenty unrelated posts" in prompt
+    assert "final few words carry the payoff" in prompt
+    assert "Do not invent a backstory" in prompt
+
+
+def test_prompt_defines_style_specific_humor_without_stereotypes():
+    prompt = build_prompt(
+        "The family group chat has 86 unread Good morning messages.",
+        "desi",
+        3,
+    )
+    assert "English-language South Asian social humor" in prompt
+    assert "No generic auntie/uncle/WhatsApp joke" in prompt
+    assert "no fake accent" in prompt.lower()
