@@ -5,6 +5,7 @@ import httpx
 
 from app import config
 from app.prompts import ANGLES
+from app.safety import is_safe_output
 
 
 class ProviderError(RuntimeError):
