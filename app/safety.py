@@ -25,6 +25,24 @@ TARGETED_ABUSE_PATTERNS = (
     ),
 )
 
+UNSAFE_OUTPUT_PATTERNS = (
+    # Do not let a joke turn into encouragement of self-harm or a direct threat.
+    re.compile(
+        r"\b(?:self[- ]?harm|suicid\w*|kill yourself|hurt yourself|end your life)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\b(?:i['’]?ll|i will|we['’]?ll|we will|you should|go)\s+"
+        r"(?:kill|hurt|attack|shoot|stab|beat)\b",
+        re.IGNORECASE,
+    ),
+    # Keep explicit sexual material out of this all-ages comment generator.
+    re.compile(
+        r"\b(?:porn(?:ography)?|nudes?|orgasm|explicit sexual|sexual intercourse|hook[- ]?up)\b",
+        re.IGNORECASE,
+    ),
+)
+
 BLOCKED_REQUESTS = (
     "write a racist roast",
     "humiliate this person",
@@ -61,4 +79,4 @@ def is_safe_output(text: str) -> bool:
         validate_input(text)
     except ValueError:
         return False
-    return True
+    return not any(pattern.search(text) for pattern in UNSAFE_OUTPUT_PATTERNS)
