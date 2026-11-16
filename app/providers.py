@@ -39,6 +39,13 @@ GENERIC_PUNCH_PATTERNS = (
     r"\bauto[- ]?pilot\b",
     r"\bVIP spot\b",
     r"\bwhole new level of\b",
+    r"\b(?:candidate|option|draft)\b",
+    r"\b(?:definitely|clearly|obviously) wrong\b",
+    r"\b(?:though|either)\s*[.!?]?$",
+    r"\bbecause (?:i|we|he|she|they)\b",
+    r"\bif you count every\b",
+    r"\bno context needed\b",
+    r"\bhr is officially reviewing\b",
 )
 
 STYLE_EDITOR_GUIDANCE = {
