@@ -77,7 +77,7 @@ QUALITY BAR
 - It must depend on a detail from THIS exact situation. If the same line could sit under twenty unrelated posts, discard it.
 - The comment must add a funny interpretation, not just rephrase the input with a synonym. It must land in one clean turn and depend on this exact situation.
 - Reject a generic judgment that merely says the person is wrong, late, dramatic, or excessive.
-- Prefer an unexpected but logical payoff over a metaphor. A metaphor is allowed only when the link is immediate and specific.
+- Prefer an unexpected but logical payoff over a metaphor. A metaphor is allowed only when the link is immediate and specific. No random analogy.
 - Do not narrate mechanically with phrases such as "he is definitely wrong", "she clearly", or "that means".
 - Avoid filler endings such as "though", "either", "and that's it", or "because".
 - Avoid generic AI joke scaffolds: HR reviews, performance improvement plans, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and "that's commitment" unless that exact idea is unusually apt.
