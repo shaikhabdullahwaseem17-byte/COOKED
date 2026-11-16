@@ -80,10 +80,12 @@ async def run_case(case: dict[str, str]) -> dict[str, Any]:
         match = re.fullmatch(r"\s*([1-9]\d*)\s*", editor_output)
         if match:
             editor_choice = int(match.group(1))
-    if len(candidates) == 1 and answer == candidates[0]:
-        selection_method = "single_candidate"
+    if editor_output and answer == editor_output:
+        selection_method = "editor_rewrite"
     elif selected is not None and editor_choice == selected:
         selection_method = "editor"
+    elif len(candidates) == 1 and answer == candidates[0]:
+        selection_method = "single_candidate"
     else:
         selection_method = "heuristic_fallback"
     return {
