@@ -118,7 +118,7 @@ def render_markdown(report: dict[str, Any]) -> str:
             f"## {row['id']} — English / {row['style']}", "",
             f"**Input:** {row['text']}", "",
             f"**COOKED output:** {row['answer'] or '[FAILED]'}", "",
-            f"**Candidate selection:** {row['selected_candidate_index'] or 'fallback / unavailable'} ({row['selection_method']})", "",
+            f"**Candidate selection:** {row['selected_candidate_index'] or ('rewritten by editor' if row['selection_method'] == 'editor_rewrite' else 'fallback / unavailable')} ({row['selection_method']})", "",
         ]
         lines += [f"- Candidate {i}: {candidate}" for i, candidate in enumerate(row["candidate_outputs"], 1)]
         if row["editor_output"]:
