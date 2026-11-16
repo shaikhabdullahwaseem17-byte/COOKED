@@ -28,7 +28,7 @@ COOKED uses an existing instruction model through Ollama. It is **not** a founda
 - Supports English output across four distinct humor styles: Instagram, dry, Desi and absurd.
 - Desi is a cultural humor style written in natural English, not a separate language mode.
 - Retrieves at most one locally curated, original English example when the situation has meaningful overlap with it.
-- Generates three distinct comedic approaches concurrently, then asks a separate editor pass to choose only among those candidates.
+- Generates three distinct comedic approaches concurrently, then asks a separate editor pass to rewrite the drafts into one stronger comment. The editor's output must pass safety, numeric-fact, length, and context-grounding checks; it is not trusted just because the model wrote it.
 - Uses a lightweight heuristic as a fallback if the editor fails or returns an invalid choice.
 - Penalizes common AI-style preambles, stale templates, overlong outputs and list-like answers; rewards some context anchoring without rewarding simple copying.
 - Filters generated comments for exposed contact details, targeted harassment, direct threats, explicit sexual material, and specified medical-condition or sexualized-clothing punchlines. These narrow checks are a guardrail, not comprehensive moderation.
