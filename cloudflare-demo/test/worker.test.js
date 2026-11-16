@@ -47,6 +47,15 @@ test("accepts a context-grounded, safe comment", () => {
   );
 });
 
+test("accepts relevant comments for short, broad setups", () => {
+  assert.equal(validateOutput("Fridge gets him.", "He eats alot."), true);
+  assert.equal(validateOutput("The silence has started charging him rent.", "He talks alot."), true);
+});
+
+test("still rejects unrelated comments for short setups", () => {
+  assert.equal(validateOutput("The airport has updated its opening hours.", "He eats alot."), false);
+});
+
 test("rejects an unrelated, unsafe or overlong comment", () => {
   assert.equal(validateOutput("The airport has entered the chat today.", valid.text), false);
   assert.equal(validateOutput("The refresh button gave everyone insomnia.", valid.text), false);
