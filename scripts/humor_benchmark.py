@@ -2,9 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import asyncio
 import csv
 import hashlib
-import asyncio
 import json
 import re
 import time
