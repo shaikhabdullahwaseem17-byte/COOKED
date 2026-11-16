@@ -135,7 +135,51 @@ pytest -q
 
 The MIT licence for this repository does not replace the separate licences and terms for Ollama models, hosted model providers, Python packages, or other third-party software. Check those before redistributing a bundled model or service.
 
-## The design was built through real decisions and revisions
+## How I built COOKED, from the beginning
+
+I want the history of this project to be clear. COOKED did not appear as a finished app in one prompt. I made decisions, tested things, rejected parts that were not good enough, and corrected the direction when the work did not match what I had asked for. This section records the main steps and the mistakes I had to catch along the way.
+
+### Starting the project
+
+I created the GitHub repository called COOKED and decided to build the project there. I was doing the work entirely from my phone, using GitHub Codespaces. I did not have a normal computer setup or a local terminal to rely on, so I had to work through the Codespaces interface and follow the steps there.
+
+At the beginning, I needed practical instructions. I opened a Codespace, checked the Python environment, ran the commands, and worked through the test output. I asked what the results meant and which files mattered when the test runner showed failures. I kept going through the checks instead of treating a successful-looking screen as proof that the app was finished.
+
+I wanted the work done properly, but I also said I did not want the project dragged out for days. I asked for speed without quietly lowering the quality standard. I did not want to keep hearing that something was "strong" while obvious problems were left for later.
+
+### The first model and the quality problem
+
+The first live local benchmark used Ollama with Qwen 2.5 3B and eight test situations. It returned eight outputs, but that did not mean it was producing good comedy. The lines were often generic or awkward, and the attempts at Urdu, Hindi, and Roman Urdu were not reliable. The benchmark itself also made clear that its heuristic score was only a debugging signal, not a real humour score.
+
+I wanted the actual comments judged, not a nice-looking test count. I pushed for better output quality, stronger context fit, more natural wording, and originality. I also challenged the choice to keep relying on a weaker model when the goal was to get the best result we could. I told the assistant to use a better model directly for the work rather than repeatedly treating the weak default as if it were good enough. The project history should be honest about that: the initial model choice was a practical starting point, not a quality decision I approved as the final standard.
+
+Different local models were then tried and compared, including larger Qwen and Gemma options. The results were mixed. A bigger model was not automatically a funnier model, and a successful generation was not automatically a usable comment. Some runs were slow, some were inconsistent, and some produced lines that still missed the situation. I did not accept model size, output count, or a passing test suite as a substitute for reading the actual results.
+
+The default local model remains a lightweight starting option, not a claim that COOKED has already reached its humour target. The audit is kept in the repository so people can see the shortcomings instead of being asked to trust a promotional claim.
+
+### Cutting the language scope back
+
+The assistant initially expanded the project to include multiple languages, including Urdu, Hindi, and Roman Urdu. That was not a direction I wanted to keep just for the sake of having more language options. I questioned whether those languages were genuinely good enough, whether they were adding value, and whether they were making the product worse.
+
+I decided to remove that multilingual scope and make the first version English-only. I wanted one language handled naturally rather than several languages handled badly. I kept the Desi style, but it would be written in English and use South Asian humour when the situation actually supported it. That distinction matters: Desi is a humour style, not a promise that the app can generate Urdu, Hindi, or Roman Urdu.
+
+The four styles I kept were Instagram, Dry, Desi, and Absurd. I wanted them to feel meaningfully different, not just be four labels for the same generic line.
+
+### Making the humour more relevant
+
+I kept pushing the work away from generic insults and towards comments that actually connect to the situation. A line should use something specific from the caption or scenario. It should sound like a person wrote it, have a clear comic angle, and land without explaining its own joke.
+
+The project gained separate writing angles, draft generation, an editor pass, and checks for context, changed numbers, output shape, and safety. Those changes were developed and tested in stages. I also challenged cases where the assistant treated a technical improvement as proof that the humour itself had improved. It is not proof. Automated tests can check behaviour and catch regressions, but people still need to judge whether the comments are funny, natural, original, and relevant.
+
+I wanted the safety boundaries to be part of the product too. COOKED is meant for playful comments, not for targeting someone's appearance, identity, health, vulnerabilities, or private information.
+
+### Building a public version
+
+The local project used Ollama and did not require me to provide an API key. I also wanted people to be able to try COOKED in a browser. That led to a separate Cloudflare Workers AI demo. It uses a hosted model and its own request limits, so it is not identical to the local app's multi-draft and editor workflow. I tested the deployed endpoint and tried actual prompts in the browser. The public demo is linked near the top of this README.
+
+The public browser version and the local Python app are separate parts of the project. Changes to the browser interface were kept separate from the Worker generation endpoint so the redesign would not needlessly disturb the working request flow.
+
+### The design was built through real decisions and revisions
 
 I did not want COOKED to look like a ready-made AI landing page. I wanted a focused tool that felt considered, simple to use, and recognisably its own thing. The final design came from trying things, looking at them, rejecting what did not feel right, and asking for specific changes until the page matched what I had in mind.
 
@@ -156,7 +200,15 @@ The design took more than one pass. Some early versions were too plain. Some cha
 
 I asked to see a preview before changing the public app. Once I was happy with the direction, I asked for it to be implemented without damaging the working project. The final browser redesign was made in a separate branch, checked, and merged through a pull request. The change was limited to the browser page. The Worker and its generation endpoint were left alone. The automated browser-demo tests and Python test suite both passed for that change.
 
-That is how I wanted this project to be made: with a clear idea, a lot of small decisions, honest review, and no pretending that the first output is automatically good enough. The AI helped write and revise the code, but it did not decide what I wanted COOKED to look like. I did.
+### Mistakes and corrections that are part of the record
+
+There were times when the assistant's work did not follow my direction closely enough. It added language support I had not decided to keep. It spent time working around a weaker model when I had asked for a better one to be used directly. Some early design attempts were too plain, and later attempts still failed to make the glass look properly transparent. I had to point out those problems and restate what I wanted.
+
+I also had to keep correcting the difference between a test passing and a product being good. A benchmark returning outputs does not mean the jokes work. A higher test count does not mean the humour is better. A page being generated does not mean it matches the design. I asked for the actual output and actual interface to be reviewed, and for claims to stay within what had really been checked.
+
+I am including these points because they are part of how the project was made. I do not want the README to pretend that every first attempt was right or that the assistant independently made all the decisions. I gave the direction, tested the work, caught mistakes, removed things I did not want, and decided what stayed.
+
+That is how I wanted this project to be made: with a clear idea, real testing, corrections, and no pretending that the first output is automatically good enough. The AI helped write and revise the code, but it did not decide what COOKED should be. I did.
 
 ## Who did what
 
