@@ -232,7 +232,7 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
         "He replied 'interesting' and immediately changed the subject.",
         style="instagram",
     ))
-    assert result == "That 'interesting' was a polite exit with the door already closed."
+    assert result == "That 'interesting' reply changed the subject."
     assert "EXACT FIT" in seen[0]
     assert "invented backstory" in seen[0]
     assert "feels effortless and specific" in seen[0]
