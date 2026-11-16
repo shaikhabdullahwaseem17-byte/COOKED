@@ -100,6 +100,21 @@ NUMBER_WORDS = {
     "eighty": 80, "ninety": 90, "hundred": 100,
 }
 
+# Words that make a spelled-out number an explicit quantity. "One sunrise"
+# is an idiom/callback rather than a changed count, so a lone "one" should
+# not invalidate an otherwise fact-consistent comment.
+COUNTABLE_UNITS = {
+    "second", "seconds", "minute", "minutes", "hour", "hours", "day", "days",
+    "week", "weeks", "month", "months", "year", "years", "reply", "replies",
+    "message", "messages", "comment", "comments", "post", "posts", "photo",
+    "photos", "slide", "slides", "paragraph", "paragraphs", "episode",
+    "episodes", "meeting", "meetings", "page", "pages", "person", "people",
+    "item", "items", "notification", "notifications", "greeting", "greetings",
+    "call", "calls", "voice", "note", "notes", "email", "emails", "text",
+    "texts", "step", "steps", "try", "tries", "time", "times", "drink",
+    "drinks", "plate", "plates", "seat", "seats",
+}
+
 
 def _number_mentions(text: str) -> set[int]:
     """Extract simple numeric facts so candidate wording cannot alter stated counts."""
@@ -124,6 +139,9 @@ def _number_mentions(text: str) -> set[int]:
                     value += unit
                     index += 1
             values.add(value)
+        elif token == "one":
+            if index + 1 < len(tokens) and tokens[index + 1] in COUNTABLE_UNITS:
+                values.add(1)
         else:
             values.add(NUMBER_WORDS[token])
         index += 1
@@ -326,6 +344,9 @@ Your task:
 - Make the last few words do the work. Use conversational English that sounds typed, not performed.
 - If the drafts contain a useful idea, sharpen it. Do not preserve bad wording just because it is in a draft.
 - Reject invented backstory. Do not add facts, relationships, places, motives, counts, or events that the situation does not supply.
+- Do not import a second scene (for example, an unrelated wedding, celebrity, app, destination, or made-up consequence) just to force a punchline.
+- Reject familiar comparison templates such as hide-and-seek analogies when the comparison is not specifically earned by the situation.
+- No sexual innuendo, suggestive clothing references, or body-based jokes.
 - Do not explain the joke, narrate what happened, or tell the reader that someone is wrong.
 - Avoid generic AI scaffolds such as HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and vague "that's commitment" endings.
 - Keep it to one comment of 5–16 words, with no preamble, quotation marks, labels, or explanation.
