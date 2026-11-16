@@ -5,7 +5,7 @@
 {"input":"He wrote 'I don't care' and checked the post insights every minute.","output":"The analytics heard a different story.","style":"instagram","language":"en","source":"original_example"}
 {"input":"He announced he'd left the group chat, then kept replying from notifications.","output":"The exit has a reply feature.","style":"instagram","language":"en","source":"original_example"}
 {"input":"She called the photo candid after arranging three lamps and asking for five retakes.","output":"Candid, with a production team.","style":"instagram","language":"en","source":"original_example"}
-{"input":"She posted 'no context' and then spent 40 replies explaining the context.","output":"No context, now available in 40 installments.","style":"instagram","language":"en","source":"original_example"}
+{"input":"She wrote 'no context' and then replied to 40 comments with the missing context.","output":"No context, now available in 40 installments.","style":"instagram","language":"en","source":"original_example"}
 {"input":"He posted a 12-minute apology video for being four minutes late.","output":"The apology had a longer runtime than the delay.","style":"instagram","language":"en","source":"original_example"}
 {"input":"He called the caption effortless after rewriting it nineteen times.","output":"The caption has outlived the original thought.","style":"instagram","language":"en","source":"original_example"}
 {"input":"The team scheduled a follow-up to plan how to reduce follow-ups.","output":"The follow-up has already requested another follow-up.","style":"dry","language":"en","source":"original_example"}
