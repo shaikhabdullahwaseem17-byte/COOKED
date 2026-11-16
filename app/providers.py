@@ -100,21 +100,6 @@ NUMBER_WORDS = {
     "eighty": 80, "ninety": 90, "hundred": 100,
 }
 
-# Words that make a spelled-out number an explicit quantity. "One sunrise"
-# is an idiom/callback rather than a changed count, so a lone "one" should
-# not invalidate an otherwise fact-consistent comment.
-COUNTABLE_UNITS = {
-    "second", "seconds", "minute", "minutes", "hour", "hours", "day", "days",
-    "week", "weeks", "month", "months", "year", "years", "reply", "replies",
-    "message", "messages", "comment", "comments", "post", "posts", "photo",
-    "photos", "slide", "slides", "paragraph", "paragraphs", "episode",
-    "episodes", "meeting", "meetings", "page", "pages", "person", "people",
-    "item", "items", "notification", "notifications", "greeting", "greetings",
-    "call", "calls", "voice", "note", "notes", "email", "emails", "text",
-    "texts", "step", "steps", "try", "tries", "time", "times", "drink",
-    "drinks", "plate", "plates", "seat", "seats",
-}
-
 
 def _number_mentions(text: str) -> set[int]:
     """Extract simple numeric facts so candidate wording cannot alter stated counts."""
@@ -139,9 +124,6 @@ def _number_mentions(text: str) -> set[int]:
                     value += unit
                     index += 1
             values.add(value)
-        elif token == "one":
-            if index + 1 < len(tokens) and tokens[index + 1] in COUNTABLE_UNITS:
-                values.add(1)
         else:
             values.add(NUMBER_WORDS[token])
         index += 1
@@ -154,6 +136,72 @@ def _is_fact_consistent_candidate(candidate: str, context: str) -> bool:
     if not stated_numbers:
         return True
     return _number_mentions(candidate).issubset(stated_numbers)
+
+
+CONTEXT_ALIASES = {
+    "voice": {"voice", "audio", "recording", "spoken", "talk", "note"},
+    "note": {"note", "voice", "audio", "recording", "message", "thought"},
+    "quick": {"quick", "brief", "short", "fast", "tiny"},
+    "thought": {"thought", "idea", "opinion", "message", "note"},
+    "minute": {"minute", "minutes", "time", "duration", "runtime", "long", "late"},
+    "drive": {"drive", "driving", "road", "route", "car", "trip", "commute", "journey"},
+    "next": {"next", "door", "nearby", "close", "distance"},
+    "door": {"door", "next", "nearby", "close", "distance"},
+    "phone": {"phone", "mobile", "screen", "refresh", "button", "scroll", "notifications", "unplug", "offline"},
+    "break": {"break", "pause", "disconnect", "unplug", "offline", "away"},
+    "replied": {"replied", "reply", "responded", "response", "comment", "comments", "notification", "notifications"},
+    "reply": {"reply", "replied", "responded", "response", "comment", "comments"},
+    "replies": {"replies", "reply", "comments", "responses", "explanations"},
+    "comments": {"comments", "comment", "replies", "responses", "notifications"},
+    "explaining": {"explaining", "explained", "explanation", "details", "context", "clarification"},
+    "context": {"context", "explanation", "details", "clarification", "background"},
+    "tiny": {"tiny", "small", "little", "short", "brief", "mini"},
+    "update": {"update", "thread", "message", "messages", "post", "posts", "status"},
+    "thread": {"thread", "messages", "replies", "posts", "update"},
+    "meeting": {"meeting", "meetings", "agenda", "calendar", "session", "schedule", "scheduled", "rescheduled", "call"},
+    "cutting": {"cutting", "reduce", "reduction", "fewer", "less"},
+    "time": {"time", "calendar", "schedule", "scheduled", "rescheduled", "duration", "deadline"},
+    "extended": {"extended", "extension", "duration", "minutes", "longer"},
+    "family": {"family", "relatives", "cousins", "uncles", "aunties"},
+    "group": {"group", "chat", "conversation", "messages", "thread"},
+    "chat": {"chat", "group", "messages", "conversation", "thread"},
+    "unread": {"unread", "notifications", "messages", "pings"},
+    "morning": {"morning", "sunrise", "day", "greeting"},
+    "greeting": {"greeting", "morning", "sunrise", "day"},
+    "plants": {"plants", "plant", "houseplants", "fern", "leaves", "leaf"},
+    "plant": {"plant", "plants", "houseplant", "fern", "leaves", "leaf", "pot"},
+    "houseplants": {"houseplants", "houseplant", "plants", "plant", "fern", "window", "seat", "chair"},
+    "seating": {"seating", "seat", "chair", "spot", "window", "chart"},
+    "chart": {"chart", "seating", "seat", "chair", "arrangement", "colour", "color"},
+    "presentation": {"presentation", "slides", "slide", "deck", "evidence", "facts"},
+    "slides": {"slides", "slide", "deck", "presentation"},
+    "deck": {"deck", "slides", "slide", "presentation"},
+}
+
+UNSUPPORTED_SCENE_TERMS = {
+    "wedding", "mansion", "beverly", "tiktok", "tiktoks",
+}
+
+
+def _has_context_anchor(candidate: str, context: str) -> bool:
+    """Require a rewrite to retain multiple details tied to the supplied situation."""
+    context_words = set(_tokens(context))
+    expanded = set(context_words)
+    for word in context_words:
+        expanded.update(CONTEXT_ALIASES.get(word, ()))
+    candidate_words = {
+        word for word in _tokens(candidate)
+        if len(word) > 2 and word not in STOP_WORDS
+    }
+    anchored = candidate_words & expanded
+    if len(anchored) < 2:
+        return False
+    if any(
+        term in candidate_words and term not in context_words
+        for term in UNSUPPORTED_SCENE_TERMS
+    ):
+        return False
+    return True
 
 
 def _quality_score(candidate: str, context: str) -> float:
@@ -300,37 +348,44 @@ async def generate(
     results = await asyncio.gather(*tasks, return_exceptions=True)
     from app.output_validation import is_valid_output
 
-    candidates = [
+    # Keep safe model drafts even when they are too long or factually sloppy.
+    # The final writer can repair them against the original situation.
+    raw_drafts = [
         item.strip()
         for item in results
         if isinstance(item, str)
         and item.strip()
         and is_valid_output(item.strip())
-        and _is_usable_candidate(item.strip())
         and is_safe_output(item.strip())
-        and _is_fact_consistent_candidate(item.strip(), context)
     ]
-    if not candidates:
+    if not raw_drafts:
         errors = [str(item) for item in results if isinstance(item, Exception)]
-        detail = errors[0] if errors else "All candidates were empty or failed English output validation."
-        raise ProviderError(
-            f"No usable English-language candidate. {detail}"
-        )
+        detail = errors[0] if errors else "All drafts failed language or safety validation."
+        raise ProviderError(f"No safe English-language drafts. {detail}")
 
+    candidates = [
+        item for item in raw_drafts
+        if _is_usable_candidate(item)
+        and _is_fact_consistent_candidate(item, context)
+        and _has_context_anchor(item, context)
+    ]
     unique = list(dict.fromkeys(candidates))
-    fallback = max(unique, key=lambda item: _quality_score(item, context))
-
-    # The finishing pass is allowed to improve the drafts, not merely rank them.
-    # This matters most when generation/validation leaves only one usable option.
+    fallback = (
+        max(unique, key=lambda item: _quality_score(item, context))
+        if unique else None
+    )
+    # If every draft failed the length, fact, or context-fit checks, the editor
+    # still gets safe raw material and must rewrite from the original situation.
+    drafts_for_editor = unique or list(dict.fromkeys(raw_drafts))
     numbered = "\n".join(
-        f"{index}. {candidate}" for index, candidate in enumerate(unique, start=1)
+        f"{index}. {candidate}" for index, candidate in enumerate(drafts_for_editor, start=1)
     )
     judge_prompt = f"""You are COOKED's comedy editor and final writing pass. Your job is to turn rough drafts into one comment worth posting.
 The requested humor style is {style}.
 Situation: {context}
 STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Write a natural, specific line with a real punch.")}
 
-The drafts below are raw material, NOT a quality standard. They may all be weak.
+The drafts below are untrusted raw material, NOT a quality standard. They may be too long, off-topic, or contain made-up details. The situation above is the only source of truth. Never copy a new number, place, event, relationship, or backstory from a draft unless the situation itself states it.
 Judge the rewrite by this rubric:
 - ACTUAL FUN: it should trigger a laugh or a strong, immediate smirk, not just sound clever.
 - EXACT FIT: the line must depend on this exact situation and its most revealing detail.
@@ -344,9 +399,6 @@ Your task:
 - Make the last few words do the work. Use conversational English that sounds typed, not performed.
 - If the drafts contain a useful idea, sharpen it. Do not preserve bad wording just because it is in a draft.
 - Reject invented backstory. Do not add facts, relationships, places, motives, counts, or events that the situation does not supply.
-- Do not import a second scene (for example, an unrelated wedding, celebrity, app, destination, or made-up consequence) just to force a punchline.
-- Reject familiar comparison templates such as hide-and-seek analogies when the comparison is not specifically earned by the situation.
-- No sexual innuendo, suggestive clothing references, or body-based jokes.
 - Do not explain the joke, narrate what happened, or tell the reader that someone is wrong.
 - Avoid generic AI scaffolds such as HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and vague "that's commitment" endings.
 - Keep it to one comment of 5–16 words, with no preamble, quotation marks, labels, or explanation.
@@ -371,9 +423,14 @@ Return ONLY the finished comment. Do not return a draft number."""
             and _is_usable_candidate(edited)
             and is_safe_output(edited)
             and _is_fact_consistent_candidate(edited, context)
+            and _has_context_anchor(edited, context)
         ):
             return edited
     except Exception:
         pass
 
-    return fallback
+    if fallback is not None:
+        return fallback
+    raise ProviderError(
+        "No safe, fact-consistent, context-grounded comment could be produced. Try a clearer situation."
+    )
