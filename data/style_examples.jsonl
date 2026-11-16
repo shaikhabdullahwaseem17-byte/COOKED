@@ -12,7 +12,7 @@
 {"input":"The office ordered a second printer because the first one ran out of paper.","output":"Refilling the first one was apparently out of scope.","style":"dry","language":"en","source":"original_example"}
 {"input":"He spent an hour choosing a font for a two-word reply.","output":"The reply now has a brand identity.","style":"dry","language":"en","source":"original_example"}
 {"input":"My friend made a spreadsheet to decide what to eat, then ordered the same lunch as always.","output":"The spreadsheet has confirmed yesterday's decision.","style":"dry","language":"en","source":"original_example"}
-{"input":"The recurring meeting to discuss cutting meetings has been extended to 90 minutes.","output":"The meeting has become a very convincing counterexample.","style":"dry","language":"en","source":"original_example"}
+{"input":"A manager created a tracker to monitor whether the team was using the tracker.","output":"The tracker is now tracking itself.","style":"dry","language":"en","source":"original_example"}
 {"input":"He sent a follow-up asking whether anyone had seen his previous follow-up.","output":"The follow-up is now following up on itself.","style":"dry","language":"en","source":"original_example"}
 {"input":"He says he is two minutes away while he is still deciding what to wear.","output":"His ETA needs wardrobe approval first.","style":"desi","language":"en","source":"original_example"}
 {"input":"At Eid lunch, he asked about the leftovers before anyone had sat down.","output":"The meal hadn't started; the leftovers were already allocated.","style":"desi","language":"en","source":"original_example"}
