@@ -20,8 +20,8 @@ def test_prompt_has_distinct_angles():
 
 def test_desi_style_is_south_asian_humor_written_in_english():
     prompt = build_prompt("He blames the Wi-Fi for every missed deadline.", "desi", 3)
-    assert "English-language South Asian internet humor" in prompt
-    assert "natural English" in prompt
+    assert "English-language South Asian social humor" in prompt
+    assert "fluent and natural" in prompt
 
 
 def test_request_defaults():
@@ -71,8 +71,9 @@ def test_generate_tolerates_partial_provider_failure(monkeypatch):
 
 def test_prompt_includes_original_style_references():
     prompt = build_prompt("He announced his fifth social media break this month.", "instagram", 3)
-    assert "STYLE REFERENCES" in prompt
-    assert "learn the technique, never copy their wording" in prompt
+    assert "STYLE REFERENCE" in prompt
+    assert "learn the comic move" in prompt
+    assert "never reuse a recognizable phrase" in prompt
 
 
 def test_example_retrieval_respects_style():
@@ -174,10 +175,10 @@ def test_instagram_prompt_targets_native_comment_humor():
         "instagram",
         3,
     )
-    assert "quick, sharp Instagram comment" in prompt
-    assert "clean punchline" in prompt
+    assert "natural, sharp Instagram comment" in prompt
+    assert "clean punch" in prompt
     assert "exact situation" in prompt
-    assert "forced transliteration" in prompt
+    assert "transliteration" in prompt
 
 
 def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
@@ -198,8 +199,8 @@ def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
         style="instagram",
     ))
     assert result == "The apology got a director's cut. The lateness got four minutes."
-    assert "immediate comedic payoff" in seen[0]
-    assert "Naturalness" in seen[0]
+    assert "ACTUAL FUN" in seen[0]
+    assert "HUMAN VOICE" in seen[0]
 
 
 def test_prompt_rejects_unrelated_joke_details():
@@ -230,9 +231,9 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
         style="instagram",
     ))
     assert result == "That 'interesting' was a polite exit with the door already closed."
-    assert "Exact fit" in seen[0]
-    assert "facts, objects, motives, or relationships not in the situation" in seen[0]
-    assert "Prefer the most specific line" in seen[0]
+    assert "EXACT FIT" in seen[0]
+    assert "invented backstory" in seen[0]
+    assert "feels effortless and specific" in seen[0]
 
 
 def test_example_retrieval_rejects_weak_generic_overlap():
@@ -273,23 +274,44 @@ def test_prompt_preserves_exact_numeric_facts():
 
 def test_prompt_rejects_empty_praise_as_a_punchline():
     prompt = build_prompt("He sent a nine-minute voice note.", "instagram", 3)
-    assert "empty praise" in prompt
-    assert "that's commitment" in prompt
+    assert "generic judgment" in prompt
+    assert "final few words carry the payoff" in prompt
 
 
 def test_prompt_avoids_quote_markers_in_output():
     prompt = build_prompt("He said 'quick question' and wrote six paragraphs.", "instagram", 3)
-    assert "Do not use quotation marks" in prompt
+    assert "quotation marks" in prompt
 
 
 def test_prompt_includes_style_voice_sample_without_importing_facts():
     prompt = build_prompt("The fridge is making a strange noise.", "dry", 3)
     assert "VOICE SAMPLE" in prompt
     assert "The follow-up has already requested another follow-up." in prompt
-    assert "never borrow its facts, objects, structure, or wording" in prompt
+    assert "never reuse its wording, premise, or details" in prompt
 
 
 def test_each_style_has_its_own_original_anchor():
     from app.prompts import STYLE_ANCHORS
     assert set(STYLE_ANCHORS) == {"instagram", "dry", "desi", "absurd"}
     assert len(set(STYLE_ANCHORS.values())) == 4
+
+
+
+def test_voice_sample_uses_real_line_breaks_not_literal_escape_text():
+    prompt = build_prompt("The fridge is making a strange noise.", "dry", 3)
+    assert "\n\nVOICE SAMPLE" in prompt
+    assert "\\nVOICE SAMPLE" not in prompt
+
+
+def test_prompt_teaches_a_specific_comic_turn_not_generic_roasting():
+    prompt = build_prompt("He said he was taking a phone break and replied to every comment.", "instagram", 3)
+    assert "social tell" in prompt
+    assert "one clean turn" in prompt
+    assert "final few words carry the payoff" in prompt
+    assert "Casual beats polished" in prompt
+
+
+def test_prompt_uses_at_most_one_retrieved_example():
+    prompt = build_prompt("He sent a quick question and wrote a six-paragraph message.", "instagram", 3)
+    assert prompt.count("STYLE REFERENCE") == 1
+    assert prompt.count("Comment:") <= 1
