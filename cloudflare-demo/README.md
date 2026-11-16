@@ -29,12 +29,19 @@ Cloudflare's Git integration supports deploying Workers from a GitHub repository
 
 1. Have the adult account owner open [Cloudflare Dashboard](https://dash.cloudflare.com/) and go to **Workers & Pages**.
 2. Select **Create application**, then **GitHub**. Connect the COOKED repository and choose the `main` branch.
-3. Set the project **Root directory** to `cloudflare-demo`.
-4. Leave the optional build command empty. Set the **Deploy command** to `npx wrangler deploy`.
-5. Make sure the Worker name is `cooked-public-demo`, matching `wrangler.jsonc`.
-6. Keep the account on the **Workers Free** plan for this trial. Do not opt into paid usage or add a paid billing plan for the demo.
-7. Save and deploy. Cloudflare will provide a `workers.dev` URL.
-8. Open the URL and check `/api/health`. It should return a JSON status and the model ID. Then test one example in the page.
+3. Set **Root directory** to the repository root (leave it blank/default, or use `.`). Do not set it to `cloudflare-demo` for this command.
+4. Leave the optional build command empty.
+5. Set the **Deploy command** exactly to:
+
+   ```sh
+   npx wrangler@4.102.0 deploy --config cloudflare-demo/wrangler.jsonc
+   ```
+
+   This explicitly selects the demo's Wrangler configuration. The failed build log shows Cloudflare ran `npx wrangler deploy` from the repository root, where it did not find `cloudflare-demo/wrangler.jsonc`; it then tried to treat the project as a static-assets project and could not find the expected directory. The explicit `--config` path fixes that configuration lookup. The assets directory in the config is `./public`, resolved relative to the config file.
+6. Make sure the Worker name is `cooked-public-demo`, matching `cloudflare-demo/wrangler.jsonc`.
+7. Keep the account on the **Workers Free** plan for this trial. Do not opt into paid usage or add a paid billing plan for the demo.
+8. Save and deploy. Cloudflare will provide a `workers.dev` URL.
+9. Open the URL and check `/api/health`. It should return a JSON status and the model ID. Then test one example in the page.
 
 Cloudflare's documentation: [Connect a Worker to a GitHub repository](https://developers.cloudflare.com/workers/ci-cd/builds/).
 
