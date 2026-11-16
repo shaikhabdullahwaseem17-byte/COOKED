@@ -38,7 +38,7 @@ def test_qwen35_candidate_uses_direct_short_output(monkeypatch):
 
     assert result == "A concise comeback."
     assert payloads[0]["think"] is False
-    assert payloads[0]["options"]["num_predict"] == 48
+    assert payloads[0]["options"]["num_predict"] == 32
     assert timeouts == [90]
 
 
@@ -154,7 +154,7 @@ def test_gemma4_uses_fast_thinking_mode_and_bounded_output(monkeypatch):
 
     assert result == "One concise comment."
     assert payloads[0]["think"] is False
-    assert payloads[0]["options"]["num_predict"] == 48
+    assert payloads[0]["options"]["num_predict"] == 32
     assert timeouts == [90]
 
 
@@ -208,3 +208,23 @@ def test_candidate_filter_rejects_generic_praise_and_metaphor_words():
         "86 greetings means someone is hitting send on auto-pilot.",
     ):
         assert not providers._is_usable_candidate(candidate)
+
+
+def test_single_valid_candidate_skips_the_editor_call(monkeypatch):
+    calls = []
+
+    async def fake_complete(prompt, temperature):
+        calls.append(prompt)
+        if "You are COOKED's comedy editor" in prompt:
+            raise AssertionError("Editor should be skipped for one candidate")
+        if temperature == 0.88:
+            return "The calendar filed a complaint."
+        return "That's commitment."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(providers.generate(
+        "Write one short comment.", "He changed the meeting time again.", "instagram"
+    ))
+
+    assert result == "The calendar filed a complaint."
+    assert len(calls) == 3
