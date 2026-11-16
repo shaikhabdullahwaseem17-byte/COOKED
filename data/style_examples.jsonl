@@ -7,7 +7,7 @@
 {"input":"He sent a follow-up asking whether anyone had seen his previous follow-up.","output":"The follow-up has requested confirmation of its own receipt.","style":"dry","language":"en","source":"original_example"}
 {"input":"At a wedding, he said he would leave after tea and stayed until dinner.","output":"After tea is a season, not a time.","style":"desi","language":"en","source":"original_example"}
 {"input":"At Eid lunch, he asked about leftovers before anyone had started eating.","output":"The biryani has not landed; the containers are already booked.","style":"desi","language":"en","source":"original_example"}
-{"input":"The family group chat has 86 unread messages, all forwarding the same Good morning greeting.","output":"One sunrise, 86 notifications.","style":"desi","language":"en","source":"original_example"}
+{"input":"The family WhatsApp group is still forwarding the same morning greeting after lunch.","output":"One sunrise, 86 notifications.","style":"desi","language":"en","source":"original_example"}
 {"input":"Every uncle asked about career plans before the food reached the table.","output":"The career interview started before the starters.","style":"desi","language":"en","source":"original_example"}
 {"input":"She made a colour-coded seating chart for the houseplants.","output":"The fern has requested the window seat in writing.","style":"absurd","language":"en","source":"original_example"}
 {"input":"He arranged the sofa cushions by seniority.","output":"The youngest cushion has filed an appeal.","style":"absurd","language":"en","source":"original_example"}
