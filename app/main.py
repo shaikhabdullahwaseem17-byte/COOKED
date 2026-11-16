@@ -7,7 +7,7 @@ from app.prompts import build_prompt
 from app.safety import validate_input
 from app.providers import generate, ProviderError
 
-app = FastAPI(title="COOKED API", description="Instagram-comment energy. No AI slop.", version="1.0.0")
+app = FastAPI(title="COOKED API", description="Writes short, playful comments about harmless situations.", version="1.0.0")
 STATIC = Path(__file__).parent / "static"
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 
