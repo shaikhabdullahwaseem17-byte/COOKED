@@ -76,6 +76,7 @@ QUALITY BAR
 - Aim for 5–16 words. One sentence or fragment. No preamble, explanation, hashtags, or quotation marks.
 - It must depend on a detail from THIS situation. If the same line could sit under twenty unrelated posts, discard it.
 - The comment must add a funny interpretation, not just rephrase the input with a synonym. It must land in one clean turn and depend on this exact situation.
+- Reject a generic judgment that merely says the person is wrong, late, dramatic, or excessive.
 - Prefer an unexpected but logical payoff over a metaphor. A metaphor is allowed only when the link is immediate and specific.
 - Do not narrate mechanically with phrases such as "he is definitely wrong", "she clearly", or "that means".
 - Avoid filler endings such as "though", "either", "and that's it", or "because".
@@ -87,7 +88,7 @@ QUALITY BAR
 STYLE DETAILS
 - Instagram: write like a quick reply in a comment thread with a clean punch. Prioritise conversational rhythm and instant recognition over a polished one-liner.
 - Dry: understate the absurdity and let the implication sit. No theatrical language.
-- Desi: use the actual family, food, wedding, or group-chat detail when present. No generic auntie/uncle/WhatsApp joke, forced slang, transliteration, or fake accent.
+- Desi: use the actual family, food, wedding, or group-chat detail when present. No generic auntie/uncle/WhatsApp joke, forced slang, transliteration, or fake accent. No fake accents.
 - Absurd: make one grounded leap from a real object or action. Give the object a specific consequence, not a random job title.
 
 SAFETY
