@@ -325,7 +325,7 @@ Your task:
 - Prefer a clean reframe, a recognisable social truth, or a precise unexpected consequence.
 - Make the last few words do the work. Use conversational English that sounds typed, not performed.
 - If the drafts contain a useful idea, sharpen it. Do not preserve bad wording just because it is in a draft.
-- Do not invent a backstory or add facts, relationships, places, motives, counts, or events that the situation does not supply.
+- Reject invented backstory. Do not add facts, relationships, places, motives, counts, or events that the situation does not supply.
 - Do not explain the joke, narrate what happened, or tell the reader that someone is wrong.
 - Avoid generic AI scaffolds such as HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and vague "that's commitment" endings.
 - Keep it to one comment of 5–16 words, with no preamble, quotation marks, labels, or explanation.
