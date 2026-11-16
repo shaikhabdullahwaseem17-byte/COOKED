@@ -316,7 +316,7 @@ The drafts below are raw material, NOT a quality standard. They may all be weak.
 Judge the rewrite by this rubric:
 - ACTUAL FUN: it should trigger a laugh or a strong, immediate smirk, not just sound clever.
 - EXACT FIT: the line must depend on this exact situation and its most revealing detail.
-- HUMAN VOICE: the line should feel effortless and specific, like a comment typed in one pass.
+- HUMAN VOICE: a strong line feels effortless and specific, like a comment typed in one pass.
 - PAYOFF: the ending must change the interpretation, not merely repeat the setup.
 Your task:
 - Find the one detail in the situation with the strongest comic potential.
