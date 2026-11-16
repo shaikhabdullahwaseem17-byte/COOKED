@@ -31,6 +31,7 @@ COOKED uses an existing instruction model through Ollama. It is **not** a founda
 - Generates three distinct comedic approaches concurrently, then asks a separate editor pass to choose only among those candidates.
 - Uses a lightweight heuristic as a fallback if the editor fails or returns an invalid choice.
 - Penalizes common AI-style preambles, stale templates, overlong outputs and list-like answers; rewards some context anchoring without rewarding simple copying.
+- Filters generated candidates for exposed contact details, explicit targeted harassment, direct threats and explicit sexual material before selection. These narrow checks are a guardrail, not comprehensive moderation.
 - Includes one-tap demo prompts and native sharing in the web interface.
 - Runs locally by default; no hosted API key is required.
 
