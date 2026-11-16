@@ -228,3 +228,19 @@ def test_single_valid_candidate_skips_the_editor_call(monkeypatch):
 
     assert result == "The calendar filed a complaint."
     assert len(calls) == 3
+
+
+
+def test_generate_rejects_candidates_that_fail_output_safety(monkeypatch):
+    async def fake_complete(prompt, temperature):
+        if temperature == 0.88:
+            return "Mock her because she has depression."
+        return "That's commitment."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    with pytest.raises(providers.ProviderError, match="No usable"):
+        asyncio.run(providers.generate(
+            "Write one short comment.",
+            "A harmless situation.",
+            "instagram",
+        ))
