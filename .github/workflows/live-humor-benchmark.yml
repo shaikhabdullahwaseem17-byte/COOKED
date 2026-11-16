@@ -40,7 +40,7 @@ jobs:
         env:
           COOKED_PROVIDER: ollama
           COOKED_MODEL: gemma4:12b
-          REQUEST_TIMEOUT: "120"
+          REQUEST_TIMEOUT: "180"
         run: |
           PYTHONPATH=. python scripts/humor_benchmark.py --output-dir benchmark-results
       - name: Upload benchmark report
