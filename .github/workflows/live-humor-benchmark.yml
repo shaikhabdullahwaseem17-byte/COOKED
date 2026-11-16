@@ -1,6 +1,15 @@
 name: live-humor-benchmark
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/prompts.py'
+      - 'app/providers.py'
+      - 'data/style_examples.jsonl'
+      - 'scripts/humor_benchmark.py'
+      - '.github/workflows/live-humor-benchmark.yml'
   workflow_dispatch:
 
 jobs:
