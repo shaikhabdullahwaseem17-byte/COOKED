@@ -240,9 +240,50 @@ def test_generate_rejects_candidates_that_fail_output_safety(monkeypatch):
         return "That's commitment."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
-    with pytest.raises(providers.ProviderError, match="No usable"):
+    with pytest.raises(providers.ProviderError, match="No safe, fact-consistent"):
         asyncio.run(providers.generate(
             "Write one short comment.",
             "A harmless situation.",
             "instagram",
         ))
+
+
+
+def test_context_anchor_guard_rejects_unrelated_or_invented_scenes():
+    assert not providers._has_context_anchor(
+        "No context? It is like playing hide and seek with your eyes closed.",
+        "She posted no context and spent 40 replies explaining the context.",
+    )
+    assert not providers._has_context_anchor(
+        "That is basically next door unless I am late to my own wedding.",
+        "He described a 35-minute drive as basically next door.",
+    )
+    assert not providers._has_context_anchor(
+        "The fern demands its very own jungle terrarium.",
+        "She made a color-coded seating chart for the houseplants.",
+    )
+
+
+def test_context_anchor_guard_keeps_a_specific_phone_break_reframe():
+    assert providers._has_context_anchor(
+        "The refresh button will not let him unplug.",
+        "He said he was taking a break from his phone, then replied to every comment within seconds.",
+    )
+
+
+def test_editor_can_rewrite_long_safe_drafts_that_fail_shape_validation(monkeypatch):
+    async def fake_complete(prompt, temperature):
+        if "You are COOKED's comedy editor" in prompt:
+            return "That thought came with a nine-minute runtime."
+        return (
+            "He called the voice note quick, although it contains far too much "
+            "explanation and a very long description of the same thought."
+        )
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    result = asyncio.run(providers.generate(
+        "Write one short comment.",
+        "He described a nine-minute voice note as just a quick thought.",
+        style="instagram",
+    ))
+    assert result == "That thought came with a nine-minute runtime."
