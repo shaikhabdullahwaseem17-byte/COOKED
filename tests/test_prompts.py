@@ -135,7 +135,9 @@ def test_editor_receives_style(monkeypatch):
         if "comedy editor" in prompt:
             seen.append(prompt)
             return "1"
-        return "A clever reply that fits this particular situation."
+        if temperature == 0.88:
+            return "A clever reply that fits this particular situation."
+        return "The calendar filed a complaint."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
     result = asyncio.run(providers.generate("prompt", "context", style="desi"))
@@ -185,7 +187,9 @@ def test_instagram_editor_prioritizes_specific_punchlines(monkeypatch):
         if "comedy editor" in prompt:
             seen.append(prompt)
             return "1"
-        return "The apology got a director's cut. The lateness got four minutes."
+        if temperature == 0.88:
+            return "The apology got a director's cut. The lateness got four minutes."
+        return "The calendar filed a complaint."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
     result = asyncio.run(providers.generate(
@@ -215,7 +219,9 @@ def test_instagram_editor_prioritizes_grounding(monkeypatch):
         if "comedy editor" in prompt:
             seen.append(prompt)
             return "1"
-        return "That 'interesting' was a polite exit with the door already closed."
+        if temperature == 0.88:
+            return "That 'interesting' was a polite exit with the door already closed."
+        return "The conversation changed lanes without signalling."
 
     monkeypatch.setattr(providers, "_complete", fake_complete)
     result = asyncio.run(providers.generate(
