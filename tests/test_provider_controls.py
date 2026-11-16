@@ -246,3 +246,29 @@ def test_generate_rejects_candidates_that_fail_output_safety(monkeypatch):
             "A harmless situation.",
             "instagram",
         ))
+
+def test_one_sunrise_idiom_does_not_trigger_false_numeric_mismatch():
+    context = (
+        "The family group chat has 86 unread messages, all forwarding "
+        "the same Good morning greeting."
+    )
+    assert providers._is_fact_consistent_candidate(
+        "One sunrise, 86 identical greetings.", context
+    )
+
+
+def test_spelled_out_measurements_still_protect_explicit_counts():
+    context = "He described a nine-minute voice note as a quick thought."
+    assert not providers._is_fact_consistent_candidate(
+        "Two minutes for a quick thought?", context
+    )
+
+
+def test_all_ages_output_guard_rejects_suggestive_clothing_jokes():
+    from app.safety import is_safe_output
+
+    assert not is_safe_output(
+        "That is a teeny-tiny update? More like a maxi-panties reveal!"
+    )
+    assert not is_safe_output("The joke turned into an underwear reference.")
+    assert is_safe_output("The update has its own notification schedule.")

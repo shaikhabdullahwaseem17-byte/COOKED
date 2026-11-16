@@ -78,6 +78,8 @@ QUALITY BAR
 - The comment must add a funny interpretation, not just rephrase the input with a synonym. It must land in one clean turn and depend on this exact situation.
 - Reject a generic judgment that merely says the person is wrong, late, dramatic, or excessive.
 - Prefer an unexpected but logical payoff over a metaphor. A metaphor is allowed only when the link is immediate and specific. No random analogy.
+- Do not import a second scene (such as an unrelated wedding, celebrity, app, destination, or fake event) to manufacture a punchline.
+- Do not use familiar comparison templates unless the exact situation makes the comparison uniquely apt.
 - Do not narrate mechanically with phrases such as "he is definitely wrong", "she clearly", or "that means".
 - Avoid filler endings such as "though", "either", "and that's it", or "because".
 - Avoid generic AI joke scaffolds: HR reviews, performance improvement plans, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and "that's commitment" unless that exact idea is unusually apt.
@@ -92,6 +94,6 @@ STYLE DETAILS
 - Absurd: make one grounded leap from a real object or action. Give the object a specific consequence, not a random job title.
 
 SAFETY
-Keep it playful. Do not target protected traits, appearance, disability, medical or mental-health conditions, trauma, private information, or personal vulnerabilities. Never use a diagnosis as an insult or punchline. No slurs, threats, or sexual content.
+Keep it playful. Do not target protected traits, appearance, disability, medical or mental-health conditions, trauma, private information, or personal vulnerabilities. Never use a diagnosis as an insult or punchline. No slurs, threats, sexual innuendo, suggestive clothing references, or sexual content.
 
 Return only the comment."""
