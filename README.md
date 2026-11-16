@@ -4,7 +4,7 @@ A small English-only app for writing short, playful comments about captions and 
 
 Paste a setup, choose a style, set the spice level, and get one line you can copy or share. Sometimes it misses. Read the result before posting it.
 
-**COOKED is not hosted as a public website yet.** You download the project and run it on your own computer.
+**The public browser demo is prepared but not deployed yet.** The deployment files are in [`cloudflare-demo/`](cloudflare-demo/README.md). A project account owner still needs to connect the repository and publish it; until then, there is no live try-it link.
 
 [Download the source ZIP](https://github.com/shaikhabdullahwaseem17-byte/COOKED/archive/refs/heads/main.zip) · [Browse the code](https://github.com/shaikhabdullahwaseem17-byte/COOKED)
 
@@ -64,7 +64,7 @@ You can also use GitHub's **Code → Download ZIP** instead of `git clone`. Extr
 
 Keep Ollama running. Open **http://127.0.0.1:8000** in your browser. The API documentation is at **http://127.0.0.1:8000/docs**.
 
-There is no account or signup flow. The app runs on your machine; it does not give you a public link for other people to use. A public demo would need to be deployed separately with a model provider behind it.
+There is no account or signup flow in the local app. It runs on your machine. The separate browser demo can be deployed without local Python or Ollama; it uses Cloudflare Workers AI and has its own model and rate limits. See [`cloudflare-demo/README.md`](cloudflare-demo/README.md) for deployment and provider details.
 
 ### Model notes
 
