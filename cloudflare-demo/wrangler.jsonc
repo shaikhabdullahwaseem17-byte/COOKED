@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cooked-public-demo",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-16",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "ai": { "binding": "AI" },
+  "ratelimits": [
+    {
+      "name": "ROAST_LIMITER",
+      "namespace_id": "20261116",
+      "simple": { "limit": 4, "period": 60 }
+    }
+  ],
+  "observability": { "enabled": true }
+}
