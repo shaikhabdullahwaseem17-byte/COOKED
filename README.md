@@ -4,7 +4,7 @@ A small English-only app for writing short, playful comments about captions and 
 
 Paste a setup, choose a style, set the spice level, and get one line you can copy or share. Sometimes it misses. Read the result before posting it.
 
-**The public browser demo is prepared but not deployed yet.** The deployment files are in [`cloudflare-demo/`](cloudflare-demo/README.md). A project account owner still needs to connect the repository and publish it; until then, there is no live try-it link.
+**Try the [live browser demo](https://cooked.hazar128373-206.workers.dev/).** It runs through Cloudflare Workers AI. The deployment files, setup steps, and provider notes are in [`cloudflare-demo/`](cloudflare-demo/README.md).
 
 [Download the source ZIP](https://github.com/shaikhabdullahwaseem17-byte/COOKED/archive/refs/heads/main.zip) · [Browse the code](https://github.com/shaikhabdullahwaseem17-byte/COOKED)
 
@@ -134,6 +134,29 @@ pytest -q
 ```
 
 The MIT licence for this repository does not replace the separate licences and terms for Ollama models, hosted model providers, Python packages, or other third-party software. Check those before redistributing a bundled model or service.
+
+## The design was built through real decisions and revisions
+
+I did not want COOKED to look like a ready-made AI landing page. I wanted a focused tool that felt considered, simple to use, and recognisably its own thing. The final design came from trying things, looking at them, rejecting what did not feel right, and asking for specific changes until the page matched what I had in mind.
+
+These were my decisions during the design process:
+
+- I wanted the interface itself, not a marketing page. No generic feature sections, feature cards, three-column grids, circular icon badges, or unnecessary footer sections taking attention away from the tool.
+- I chose a pitch-black background, #000000, with clean white typography.
+- I wanted one main workspace, not a collection of separate cards. The input and generated comment belong inside the same rounded glass panel, with a fine divider between them.
+- I asked for the controls above the panel to be part of the same visual language. The clear and copy controls are compact circles, and the style selector is a rounded pill.
+- I chose a smoked-glass look. The panel and controls should be see-through, with a light translucent surface, a subtle silver border, a restrained highlight along the inside top edge, and enough blur to make the glass visible.
+- The black page needed a little atmosphere behind the glass. I asked for a very soft, diffuse charcoal-grey haze so the transparency would actually show. It should stay subtle and sit behind the interface.
+- I chose the wordmark to be just COOKED, with evenly spaced letters and a clean Swiss-style sans-serif look, using a Helvetica-style font stack. No extra slogan or decorative lettering.
+- I wanted the writing area to stay straightforward. The user enters a caption, text, or situation, chooses a style and intensity, and gets a comment in the same workspace.
+
+There were also things I specifically did not want. I rejected blue and purple colour treatments, decorative bubbles, floating water effects, emojis, sparkles, lens flares, swirling light waves, smoke streaks, shiny plastic-looking reflections, and loud sci-fi glow effects. I did not want the glass to become a collection of glowing decorations. The smoke is only a soft background haze, not an effect layered over the controls.
+
+The design took more than one pass. Some early versions were too plain. Some changes still did not look transparent enough. I pointed that out and asked for the glass on the main panel and the buttons to be adjusted. I also rejected versions that drifted away from the black, restrained look. The final direction was not accepted just because a page had been generated. I reviewed it, said what was wrong, changed the brief, and approved the version that matched the idea.
+
+I asked to see a preview before changing the public app. Once I was happy with the direction, I asked for it to be implemented without damaging the working project. The final browser redesign was made in a separate branch, checked, and merged through a pull request. The change was limited to the browser page. The Worker and its generation endpoint were left alone. The automated browser-demo tests and Python test suite both passed for that change.
+
+That is how I wanted this project to be made: with a clear idea, a lot of small decisions, honest review, and no pretending that the first output is automatically good enough. The AI helped write and revise the code, but it did not decide what I wanted COOKED to look like. I did.
 
 ## Who did what
 
