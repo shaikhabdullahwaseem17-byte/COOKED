@@ -8,6 +8,8 @@ The code is prepared, but **the public URL does not exist until a Cloudflare acc
 
 This is a public-preview backend, not a byte-for-byte copy of the local Python generation pipeline. It uses one carefully prompted Gemma 4 call per request rather than the local app's multiple drafts and editor pass. Its humour quality still needs real blind human review.
 
+This code is ready for an adult account owner to review and deploy. Cloudflare's privacy policy says its own services are not designed to attract people under 18. A parent or guardian must decide whether this hosting arrangement is appropriate, own and supervise any account, and review the terms and privacy obligations. Do not create an account by misrepresenting age or bypassing an eligibility rule.
+
 ## Model and limits
 
 - Model: `@cf/google/gemma-4-26b-a4b-it`.
