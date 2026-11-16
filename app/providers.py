@@ -201,7 +201,7 @@ async def _complete(prompt: str, temperature: float) -> str:
                     # COOKED needs a short comment, not a long reasoning trace.
                     # Keep candidate generations and the editor response bounded.
                     options["num_predict"] = (
-                        6 if "You are COOKED's comedy editor" in prompt else 32
+                        6 if "final comedy editor" in prompt else 32
                     )
                 payload = {
                     "model": config.MODEL,
@@ -331,7 +331,7 @@ Do not reward fancy wording over a real laugh. Prefer the line that feels effort
 Candidates:
 {numbered}
 
-Reply with ONLY its number.
+Reply with ONLY its number."""
     try:
         decision = await _complete(judge_prompt, 0.12)
         match = re.fullmatch(r"\s*([1-9]\d*)\s*", decision)
