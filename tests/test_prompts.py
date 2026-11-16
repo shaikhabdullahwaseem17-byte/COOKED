@@ -286,7 +286,7 @@ def test_prompt_avoids_quote_markers_in_output():
 def test_prompt_includes_style_voice_sample_without_importing_facts():
     prompt = build_prompt("The fridge is making a strange noise.", "dry", 3)
     assert "VOICE SAMPLE" in prompt
-    assert "The follow-up has already requested another follow-up." in prompt
+    assert "The reduction has been moved to the next meeting." in prompt
     assert "never reuse its wording, premise, or details" in prompt
 
 
