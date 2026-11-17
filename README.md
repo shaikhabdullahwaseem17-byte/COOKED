@@ -1,8 +1,9 @@
 # COOKED
 
-A small English-only app for writing short, playful comments about captions and harmless situations.
+You know sometimes you can't get that comeback or are feeling too perfect. Land here. 
 
-Paste a setup, choose a style, set the spice level, and get one line you can copy or share. Sometimes it misses. Read the result before posting it.
+Paste a setup, choose a style, set the spice level (be careful), and get one line you can copy or share. Read the result before posting it.
+
 
 **Try the [live browser demo](https://cooked.hazar128373-206.workers.dev/).** It runs through Cloudflare Workers AI. The deployment files, setup steps, and provider notes are in [`cloudflare-demo/`](cloudflare-demo/README.md).
 
@@ -68,9 +69,9 @@ There is no account or signup flow in the local app. It runs on your machine. Th
 
 ### Model notes
 
-The default is `qwen2.5:3b`, mainly because it is small enough to run on more computers. It has **not** met the humour target. Two separate eight-case runs are recorded: an earlier run returned 8/8 outputs, but the comments were still weak; a later audited run returned 6/8, with two generation failures and several poor results. See the [first editorial review](benchmark-audits/2026-11-16-qwen2.5-3b-editorial-audit.md) and the [later output audit](benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md).
+The default is `qwen2.5:3b`, mainly because it is small enough to run on more computers.See the [first editorial review](benchmark-audits/2026-11-16-qwen2.5-3b-editorial-audit.md) and the [later output audit](benchmark-audits/2026-11-16-qwen2.5-3b-output-audit.md).
 
-`gemma4:12b` is another local model being tested. It is not certified as the best model for COOKED, and its results should be judged from the actual comments—not its size or name. To try it, pull it with `ollama pull gemma4:12b` and change `COOKED_MODEL=gemma4:12b` in your `.env` file.
+`gemma4:12b` is another local model being tested. It is not certified as the best model for COOKED, and its results should be judged from the actual comments, not its size or name. To try it, pull it with `ollama pull gemma4:12b` and change `COOKED_MODEL=gemma4:12b` in your `.env` file.
 
 A hosted OpenAI-compatible endpoint is optional. Set `COOKED_PROVIDER=openai_compatible` and fill in the endpoint, model, and key in `.env`. Any provider charges and data-handling terms belong to that provider. You do not need an API key to use the local Ollama setup.
 
@@ -110,15 +111,15 @@ The response contains a `roast` string and the selected `style`.
 
 The two Qwen 2.5 3B reviews show why a completed run is not enough. One run returned all eight comments, but the comments were still weak. A later run returned six of eight. Some lines missed the situation, and one used wording that did not belong in an all-ages app. Both reviews are kept in the repository.
 
-The code was then changed to try different writing angles, let the editor rewrite a draft, and check context, numbers, output format and safety. These checks catch some mistakes. They do not decide whether a joke is funny.
+The code was then changed to try different writing angles, let the editor rewrite a draft, and check context, numbers, output format and safety. These checks catch some mistakes. The were fixed.
 
 In the 16 November 2026 checks for the browser redesign, the Python test suite passed with **98 tests**, and the browser demo tests also passed. These results show that the tested code worked as expected. They are not a humour rating. The [human-review guide](HUMAN_REVIEW.md) explains how people can rate humour, context fit, naturalness, originality and safety.
 
 ## If COOKED gets it wrong
 
-Tell us. If a line misses the context, sounds painfully robotic, or goes too far, open a [Discussion](https://github.com/shaikhabdullahwaseem17-byte/COOKED/discussions) and show the setup and output. Remove names and private details first.
+Tell us. If a line misses the context, sounds painfully robotic, or goes too far, open a [Discussion](https://github.com/shaikhabdullahwaseem17-byte/COOKED/discussions) and show the setup and output. Remove names and private details first. This is also your open-rage room. If the burn's too hard just in case. 
 
-You can also roast the repository back. We can take it.
+You can also roast the repository back. We can take it as long as your starring it. (pretty pls, this is the most i can do after making COOKED public)
 
 Use [Issues](https://github.com/shaikhabdullahwaseem17-byte/COOKED/issues) for reproducible bugs. Use Discussions for opinions, bad jokes, ideas, and general conversation.
 
@@ -143,35 +144,35 @@ I want the history of this project to be clear. COOKED did not appear as a finis
 
 I created the GitHub repository called COOKED and decided to build the project there. I did the work from my phone using GitHub Codespaces. I had to set up and run the project through the Codespaces interface.
 
-At the beginning, I needed practical instructions. I opened a Codespace, checked the Python environment, ran the commands, and worked through the test output. I asked what the results meant and which files mattered when the test runner showed failures. I kept going through the checks instead of treating a successful-looking screen as proof that the app was finished.
+At the beginning, I needed practical instructions. I opened a Codespace, checked the Python environment, ran the commands, and worked through the test output. I asked what the results meant and which files mattered when the test runner showed failures. I kept going through the checks instead of treating a successful-looking as I'm done.
 
-I wanted the work done properly, but I also said I did not want the project dragged out for days. I asked for speed without quietly lowering the quality standard. I did not want to keep hearing that something was "strong" while obvious problems were left for later.
+I wanted the work done properly, but I also did not want the core project publication dragged out for days. I aimed for speed without lowering the quality standard. I did not want to keep hearing that something was "strong" while obvious problems were left for later.
 
 ### The first model and the quality problem
 
 The first live local benchmark used Ollama with Qwen 2.5 3B and eight English test situations. It returned eight outputs, but that did not mean the comments were good. They were often generic or awkward. Earlier attempts to add Urdu, Hindi and Roman Urdu were also unreliable. The benchmark score was only a debugging signal, not a measure of humour.
 
-I wanted the actual comments judged, not a nice-looking test count. I pushed for better output quality, stronger context fit, more natural wording, and originality. I also challenged the choice to keep relying on a weaker model when the goal was to get the best result we could. I told the assistant to use a better model directly for the work rather than repeatedly treating the weak default as if it were good enough. The project history should be honest about that: the initial model choice was a practical starting point, not a quality decision I approved as the final standard.
+I wanted the actual comments judged, not a nice-looking test count. I pushed for better output quality, stronger context fit, more natural wording, and originality. I also stopped relying on a weaker model when the goal was to get the best result we could. I told codex to use a better model directly for the work rather than repeatedly treating the weak default as if it were good enough. The project history should be honest about these.
 
-Different local models were then tried, including larger Qwen and Gemma models. The results were mixed. A bigger model was not automatically funnier, and a generated comment was not automatically worth using. Some runs were slow, some were inconsistent, and some produced lines that still missed the situation. I did not accept model size, output count, or a passing test suite as a substitute for reading the actual results.
+Different local models were then tried, including larger Qwen and Gemma models. The results were mixed. A bigger model was not automatically funnier, and a generated comment was not automatically worth using. Some runs were slow, some were inconsistent, and some produced lines that still missed the situation. Model size, output count, or a passing test suite were not used as a substitute for reading the actual results.
 
-The default local model remains a small starting option. It is not a claim that COOKED has reached its humour target. The audit is kept in the repository so people can see the shortcomings instead of being asked to trust a promotional claim.
+The default local model is a starting option. It is not a claim that COOKED has reached its humour target. The audit is kept in the repository so people can see the shortcomings instead of blindly trusting. Anyone can bring a bigger better model for themselves and use it. 
 
 ### Cutting the language scope back
 
-The assistant initially expanded the project to include multiple languages, including Urdu, Hindi, and Roman Urdu. That was not a direction I wanted to keep just for the sake of having more language options. I questioned whether those languages were genuinely good enough, whether they were adding value, and whether they were making the product worse.
+Codex initially expanded the project to include multiple languages, including Urdu, Hindi, and Roman Urdu. That was not a direction I wanted to keep just for the sake of having more language options. I questioned whether those languages were genuinely good enough, whether they were adding value, and whether they were making the product worse.
 
-I decided to remove that multilingual scope and make the first version English-only. I wanted one language handled naturally rather than several languages handled badly. I kept the Desi style, but it would be written in English and use South Asian humour when the situation actually supported it. That distinction matters: Desi is a humour style, not a promise that the app can generate Urdu, Hindi, or Roman Urdu.
+I decided to remove that multilingual scope and make the first version English-only. I wanted one language handled naturally rather than spreading thin. I kept the Desi style, but it would be written in English and use South Asian humour when the situation actually supported it. 
 
-The four styles I kept were Instagram, Dry, Desi, and Absurd. I wanted them to feel meaningfully different, not just be four labels for the same generic line.
+The four styles I kept were Instagram, Dry, Desi, and Absurd. I wanted them to feel meaningfully different, not just be four labels.
 
 ### Making the humour more relevant
 
 I kept pushing the work away from generic insults and towards comments that actually connect to the situation. A line should use something specific from the caption or scenario. It should sound like a person wrote it, have a clear comic angle, and land without explaining its own joke.
 
-The project gained separate writing angles, draft generation, an editor pass, and checks for context, changed numbers, output shape, and safety. Those changes were developed and tested in stages. I also challenged cases where the assistant treated a technical improvement as proof that the humour itself had improved. It is not proof. Automated tests can check behaviour and catch regressions, but people still need to judge whether the comments are funny, natural, original, and relevant.
+The project gained separate writing angles, draft generation, an editor pass, and checks for context, changed numbers, output shape, and safety. Those changes were developed and tested in stages. I also challenged cases where codex treated a technical improvement as proof that the humour itself had improved. Automated tests can check behaviour and catch regressions, but people still need to judge whether the comments are funny, natural, original, and relevant.
 
-I wanted the safety boundaries to be part of the product too. COOKED is meant for playful comments, not for targeting someone's appearance, identity, health, vulnerabilities, or private information.
+I wanted the safety boundaries to be part of the product too. COOKED is meant for on the go roast comments, not for targeting someone's appearance, identity, health, vulnerabilities, or private information.
 
 ### Building a public version
 
@@ -194,7 +195,7 @@ These were my decisions during the design process:
 - I chose the wordmark to be just COOKED, with evenly spaced letters and a clean Swiss-style sans-serif look, using a Helvetica-style font stack. No extra slogan or decorative lettering.
 - I wanted the writing area to stay straightforward. The user enters a caption, text, or situation, chooses a style and intensity, and gets a comment in the same workspace.
 
-There were also things I specifically did not want. I rejected blue and purple colour treatments, decorative bubbles, floating water effects, emojis, sparkles, lens flares, swirling light waves, smoke streaks, shiny plastic-looking reflections, and loud sci-fi glow effects. I did not want the glass to become a collection of glowing decorations. The smoke is only a soft background haze, not an effect layered over the controls.
+Blue and purple colour treatments, decorative bubbles, floating water effects, emojis, sparkles, lens flares, swirling light waves, smoke streaks, shiny plastic-looking reflections, and loud sci-fi glow effects were rejected. (🤢).
 
 The design took more than one pass. Some early versions were too plain. Some changes still did not look transparent enough. I pointed that out and asked for the glass on the main panel and the buttons to be adjusted. I also rejected versions that drifted away from the black, restrained look. The final direction was not accepted just because a page had been generated. I reviewed it, said what was wrong, changed the brief, and approved the version that matched the idea.
 
@@ -202,7 +203,7 @@ I asked to see a preview before changing the public app. Once I was happy with t
 
 ### Mistakes and corrections that are part of the record
 
-There were times when the assistant's work did not follow my direction closely enough. It added language support I had not decided to keep. It spent time working around a weaker model when I had asked for a better one to be used directly. Some early design attempts were too plain, and later attempts still failed to make the glass look properly transparent. I had to point out those problems and restate what I wanted.
+There were times when the codex's work did not follow my direction closely enough. It added language support I had not decided to keep. It spent time working around a weaker model when I had asked for a better one to be used directly. Some early design attempts were too plain, and later attempts still failed to make the glass look properly transparent. I had to figure out those problems and restate what I wanted.
 
 I also had to keep correcting the difference between a test passing and a product being good. A benchmark returning outputs does not mean the jokes work. A higher test count does not mean the humour is better. A page being generated does not mean it matches the design. I asked for the actual output and actual interface to be reviewed, and for claims to stay within what had really been checked.
 
@@ -212,9 +213,9 @@ That is how I wanted this project to be made: with a clear idea, real testing, c
 
 ## Who did what
 
-The idea and product direction are the creator's: making a playful roasting tool, choosing the English-only scope, deciding how the four styles should sound, setting the quality and safety boundaries, and choosing to release the project openly.
+The idea and product direction are the creator's: making a light roasting tool, choosing the English-only scope, deciding how the four styles should sound, setting the quality and safety boundaries, and choosing to release the project openly.
 
-AI assisted with the implementation. It generated most of the application code, prompt code, tests, and GitHub Actions workflow files, and helped diagnose test and benchmark failures. GitHub Actions ran the automated checks and reported their results. The creator directed the work, made the product decisions, reviewed the changes, and remains responsible for the project.
+AI assisted with the implementation. It wrote the application code, prompt code, tests, and GitHub Actions workflow files, and helped diagnose test and benchmark failures. GitHub Actions ran the automated checks and reported their results. The creator directed the work, made the product decisions, reviewed the changes, and remains responsible for the project.
 
 COOKED uses existing instruction models. It is not a new foundation model trained by this repository. The examples in `data/style_examples.jsonl` are illustrative examples prepared for the project; they are not scraped Instagram comments.
 
