@@ -1,5 +1,6 @@
 # COOKED
 
+
 You know sometimes you can't get that comeback or are feeling too perfect. Land here. 
 
 Paste a setup, choose a style, set the spice level (be careful), and get one line you can copy or share. Read the result before posting it.
