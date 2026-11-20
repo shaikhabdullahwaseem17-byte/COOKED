@@ -43,8 +43,8 @@ UNSAFE_OUTPUT_PATTERNS = (
     ),
     # Keep appearance- and body-based punchlines out of the all-ages output.
     re.compile(
-        r"\\b(?:fat|skinny|overweight|underweight|obese|waistline|belly|"
-        r"ugly|hideous|acne|bald|body[- ]shaming)\\b",
+        r"\b(?:fat|skinny|overweight|underweight|obese|waistline|belly|"
+        r"ugly|hideous|acne|bald|body[- ]shaming)\b",
         re.IGNORECASE,
     ),
     # Keep sexual or suggestive material out of this all-ages comment generator.
