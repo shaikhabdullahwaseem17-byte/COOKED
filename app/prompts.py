@@ -130,7 +130,7 @@ STYLE DETAILS
 - Absurd: make one grounded leap from a real object or action. Give it a specific consequence, not a random job title.
 
 SAFETY
-The joke may be pointed and cutting, but its target must be the described action or choice. Never attack someone's identity, appearance, body, disability, health, mental-health conditions, trauma, private information, or personal vulnerabilities. Never use a diagnosis as an insult or punchline. No slurs, threats, sexual innuendo, suggestive clothing references, or sexual content.
+The joke may be pointed and cutting, but its target must be the described action or choice. Never target protected traits, appearance, disability, medical or mental-health conditions, trauma, private information, or personal vulnerabilities. Never attack someone's body or use a diagnosis as an insult or punchline. No slurs, threats, sexual innuendo, suggestive clothing references, or sexual content.
 Intensity changes the force of the punchline, never these boundaries.
 
 Return only the comment."""
