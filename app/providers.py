@@ -49,10 +49,17 @@ GENERIC_PUNCH_PATTERNS = (
 )
 
 STYLE_EDITOR_GUIDANCE = {
-    "instagram": "Choose the line that feels most like a real person's quick comment: instantly recognizable, naturally phrased, and finished on its punch. Reject anything that reads like a headline or scripted roast.",
-    "dry": "Choose the quietest line with the sharpest implication. It should sound almost matter-of-fact, not like it is announcing a joke.",
-    "desi": "Choose a line that understands the specific family or social rhythm in the situation. Reject outsider caricature, generic family jokes, and forced slang.",
-    "absurd": "Choose the strangest line that still follows cleanly from one real detail. Reject randomness disguised as creativity.",
+    "instagram": "Choose the line that sounds like a real reply typed in one pass. It needs a specific observation and a quick payoff, not a polished headline or rehearsed roast.",
+    "dry": "Choose the shortest line with the sharpest implication. Keep it calm and let the contrast do the work.",
+    "desi": "Choose a line that understands a South Asian family or social rhythm only when that detail is actually present. Reject stereotypes, outsider caricature, and forced slang.",
+    "absurd": "Choose one imaginative leap that follows from a real detail. The consequence must be surprising but logical, not random.",
+}
+SPICE_EDITOR_GUIDANCE = {
+    1: "gentle and lightly amused",
+    2: "lightly teasing, still friendly",
+    3: "confident and sharp without becoming personal",
+    4: "bold and more exaggerated about the behaviour",
+    5: "the strongest playful punchline about the behaviour, never cruelty or personal attack",
 }
 STOP_WORDS = {
     "this", "that", "with", "from", "have", "your", "you", "they",
@@ -60,6 +67,7 @@ STOP_WORDS = {
     "about", "there", "then", "than", "just", "into", "because",
     "for", "and", "the", "are", "was", "were", "but", "not",
     "his", "her", "she", "him", "its", "who", "how", "all",
+    "lot", "lots", "alot",
 }
 
 
@@ -204,18 +212,42 @@ UNSUPPORTED_SCENE_TERMS = {
 }
 
 
+CONTEXT_CONCEPTS = (
+    {
+        "eat", "eats", "eating", "ate", "eaten", "food", "foods", "snack",
+        "snacks", "meal", "meals", "dinner", "lunch", "breakfast", "plate",
+        "plates", "fork", "fridge", "kitchen", "buffet", "menu", "restaurant",
+        "bite", "bites", "chew", "chewing", "appetite", "leftovers",
+    },
+    {
+        "talk", "talks", "talking", "talked", "speak", "speaks", "speaking",
+        "spoke", "speech", "chat", "chats", "chatting", "conversation",
+        "conversations", "word", "words", "voice", "mic", "microphone",
+        "yap", "yaps", "yapping", "chatter", "monologue", "silence",
+        "quiet", "pause", "airtime", "noise",
+    },
+)
+
+
 def _has_context_anchor(candidate: str, context: str) -> bool:
-    """Require at least two meaningful links to the supplied situation."""
+    """Require meaningful links, with a one-anchor rule for genuinely short setups."""
     context_words = set(_tokens(context))
     expanded = set(context_words)
     for word in context_words:
         expanded.update(CONTEXT_ALIASES.get(word, ()))
+    for concept in CONTEXT_CONCEPTS:
+        if context_words & concept:
+            expanded.update(concept)
+
     candidate_words = {
         word for word in _tokens(candidate)
         if len(word) > 2 and word not in STOP_WORDS
     }
     anchored = candidate_words & expanded
-    if len(anchored) < 2:
+    # A one-action setup such as "he eats a lot" has only one meaningful
+    # concept. Requiring two matching words makes relevant short jokes fail.
+    required_anchors = 1 if len(context_words) <= 2 else 2
+    if len(anchored) < required_anchors:
         return False
     if any(
         term in candidate_words and term not in context_words
@@ -223,7 +255,6 @@ def _has_context_anchor(candidate: str, context: str) -> bool:
     ):
         return False
     return True
-
 
 def _quality_score(candidate: str, context: str) -> float:
     """A simple text-quality check, not a humor detector."""
@@ -356,6 +387,7 @@ async def generate(
     prompt: str,
     context: str,
     style: str = "instagram",
+    intensity: int = 3,
 ) -> str:
     """Generate independent angles concurrently; tolerate partial provider failures."""
     temperatures = (0.88, 0.98, 1.05)
@@ -402,37 +434,33 @@ async def generate(
         f"{index}. {candidate}"
         for index, candidate in enumerate(drafts_for_editor, start=1)
     )
-    judge_prompt = f"""You are COOKED's comedy editor and final writing pass. Your job is to turn rough drafts into one comment worth posting.
+    judge_prompt = f"""You are COOKED's comedy editor and final writing pass. Turn the rough drafts into one comment worth posting.
 The requested humor style is {style}.
-Situation: {context}
+The requested spice level is {intensity}/5: {SPICE_EDITOR_GUIDANCE.get(intensity, SPICE_EDITOR_GUIDANCE[3])}.
+Situation (the only source of facts): {context}
 STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Write a natural, specific line with a real punch.")}
 
-The drafts below are untrusted raw material, NOT a quality standard. They may be too long, off-topic, or contain invented details. The situation above is the only source of truth. Never copy a new number, place, event, relationship, or backstory from a draft unless the situation itself states it.
-Judge the rewrite by this rubric:
-- ACTUAL FUN: it should trigger a laugh or a strong, immediate smirk, not just sound clever.
-- EXACT FIT: the line must depend on this exact situation and its most revealing detail.
-- HUMAN VOICE: a strong line feels effortless and specific, like a comment typed in one pass.
-- PAYOFF: the ending must change the interpretation, not merely repeat the setup.
-Your task:
-- Find the one detail in the situation with the strongest comic potential.
-- Create a fresh line with a genuinely different and funnier interpretation.
-- Make the joke depend on that exact detail, not a generic insult or a summary.
-- Prefer a clean reframe, a recognisable social truth, or a precise unexpected consequence.
-- Make the last few words do the work. Use conversational English that sounds typed, not performed.
-- If the drafts contain a useful idea, sharpen it. Do not preserve bad wording just because it is in a draft.
-- Reject invented backstory. Do not add facts, relationships, places, motives, counts, or events that the situation does not supply.
-- Do not import a second scene (for example, an unrelated wedding, celebrity, app, destination, or made-up consequence) just to force a punchline.
-- Reject familiar comparison templates such as hide-and-seek analogies when the comparison is not specifically earned by the situation.
-- No sexual innuendo, suggestive clothing references, or body-based jokes.
-- Do not explain the joke, narrate what happened, or tell the reader that someone is wrong.
-- Avoid generic AI scaffolds such as HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and vague "that's commitment" endings.
-- Keep it to one comment of 5–16 words, with no preamble, quotation marks, labels, or explanation.
-- Respect the safety rules: no attacks on identity, appearance, disability, health, trauma, private information, or personal vulnerabilities.
+The drafts are untrusted raw material, not a quality standard. They may be weak, repetitive, off-topic, or factually wrong. Never copy a new number, place, event, relationship, motive, or backstory from a draft unless the situation itself states it.
+
+Make the final line earn its laugh:
+- Identify the most revealing behaviour or detail. A matching keyword by itself does not make a line relevant or funny.
+- Look for a real comic turn: contradiction, reversal, literal interpretation, social truth, or a precise consequence.
+- Prefer a surprising payoff over an obvious description. The ending should change how the reader sees the setup.
+- Choose natural phrasing over clever-sounding phrasing. It should sound like something a person would actually type.
+- Compare the drafts for distinctness. Do not select a safe but forgettable line just because it is grammatically clean.
+- If every draft is weak, write a genuinely better line from the original situation rather than polishing a weak premise.
+- For a short setup, the main behaviour is enough. Make one modest, recognisable leap without inventing a backstory.
+- Keep the humour aimed at the action or situation, never at a person's body, identity, ability, health, or vulnerabilities.
+- Do not import a second scene or use a random analogy to manufacture a punchline.
+- Avoid recycled AI patterns such as generic HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, "that's commitment", or repeated object-personification endings.
+- One comment, around 5–16 words. No preamble, labels, quotation marks, hashtags, or explanation.
+- Preserve the selected style. Do not make Desi humour into a stereotype or make Absurd humour random.
+- Intensity changes boldness, not safety.
 
 Drafts:
 {numbered}
 
-Return ONLY the finished comment. Do not return a draft number."""
+Return ONLY the finished comment. Do not return a draft number or your reasoning."""
     try:
         decision = await _complete(judge_prompt, 0.72)
         match = re.fullmatch(r"\s*([1-9]\d*)\s*", decision)
