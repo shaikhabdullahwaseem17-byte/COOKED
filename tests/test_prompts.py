@@ -352,6 +352,10 @@ def test_short_action_contexts_accept_one_specific_grounding_anchor():
         "He eats a lot.",
     )
     assert providers._has_context_anchor(
+        "The fridge knows him by name.",
+        "He eats alot.",
+    )
+    assert providers._has_context_anchor(
         "The silence has started charging for airtime.",
         "He talks a lot.",
     )
