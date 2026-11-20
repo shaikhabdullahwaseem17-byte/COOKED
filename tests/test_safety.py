@@ -66,3 +66,11 @@ def test_playful_situation_based_context_is_allowed(text):
 )
 def test_generated_output_safety_guard(text, expected):
     assert is_safe_output(text) is expected
+
+
+def test_all_ages_output_guard_rejects_body_shaming():
+    from app.safety import is_safe_output
+
+    assert not is_safe_output("That joke is about his waistline.")
+    assert not is_safe_output("The comment calls someone ugly.")
+    assert is_safe_output("The fridge knows him by name.")
