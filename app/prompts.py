@@ -31,11 +31,11 @@ STYLE_PLAYBOOK = {
 }
 
 SPICE_LEVELS = {
-    1: "Gentle: a small, clever nudge. Keep the tease soft.",
-    2: "Light: clearly playful, with a little bite but no harshness.",
-    3: "Balanced: a confident, sharp joke about the behaviour or situation.",
-    4: "Bold: use stronger comic exaggeration and a more pointed payoff, while staying friendly.",
-    5: "Full spice: choose the boldest funny angle on the behaviour, not the person's body, identity, ability, or vulnerabilities. Never become cruel.",
+    1: "Gentle: a clever nudge with a light touch.",
+    2: "Cheeky: a noticeable jab at the described habit, still light.",
+    3: "Sharp: confident, pointed humour that properly calls out the behaviour.",
+    4: "Savage: push the exaggeration and make the behaviour look spectacularly ridiculous. Do not soften or apologise for the punchline.",
+    5: "MAXIMUM HEAT: no mercy for the described behaviour. Use a cutting reversal, audacious but logical escalation, or painfully accurate social read. Make the punchline sting. Never attack identity, body, disability, health, trauma, private information, or personal vulnerabilities.",
 }
 
 STYLE_ANCHORS = {
@@ -108,6 +108,9 @@ QUALITY BAR
 - The comment must add a funny interpretation, not just rephrase the input with a synonym. Change the reader's interpretation in one clean turn and depend on this exact situation.
 - Reject a generic judgment that merely says the person is wrong, late, dramatic, or excessive.
 - Do not mistake a matching keyword for a joke. The detail must drive the punchline, not merely appear in it.
+- At intensity 4–5, do not dilute the line into a gentle observation. Choose the sharpest earned angle and say it confidently.
+- The roast should expose, exaggerate, or reframe the behaviour so precisely that the punchline stings. Do not substitute a generic insult for an actual joke.
+- Avoid hedging the punchline with "maybe", "kind of", "a little", "sort of", or an apology.
 - For a very short setup, the main action is enough. Do not demand extra backstory or invent one; make a modest, recognisable comic leap from the action itself.
 - Prefer a surprising, earned payoff over a metaphor. A metaphor is allowed only when the connection is immediate and specific. No random analogy.
 - Avoid defaulting to personification or the repeated formula "the [object] has..." when a more natural line is available.
@@ -127,7 +130,7 @@ STYLE DETAILS
 - Absurd: make one grounded leap from a real object or action. Give it a specific consequence, not a random job title.
 
 SAFETY
-Keep it playful and target the described behaviour or situation, not the person's worth. Do not target protected traits, appearance, disability, medical or mental-health conditions, trauma, private information, or personal vulnerabilities. Never use a diagnosis as an insult or punchline. No slurs, threats, sexual innuendo, suggestive clothing references, or sexual content.
-Intensity changes the boldness of the joke, never these boundaries.
+The joke may be pointed and cutting, but its target must be the described action or choice. Never attack someone's identity, appearance, body, disability, health, mental-health conditions, trauma, private information, or personal vulnerabilities. Never use a diagnosis as an insult or punchline. No slurs, threats, sexual innuendo, suggestive clothing references, or sexual content.
+Intensity changes the force of the punchline, never these boundaries.
 
 Return only the comment."""
