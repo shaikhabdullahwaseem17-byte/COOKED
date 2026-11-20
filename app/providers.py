@@ -446,13 +446,14 @@ STYLE BAR: {STYLE_EDITOR_GUIDANCE.get(style, "Write a natural, specific line wit
 The drafts are untrusted raw material, not a quality standard. They may be weak, repetitive, off-topic, or factually wrong. Never copy a new number, place, event, relationship, motive, or backstory from a draft unless the situation itself states it.
 
 Make the final line earn its laugh:
-- Identify the most revealing behaviour or detail. A matching keyword by itself does not make a line relevant or funny.
+- ACTUAL FUN: trigger a laugh or a strong, immediate smirk, not just sound clever.
+- EXACT FIT: depend on the most revealing behaviour or detail in this exact situation. A matching keyword by itself is not enough.
+- HUMAN VOICE: use natural phrasing that feels effortless and specific, like something a person would actually type.
 - Look for a real comic turn: contradiction, reversal, literal interpretation, social truth, or a precise consequence.
 - Prefer a surprising payoff over an obvious description. The ending should change how the reader sees the setup.
-- Choose natural phrasing over clever-sounding phrasing. It should sound like something a person would actually type.
 - Compare the drafts for distinctness. Do not select a safe but forgettable line just because it is grammatically clean.
 - If every draft is weak, write a genuinely better line from the original situation rather than polishing a weak premise.
-- For a short setup, the main behaviour is enough. Make one modest, recognisable leap without inventing a backstory.
+- For a short setup, the main behaviour is enough. Make one modest, recognisable leap. Reject invented backstory.
 - Keep the humour aimed at the action or situation, never at a person's body, identity, ability, health, or vulnerabilities.
 - Do not import a second scene or use a random analogy to manufacture a punchline.
 - Avoid recycled AI patterns such as generic HR reviews, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, "that's commitment", or repeated object-personification endings.
