@@ -6,11 +6,11 @@ const STYLES = {
   absurd: "one playful surreal turn that grows logically from a real detail in the setup",
 };
 const SPICE_LEVELS = {
-  1: "Gentle: a small, clever nudge. Keep the tease soft.",
-  2: "Light: clearly playful, with a little bite but no harshness.",
-  3: "Balanced: a confident, sharp joke about the behaviour or situation.",
-  4: "Bold: use stronger comic exaggeration and a more pointed payoff, while staying friendly.",
-  5: "Full spice: choose the boldest funny angle on the behaviour, never cruelty or a personal attack."
+  1: "Gentle: a clever nudge with a light touch.",
+  2: "Cheeky: a noticeable jab at the described habit, still light.",
+  3: "Sharp: confident, pointed humour that properly calls out the behaviour.",
+  4: "Savage: push the exaggeration and make the behaviour look spectacularly ridiculous. Do not soften or apologise for the punchline.",
+  5: "MAXIMUM HEAT: no mercy for the described behaviour. Use a cutting reversal, audacious but logical escalation, or painfully accurate social read. Make the punchline sting. Never attack identity, body, disability, health, trauma, private information, or personal vulnerabilities."
 };
 
 const STOP = new Set([
@@ -164,6 +164,9 @@ export function buildPrompt(text, style, intensity) {
     "Notice the most revealing action, contradiction, repeated habit, overreaction or social tell in this exact setup.",
     "Silently consider several genuinely different comic directions. Choose the one with the best surprise, exact fit and natural wording. Return no options or reasoning.",
     "Use one clean comic turn: a reversal, literal interpretation, contrast, recognisable social truth or earned consequence.",
+    "At intensity 4–5, do not dilute the joke into a gentle observation. Choose the sharpest earned angle, say it confidently, and make the punchline sting.",
+    "Expose, exaggerate or reframe the behaviour so precisely that the line lands. A generic insult is not a substitute for a joke.",
+    "Avoid hedging, apologising, disclaimers and softeners that drain the punchline.",
     "Make the final words deliver the payoff. Do not just describe the behaviour or swap in a synonym.",
     "A short setup is enough. Build on its main action with one modest, recognisable comic leap; do not demand extra backstory.",
     "Aim for 5–16 words. One sentence or fragment. Sound typed in one pass, not polished like an advert.",
@@ -174,7 +177,7 @@ export function buildPrompt(text, style, intensity) {
     "Dry: calm, understated, economical. Let the implication do the work.",
     "Desi: natural English. Use South Asian family or social rhythms only when genuinely present; no stereotypes or forced slang.",
     "Absurd: one imaginative leap from a real detail, with a clear cause and consequence.",
-    "Keep the joke about the described action or situation, not a person's body, appearance, identity, ability, health, or vulnerabilities.",
+    "The joke may be pointed and cutting, but its target must be the described action or choice, never someone's identity, appearance, body, disability, health, mental-health conditions, trauma, private information or vulnerabilities.",
     "No slurs, threats, sexual content, suggestive clothing references, self-harm references or mental-health punchlines.",
     "Intensity changes the boldness of the joke, never its safety boundaries.",
     "Return only the comment. No preamble, explanation, label or quotation marks."
