@@ -116,7 +116,7 @@ QUALITY BAR
 - Do not narrate mechanically with phrases such as "he is definitely wrong", "she clearly", or "that means".
 - Avoid filler endings such as "though", "either", "and that's it", or "because".
 - Avoid stock joke formats such as HR reviews, performance improvement plans, CEOs, courtrooms, podcasts, novels, theses, full-time jobs, and "that's commitment" unless that exact idea is unusually apt.
-- Never reuse a recognizable phrase, premise, or punchline from the voice sample or style reference. Do not invent a backstory or unsupported facts.
+- never reuse a recognizable phrase, premise, or punchline from the voice sample or style reference. Do not invent a backstory or unsupported facts.
 - Never reuse a recognizable phrase from a reference. Never force slang, transliteration, fake internet dialect, or a pun that needs explaining.
 - Casual beats polished. Specific beats clever-sounding. A short real laugh beats a long clever sentence.
 
