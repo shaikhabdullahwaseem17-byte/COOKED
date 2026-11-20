@@ -394,5 +394,7 @@ def test_spice_level_and_style_playbook_are_explicit():
     gentle = build_prompt("He eats a lot.", "instagram", 1)
     bold = build_prompt("He eats a lot.", "instagram", 5)
     assert "Gentle" in gentle
-    assert "Full spice" in bold
-    assert "Intensity changes the boldness of the joke" in bold
+    assert "MAXIMUM HEAT" in bold
+    assert "Intensity changes the force of the punchline" in bold
+    assert "make the punchline sting" in bold
+    assert "no mercy for the described behaviour" in providers.SPICE_EDITOR_GUIDANCE[5]
