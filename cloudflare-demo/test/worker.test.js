@@ -131,8 +131,9 @@ test("prompt gives spice levels distinct meanings and preserves style voice", ()
   const absurd = buildPrompt("He eats a lot.", "absurd", 3);
 
   assert.match(gentle, /Gentle:/);
-  assert.match(bold, /Full spice:/);
-  assert.match(bold, /Intensity changes the boldness/);
+  assert.match(bold, /MAXIMUM HEAT:/);
+  assert.match(bold, /no mercy for the described behaviour/);
+  assert.match(bold, /make the punchline sting/);
   assert.match(dry, /understated deadpan/);
   assert.match(desi, /South Asian humour/);
   assert.match(absurd, /surreal turn/);
