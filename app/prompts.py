@@ -105,7 +105,7 @@ FIND THE JOKE
 QUALITY BAR
 - Aim for 5–16 words. One sentence or fragment. No preamble, explanation, hashtags, or quotation marks.
 - It must depend on a detail from THIS exact situation. If the same line could sit under twenty unrelated posts, discard it.
-- The comment must add a funny interpretation, not just rephrase the input with a synonym. It must land in one clean turn and depend on this exact situation.
+- The comment must add a funny interpretation, not just rephrase the input with a synonym. Change the reader's interpretation in one clean turn and depend on this exact situation.
 - Reject a generic judgment that merely says the person is wrong, late, dramatic, or excessive.
 - Do not mistake a matching keyword for a joke. The detail must drive the punchline, not merely appear in it.
 - For a very short setup, the main action is enough. Do not demand extra backstory or invent one; make a modest, recognisable comic leap from the action itself.
