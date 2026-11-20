@@ -28,6 +28,7 @@ async def roast(payload: RoastRequest):
             prompt,
             payload.text,
             style=payload.style,
+            intensity=payload.intensity,
         )
         return RoastResponse(roast=answer, style=payload.style)
     except ValueError as exc:

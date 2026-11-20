@@ -344,3 +344,57 @@ def test_prompt_defines_style_specific_humor_without_stereotypes():
     assert "English-language South Asian social humor" in prompt
     assert "No generic auntie/uncle/WhatsApp joke" in prompt
     assert "no fake accent" in prompt.lower()
+
+
+def test_short_action_contexts_accept_one_specific_grounding_anchor():
+    assert providers._has_context_anchor(
+        "The fridge knows him by name.",
+        "He eats a lot.",
+    )
+    assert providers._has_context_anchor(
+        "The fridge knows him by name.",
+        "He eats alot.",
+    )
+    assert providers._has_context_anchor(
+        "The silence has started charging for airtime.",
+        "He talks a lot.",
+    )
+    assert not providers._has_context_anchor(
+        "The airport has updated its opening hours.",
+        "He eats a lot.",
+    )
+
+
+def test_short_food_and_talking_setups_can_reach_the_editor(monkeypatch):
+    async def fake_complete(prompt, temperature):
+        if "comedy editor" in prompt:
+            return "The fridge knows him by name."
+        return "The fridge knows him by name."
+
+    monkeypatch.setattr(providers, "_complete", fake_complete)
+    food = asyncio.run(providers.generate(
+        "Write a short comment.", "He eats a lot.", style="instagram"
+    ))
+    assert food == "The fridge knows him by name."
+
+    async def talking_complete(prompt, temperature):
+        return "The silence has started charging for airtime."
+
+    monkeypatch.setattr(providers, "_complete", talking_complete)
+    talking = asyncio.run(providers.generate(
+        "Write a short comment.", "He talks a lot.", style="instagram"
+    ))
+    assert talking == "The silence has started charging for airtime."
+
+
+def test_spice_level_and_style_playbook_are_explicit():
+    from app.prompts import SPICE_LEVELS, STYLE_PLAYBOOK
+    assert set(SPICE_LEVELS) == {1, 2, 3, 4, 5}
+    assert len(set(STYLE_PLAYBOOK.values())) == 4
+    gentle = build_prompt("He eats a lot.", "instagram", 1)
+    bold = build_prompt("He eats a lot.", "instagram", 5)
+    assert "Gentle" in gentle
+    assert "MAXIMUM HEAT" in bold
+    assert "Intensity changes the force of the punchline" in bold
+    assert "make the punchline sting" in bold.casefold()
+    assert "no mercy for the described behaviour" in providers.SPICE_EDITOR_GUIDANCE[5]

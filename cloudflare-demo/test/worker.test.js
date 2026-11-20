@@ -121,3 +121,27 @@ test("request handler returns the existing error when both attempts fail", async
   assert.equal(response.status, 503);
   assert.equal(prompts.length, 2);
 });
+
+
+test("prompt gives spice levels distinct meanings and preserves style voice", () => {
+  const gentle = buildPrompt("He eats a lot.", "instagram", 1);
+  const bold = buildPrompt("He eats a lot.", "instagram", 5);
+  const dry = buildPrompt("He eats a lot.", "dry", 3);
+  const desi = buildPrompt("He eats a lot.", "desi", 3);
+  const absurd = buildPrompt("He eats a lot.", "absurd", 3);
+
+  assert.match(gentle, /Gentle:/);
+  assert.match(bold, /MAXIMUM HEAT:/);
+  assert.match(bold, /no mercy for the described behaviour/);
+  assert.match(bold, /make the punchline sting/);
+  assert.match(dry, /understated deadpan/);
+  assert.match(desi, /South Asian humour/);
+  assert.match(absurd, /surreal turn/);
+  assert.match(bold, /Silently consider several genuinely different comic directions/);
+});
+
+test("output guard blocks appearance-based punchlines but keeps behaviour jokes", () => {
+  assert.equal(validateOutput("That waistline has its own schedule.", "He eats a lot."), false);
+  assert.equal(validateOutput("The fridge knows him by name.", "He eats a lot."), true);
+  assert.equal(validateOutput("The silence has started charging for airtime.", "He talks a lot."), true);
+});
