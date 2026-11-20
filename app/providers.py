@@ -49,17 +49,17 @@ GENERIC_PUNCH_PATTERNS = (
 )
 
 STYLE_EDITOR_GUIDANCE = {
-    "instagram": "Choose the line that sounds like a real reply typed in one pass. It needs a specific observation and a quick payoff, not a polished headline or rehearsed roast.",
-    "dry": "Choose the shortest line with the sharpest implication. Keep it calm and let the contrast do the work.",
-    "desi": "Choose a line that understands a South Asian family or social rhythm only when that detail is actually present. Reject stereotypes, outsider caricature, and forced slang.",
-    "absurd": "Choose one imaginative leap that follows from a real detail. The consequence must be surprising but logical, not random.",
+    "instagram": "Choose the most scroll-stopping line that still sounds like a real person typed it. It needs an exact observation and a sharp, fast payoff, not a polished headline or a list of insults.",
+    "dry": "Choose the shortest line with the coldest, sharpest implication. Keep the delivery calm; let the contrast do the damage.",
+    "desi": "Choose a line that understands a South Asian family or social rhythm only when that detail is actually present. Keep the wit sharp and natural. Reject stereotypes, outsider caricature, and forced slang.",
+    "absurd": "Choose the boldest imaginative leap that follows from a real detail. The consequence must be surprising but logical, not random.",
 }
 SPICE_EDITOR_GUIDANCE = {
-    1: "gentle and lightly amused",
-    2: "lightly teasing, still friendly",
-    3: "confident and sharp without becoming personal",
-    4: "bold and more exaggerated about the behaviour",
-    5: "the strongest playful punchline about the behaviour, never cruelty or personal attack",
+    1: "a clever nudge with a light touch",
+    2: "a cheeky jab at the described habit",
+    3: "confident, pointed humour that calls out the behaviour",
+    4: "a savage, sharply phrased exaggeration of the behaviour",
+    5: "maximum heat: no mercy for the described behaviour; make the punchline sting without attacking the person's traits or vulnerabilities",
 }
 STOP_WORDS = {
     "this", "that", "with", "from", "have", "your", "you", "they",
@@ -448,6 +448,9 @@ The drafts are untrusted raw material, not a quality standard. They may be weak,
 Make the final line earn its laugh:
 - ACTUAL FUN: trigger a laugh or a strong, immediate smirk, not just sound clever.
 - EXACT FIT: depend on the most revealing behaviour or detail in this exact situation. A matching keyword by itself is not enough.
+- HIGH-INTENSITY PUNCH: at level 4–5, choose the sharpest safe angle. Do not water it down into a polite observation; make the behaviour look ridiculous through a specific reversal, escalation, or social read.
+- NO EMPTY INSULTS: a generic "you're stupid" style put-down is not a punchline. The joke itself must expose the ridiculousness of the described action.
+- NO HEDGING: avoid apologetic qualifiers, disclaimers, or softeners that drain the payoff.
 - HUMAN VOICE: use natural phrasing that feels effortless and specific, like something a person would actually type.
 - Look for a real comic turn: contradiction, reversal, literal interpretation, social truth, or a precise consequence.
 - Prefer a surprising payoff over an obvious description. The ending should change how the reader sees the setup.
