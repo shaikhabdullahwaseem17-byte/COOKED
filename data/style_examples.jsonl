@@ -31,3 +31,11 @@
 {"input":"A potato left in the pantry started growing new shoots.","output":"The potato has quietly entered its next chapter.","style":"absurd","language":"en","source":"original_example"}
 {"input":"Someone put a tiny hat on the kettle and left it on the counter.","output":"The kettle now expects to be introduced first.","style":"absurd","language":"en","source":"original_example"}
 {"input":"The office traffic cone was given a chair at the team meeting.","output":"The cone has somehow secured a permanent seat.","style":"absurd","language":"en","source":"original_example"}
+{"input":"She said one last scroll and missed her stop.","output":"That scroll got a longer commute than planned.","style":"instagram","language":"en","source":"original_example"}
+{"input":"He asked for a quick answer, then sent six follow-up questions.","output":"The quick answer came with an interview round.","style":"instagram","language":"en","source":"original_example"}
+{"input":"An email marked urgent sat in drafts for two days.","output":"Urgency appears to be scheduled for later.","style":"dry","language":"en","source":"original_example"}
+{"input":"The meeting ended with everyone assigned to schedule another meeting.","output":"The meeting has successfully recreated itself.","style":"dry","language":"en","source":"original_example"}
+{"input":"At a family visit, the host said to stay for just five minutes.","output":"Five minutes is clearly a local unit of measurement.","style":"desi","language":"en","source":"original_example"}
+{"input":"Everyone said they were leaving after chai, then ordered another round.","output":"The goodbye was apparently only a tea break.","style":"desi","language":"en","source":"original_example"}
+{"input":"She lined up the fridge magnets by height.","output":"The shortest magnet has requested a recount.","style":"absurd","language":"en","source":"original_example"}
+{"input":"The office plant was included in the seating plan.","output":"It has better sunlight than half the team.","style":"absurd","language":"en","source":"original_example"}
