@@ -28,7 +28,7 @@ const CONTEXT_CONCEPTS = [
     "eat","eats","eating","ate","eaten","food","foods","snack","snacks",
     "meal","meals","dinner","lunch","breakfast","plate","plates","fork",
     "fridge","kitchen","buffet","menu","restaurant","bite","bites","chew",
-    "chewing","stomach","appetite"
+    "chewing","appetite","leftovers"
   ]),
   new Set([
     "talk","talks","talking","talked","speak","speaks","speaking","spoke",
