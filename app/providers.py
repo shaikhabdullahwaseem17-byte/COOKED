@@ -231,7 +231,10 @@ CONTEXT_CONCEPTS = (
 
 def _has_context_anchor(candidate: str, context: str) -> bool:
     """Require meaningful links, with a one-anchor rule for genuinely short setups."""
-    context_words = set(_tokens(context))
+    context_words = {
+        word for word in _tokens(context)
+        if len(word) > 2 and word not in STOP_WORDS
+    }
     expanded = set(context_words)
     for word in context_words:
         expanded.update(CONTEXT_ALIASES.get(word, ()))
