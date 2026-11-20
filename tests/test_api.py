@@ -54,9 +54,10 @@ def test_roast_rejects_legacy_language_field():
 
 
 def test_roast_returns_structured_result(monkeypatch):
-    async def fake_generate(prompt, context, style="instagram"):
+    async def fake_generate(prompt, context, style="instagram", intensity=3):
         assert context == "A harmless test situation."
         assert style == "instagram"
+        assert intensity == 3
         return "The situation brought its own plot twist."
 
     monkeypatch.setattr("app.main.generate", fake_generate)
@@ -73,7 +74,7 @@ def test_roast_returns_structured_result(monkeypatch):
 
 
 def test_roast_maps_provider_errors_to_service_unavailable(monkeypatch):
-    async def fake_generate(prompt, context, style="instagram"):
+    async def fake_generate(prompt, context, style="instagram", intensity=3):
         raise ProviderError("The model provider timed out. Try again.")
 
     monkeypatch.setattr("app.main.generate", fake_generate)
